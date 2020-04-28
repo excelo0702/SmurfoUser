@@ -1,19 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        app:srcCompat="@drawable/ic_sentiment"
+        android:layout_marginTop="30dp"
+        ></ImageView>
+
 
     <TextView
-        android:id="@+id/text_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="130dp"
+        android:inputType="textMultiLine"
+        android:layout_marginBottom="20dp"
+        android:textSize="15dp"
+        android:text="      We are really Sorry \n Tell Us What Went Wrong"
+        ></TextView>
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:text="Rating"
+        ></TextView>
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rating="2"
+        android:id="@+id/r1"
+        ></RatingBar>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rating"
+
+        ></TextView>
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rating="2"
+        android:id="@+id/r2"
+
+        ></RatingBar>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rating"
+        ></TextView>
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rating="2"
+        android:id="@+id/r3"
+
+        ></RatingBar>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rating"
+        ></TextView>
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rating="2"
+        android:id="@+id/r4"
+
+        ></RatingBar>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Other"
+        ></TextView>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        ></EditText>
+
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="submit"
+        android:layout_marginLeft="70dp"
+        android:id="@+id/submit_feedback"
+        android:background="#FFFFFF"
+        android:textSize="16dp"
+        ></Button>
+
+
+
+
+</LinearLayout>

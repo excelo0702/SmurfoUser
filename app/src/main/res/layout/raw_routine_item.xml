@@ -59,18 +59,8 @@
                     android:id="@+id/description_routine"
                     android:layout_marginLeft="15dp">
                 </TextView>
-
-
             </LinearLayout>
-
-
-
         </LinearLayout>
-
-
-
-
-
     </androidx.cardview.widget.CardView>
 
 

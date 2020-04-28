@@ -21,9 +21,11 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="670dp"
         android:id="@+id/list_notification_view"
         ></ListView>
+
+
 
 
 </LinearLayout>
