@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.chhots.ui.home.HomeFragment"
+        android:label="DEPRITA"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_notification"
+        android:name="com.example.chhots.ui.gallery.GalleryFragment"
+        android:label="Notifications"
+        tools:layout="@layout/fragment_notification" />
+
+    <fragment
+        android:id="@+id/nav_subscription"
+        android:name="com.example.chhots.ui.slideshow.SlideshowFragment"
+        android:label="Subscription"
+        tools:layout="@layout/fragment_subscription" />
+
+    <fragment
+        android:id="@+id/nav_category"
+        android:name="com.example.chhots.ui.tools.ToolsFragment"
+        android:label="Category"
+        tools:layout="@layout/fragment_category" />
+
+    <fragment
+        android:id="@+id/nav_setting"
+        android:name="com.example.chhots.ui.share.ShareFragment"
+        android:label="Setting"
+        tools:layout="@layout/fragment_setting" />
+
+
+    <fragment
+        android:id="@+id/nav_feedback"
+        android:name="com.example.chhots.ui.send.SendFragment"
+        android:label="Feedback"
+        tools:layout="@layout/fragment_feedback" />
+
+
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.example.chhots.ui.send.SendFragment"
+        android:label="About"
+        tools:layout="@layout/fragment_about" />
+
+
+    <fragment
+        android:id="@+id/nav_support"
+        android:name="com.example.chhots.ui.send.SendFragment"
+        android:label="Support Us"
+        tools:layout="@layout/fragment_support" />
+
+</navigation>

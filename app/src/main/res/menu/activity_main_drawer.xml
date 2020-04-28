@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single"
+        >
+        <item
+
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="Home Page" />
+
+        <item
+            android:id="@+id/nav_notification"
+            android:icon="@drawable/ic_notifications"
+            android:title="Notification" />
+        <item
+            android:id="@+id/nav_subscription"
+            android:icon="@drawable/ic_subscriptions"
+            android:title="Subscription" />
+        <item
+            android:id="@+id/nav_category"
+            android:icon="@drawable/ic_category"
+            android:title="Category" />
+
+        <item
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/ic_settings"
+                android:title="Setting" />
+
+
+        <item
+                android:id="@+id/nav_feedback"
+                android:icon="@drawable/ic_feedback"
+                android:title="Feedback" />
+
+
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_about_us"
+                android:title="About Deprrita" />
+
+
+            <item
+                android:id="@+id/nav_support"
+                android:icon="@drawable/ic_support"
+                android:title="Support Us" />
+    </group>
+</menu>
