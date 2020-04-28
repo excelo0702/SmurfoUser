@@ -13,46 +13,46 @@
 
     <fragment
         android:id="@+id/nav_notification"
-        android:name="com.example.chhots.ui.gallery.GalleryFragment"
+        android:name="com.example.chhots.ui.notifications.NotificationsFragment"
         android:label="Notifications"
         tools:layout="@layout/fragment_notification" />
 
     <fragment
         android:id="@+id/nav_subscription"
-        android:name="com.example.chhots.ui.slideshow.SlideshowFragment"
+        android:name="com.example.chhots.ui.Subscription.subscription"
         android:label="Subscription"
         tools:layout="@layout/fragment_subscription" />
 
     <fragment
         android:id="@+id/nav_category"
-        android:name="com.example.chhots.ui.tools.ToolsFragment"
+        android:name="com.example.chhots.ui.Category.category"
         android:label="Category"
         tools:layout="@layout/fragment_category" />
 
     <fragment
         android:id="@+id/nav_setting"
-        android:name="com.example.chhots.ui.share.ShareFragment"
+        android:name="com.example.chhots.ui.Setting.setting"
         android:label="Setting"
         tools:layout="@layout/fragment_setting" />
 
 
     <fragment
         android:id="@+id/nav_feedback"
-        android:name="com.example.chhots.ui.send.SendFragment"
+        android:name="com.example.chhots.ui.Feedback.feedback"
         android:label="Feedback"
         tools:layout="@layout/fragment_feedback" />
 
 
     <fragment
         android:id="@+id/nav_about"
-        android:name="com.example.chhots.ui.send.SendFragment"
+        android:name="com.example.chhots.ui.About_Deprrita.about"
         android:label="About"
         tools:layout="@layout/fragment_about" />
 
 
     <fragment
         android:id="@+id/nav_support"
-        android:name="com.example.chhots.ui.send.SendFragment"
+        android:name="com.example.chhots.ui.SupportUs.support"
         android:label="Support Us"
         tools:layout="@layout/fragment_support" />
 

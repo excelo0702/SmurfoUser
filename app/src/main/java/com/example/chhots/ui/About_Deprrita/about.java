@@ -1,4 +1,4 @@
-package com.example.chhots.ui;
+package com.example.chhots.ui.About_Deprrita;
 
 
 import android.os.Bundle;
@@ -14,10 +14,10 @@ import com.example.chhots.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class support extends Fragment {
+public class about extends Fragment {
 
 
-    public support() {
+    public about() {
         // Required empty public constructor
     }
 
@@ -26,7 +26,7 @@ public class support extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_support, container, false);
+        return inflater.inflate(R.layout.fragment_about, container, false);
     }
 
 }

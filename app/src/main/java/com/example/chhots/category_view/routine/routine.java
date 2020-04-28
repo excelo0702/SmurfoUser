@@ -26,8 +26,25 @@ public class routine extends Fragment {
         // Required empty public constructor
     }
 
-    String[] name = {"tanish" ,"tanish" ,"tanish" ,"tanish" ,"tanish" ,"tanish" , "mommy"};
-    String[] danceform = {"tanish" ,"tanish" ,"tanish" ,"tanish" ,"tanish" ,"tanish" , "mommy"};;
+    String[] name = {
+            "Song" ,
+            "Song" ,
+            "Song" ,
+            "Song" ,
+            "Song" ,
+            "Song" ,
+            "Song" ,
+
+    };
+    String[] danceform = {
+            "Instructor" ,
+            "Instructor" ,
+            "Instructor" ,
+            "Instructor" ,
+            "Instructor" ,
+            "Instructor" ,
+            "Instructor" ,
+    };;
     int[] imageId = {
             R.drawable.image,
             R.drawable.image,
@@ -73,6 +90,7 @@ public class routine extends Fragment {
 
         return view;
     }
+
     class Myadapter extends ArrayAdapter<String> {
         Context context;
         String[] name;

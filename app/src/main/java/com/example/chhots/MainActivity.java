@@ -8,7 +8,6 @@ import com.example.chhots.bottom_navigation_fragments.favorite;
 import com.example.chhots.bottom_navigation_fragments.instructor;
 import com.example.chhots.bottom_navigation_fragments.trending;
 import com.example.chhots.category_view.routine.routine;
-import com.example.chhots.ui.dashboard.DashboardFragment;
 import com.example.chhots.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -56,49 +55,6 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-
-
-                switch (item.getItemId()) {
-                    case R.id.nav_home:
-                        Toast.makeText(getApplicationContext(), "Dashboard", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_notification:
-                        Toast.makeText(getApplicationContext(), "Favorites", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_subscription:
-                        Toast.makeText(getApplicationContext(), "Trending", Toast.LENGTH_SHORT).show();
-                        break;
-
-                    case R.id.nav_category:
-                        Toast.makeText(getApplicationContext(), "Instructor", Toast.LENGTH_SHORT).show();
-                        break;
-
-
-                    case R.id.nav_setting:
-                        Toast.makeText(getApplicationContext(), "Instructor", Toast.LENGTH_SHORT).show();
-                        break;
-
-
-                    case R.id.nav_feedback:
-                        Toast.makeText(getApplicationContext(), "Instructor", Toast.LENGTH_SHORT).show();
-                        break;
-
-                    case R.id.nav_about:
-                        Toast.makeText(getApplicationContext(), "Instructor", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_support:
-                        Toast.makeText(getApplicationContext(), "Instructor", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-                return false;
-
-
-            }
-        });
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_notification, R.id.nav_subscription,

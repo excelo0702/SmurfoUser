@@ -42,10 +42,10 @@ public class routine_view extends Fragment {
 
         Toast.makeText(getContext(),txtt1+txtt2+" fffff",Toast.LENGTH_SHORT).show();
 
-        txt1.setText(txtt1);
+     /*   txt1.setText(txtt1);
         txt2.setText(txtt2);
         img.setImageResource(imgg);
-
+*/
         return view;
     }
 

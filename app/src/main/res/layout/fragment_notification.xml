@@ -2,54 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    >
 
-    <HorizontalScrollView
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notification"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="#000000"></TextView>
+
+
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_gravity="center_vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="330dp"
-                android:layout_height="match_parent"
-                android:padding="20dp"
-                android:layout_margin="20dp"
-                android:text="hghhfh"
-                android:background="@drawable/text_box_border"
-                ></TextView>
-
-            <TextView
-                android:layout_width="330dp"
-                android:layout_height="match_parent"
-                android:padding="20dp"
-                android:layout_margin="20dp"
-                android:text="hghhfh"></TextView>
-
-
-            <TextView
-                android:layout_width="330dp"
-                android:layout_height="match_parent"
-                android:padding="20dp"
-                android:layout_margin="20dp"
-                android:text="hghhfh"></TextView>
-
-
-            <TextView
-                android:layout_width="330dp"
-                android:layout_height="match_parent"
-                android:padding="20dp"
-                android:layout_margin="20dp"
-                android:text="hghhfh"></TextView>
-
-        </LinearLayout>
-
-
-    </HorizontalScrollView>
+        android:layout_height="wrap_content"
+        android:id="@+id/list_notification_view"
+        ></ListView>
 
 
 </LinearLayout>
