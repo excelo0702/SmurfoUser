@@ -2,12 +2,16 @@ package com.example.chhots.category_view;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chhots.R;
+
+import java.util.List;
 
 public class live extends Fragment {
 
@@ -58,7 +64,10 @@ public class live extends Fragment {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getContext(),name[i],Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Go live",Toast.LENGTH_SHORT).show();
+                validateMobileLiveIntent(getContext());
+
+
             }
         });
 
@@ -67,6 +76,48 @@ public class live extends Fragment {
         return view;
 
     }
+
+
+    private boolean canResolveMobileLiveIntent(Context context) {
+        Intent intent = new Intent("com.google.android.youtube.intent.action.CREATE_LIVE_STREAM")
+                .setPackage("com.google.android.youtube");
+        PackageManager pm = context.getPackageManager();
+        List resolveInfo =
+                pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return resolveInfo != null && !resolveInfo.isEmpty();
+    }
+    private void validateMobileLiveIntent(Context context) {
+        if (canResolveMobileLiveIntent(context)) {
+            // Launch the live stream Activity
+            Intent intent = createMobileLiveIntent(context,"huhu");
+            startMobileLive(context);
+
+        } else {
+            // Prompt user to install or upgrade the YouTube app
+        }
+    }
+    private Intent createMobileLiveIntent(Context context, String description) {
+        Intent intent = new Intent("com.google.android.youtube.intent.action.CREATE_LIVE_STREAM")
+                .setPackage("com.google.android.youtube");
+        Uri referrer = new Uri.Builder()
+                .scheme("android-app")
+                .appendPath(context.getPackageName())
+                .build();
+
+        intent.putExtra(Intent.EXTRA_REFERRER, referrer);
+        if (!TextUtils.isEmpty(description)) {
+            intent.putExtra(Intent.EXTRA_SUBJECT, description);
+        }
+        return intent;
+    }
+
+
+    private void startMobileLive(Context context) {
+        Intent mobileLiveIntent = createMobileLiveIntent(context, "Streaming via ...");
+        startActivity(mobileLiveIntent);
+    }
+
+
 
     class Myadapter extends ArrayAdapter<String> {
         Context context;

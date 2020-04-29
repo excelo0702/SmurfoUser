@@ -7,11 +7,13 @@
 
 
 
+
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_margin="5dp"
-        app:cardCornerRadius="8dp"
+        android:layout_width="350dp"
+        android:layout_height="220dp"
+        android:layout_margin="15dp"
+        android:layout_gravity="center_horizontal"
+        app:cardCornerRadius="20dp"
         app:cardBackgroundColor="#242222"
         android:padding="5dp">
 
@@ -33,39 +35,32 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical">
 
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:textColor="#FFFFFF"
-                    android:text="name"
+                    android:text="Song"
+                    android:textStyle="bold"
+                    android:textSize="25dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="15dp"
                     android:id="@+id/name_live"
                     />
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="15dp"
+                    android:layout_height="25dp"
                     android:textColor="#FFFFFF"
-                    android:text="name"
+                    android:text="Instructor"
                     android:layout_gravity="center_vertical"
                     android:id="@+id/description_live"
-                    android:layout_marginRight="10dp">
+                    android:layout_marginLeft="15dp">
                 </TextView>
-
-
             </LinearLayout>
-
-
-
         </LinearLayout>
-
-
-
-
-
     </androidx.cardview.widget.CardView>
 
 
