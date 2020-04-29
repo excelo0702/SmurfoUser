@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardCornerRadius="30dp"
+        android:padding="20dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/image"
+            android:id="@+id/raw_course_viewpager_image">
+
+        </ImageView>
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Course Name"
+    android:layout_marginTop="180dp"
+    android:textColor="#FFFFFF"
+    android:id="@+id/raw_course_viewpager_name"
+
+    ></TextView>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:layout_marginTop="200dp"
+            android:layout_marginBottom="20dp"
+            android:textColor="#FFFFFF"
+            android:id="@+id/raw_course_viewpager_description"
+
+            ></TextView>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</RelativeLayout>
