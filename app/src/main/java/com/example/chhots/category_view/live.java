@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,7 +46,9 @@ public class live extends Fragment {
             R.drawable.image,
             R.drawable.image
     };
+
     ListView listview;
+    Button go_live;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +59,13 @@ public class live extends Fragment {
         View view = inflater.inflate(R.layout.fragment_live, container, false);
 
         listview = (ListView)view.findViewById(R.id.list_live_view);
+        go_live = (Button)view.findViewById(R.id.live_button);
+        go_live.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                validateMobileLiveIntent(getContext());
+            }
+        });
 
         Myadapter myadapter = new Myadapter(getActivity(),name,danceform,imageId);
 
@@ -65,7 +75,13 @@ public class live extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(getContext(),"Go live",Toast.LENGTH_SHORT).show();
-                validateMobileLiveIntent(getContext());
+           //     validateMobileLiveIntent(getContext());
+                String id = "l_NIgnb9J2g";
+                Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.youtube.com/watch?v="+id));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setPackage("com.google.android.youtube");
+                startActivity(intent);
+
 
 
             }
