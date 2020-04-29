@@ -2,6 +2,7 @@ package com.example.chhots.category_view;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -9,8 +10,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +21,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +54,7 @@ public class live extends Fragment {
 
     ListView listview;
     Button go_live;
+    String link;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,6 +70,14 @@ public class live extends Fragment {
             @Override
             public void onClick(View view) {
                 validateMobileLiveIntent(getContext());
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        alertDialog();
+                    }
+                }, 200);
             }
         });
 
@@ -82,8 +96,6 @@ public class live extends Fragment {
                 intent.setPackage("com.google.android.youtube");
                 startActivity(intent);
 
-
-
             }
         });
 
@@ -93,6 +105,30 @@ public class live extends Fragment {
 
     }
 
+    private void alertDialog() {
+        AlertDialog.Builder dialog=new AlertDialog.Builder(getContext());
+        dialog.setMessage("Please Select any option");
+        dialog.setTitle("Dialog Box");
+
+        final EditText input = new EditText(getContext());
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        dialog.setView(input);
+
+        dialog.setPositiveButton("Submit",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                        link = input.getText().toString();
+                        Toast.makeText(getContext(),link,Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        AlertDialog alertDialog=dialog.create();
+        alertDialog.show();
+    }
 
     private boolean canResolveMobileLiveIntent(Context context) {
         Intent intent = new Intent("com.google.android.youtube.intent.action.CREATE_LIVE_STREAM")

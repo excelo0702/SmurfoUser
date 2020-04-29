@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="130dp"
+        android:layout_height="135dp"
+        android:layout_margin="15dp"
+        app:cardBackgroundColor="#FFFFFF"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:layout_width="130dp"
+                android:layout_height="90dp"
+                app:srcCompat="@drawable/ic_sentiment"
+                android:id="@+id/raw_image_course"
+                ></ImageView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:text="Course Name"
+                android:textSize="16dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/raw_course_name"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:text="Dance Form"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/raw_dance_form"
+                android:layout_marginLeft="5dp">
+            </TextView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+
+</LinearLayout>

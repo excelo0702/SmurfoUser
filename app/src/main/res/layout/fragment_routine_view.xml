@@ -20,6 +20,21 @@
         android:id="@+id/video_routine_detail"
         ></ImageView>
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/merchat_id"
+        >
+    </EditText>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/order_id"
+        >
+    </EditText>
+
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -28,6 +43,7 @@
         ></Button>
 
     <androidx.cardview.widget.CardView
+        
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_margin="5dp"

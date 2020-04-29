@@ -5,17 +5,18 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".category_view.contest">
+    tools:context=".category_view.Contest.contest">
 
 
-
-    <ListView
+    <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/list_contest_view"
-        ></ListView>
-
-
+        android:layout_height="match_parent"
+        android:foregroundGravity="center"
+        android:id="@+id/view_contest_Pager"
+        android:layout_centerInParent="true"
+        android:overScrollMode="never"
+        android:clipToPadding="false"
+        ></androidx.viewpager.widget.ViewPager>
 
 
 </LinearLayout>

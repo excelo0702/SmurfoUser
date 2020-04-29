@@ -1,15 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".category_view.courses">
+    tools:context=".category_view.Courses.courses"
+    android:background="#FDFBFB"
+    android:orientation="vertical">
 
-
-    <ListView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/list_courses_view"
-        ></ListView>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-</FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:background="#463D3D"
+        android:layout_marginBottom="20dp"
+        >
+
+        <androidx.viewpager.widget.ViewPager
+            android:layout_width="270dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:background="#FFFFFF"
+            android:overScrollMode="never"
+            android:clipToPadding="false"
+            android:id="@+id/courses_viewPager"
+            ></androidx.viewpager.widget.ViewPager>
+
+
+        </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recently Viewed"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:layout_margin="10dp"
+
+        ></TextView>
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="155dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        >
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/recent_viewed_courses"
+            ></LinearLayout>
+
+    </HorizontalScrollView>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trending Courses"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_margin="10dp"
+
+            ></TextView>
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            >
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/trending_courses"
+                ></LinearLayout>
+
+
+        </HorizontalScrollView>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mostly Viewed"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_margin="10dp"
+
+            ></TextView>
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            >
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/most_viewed_courses"
+                ></LinearLayout>
+
+        </HorizontalScrollView>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="For You"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_margin="10dp"
+
+            ></TextView>
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            >
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/for_you_courses"
+                ></LinearLayout>
+
+
+        </HorizontalScrollView>
+
+
+    </LinearLayout>
+
+</ScrollView>

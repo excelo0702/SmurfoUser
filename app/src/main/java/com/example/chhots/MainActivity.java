@@ -17,7 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -25,17 +26,13 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.tabs.TabItem;
-import com.google.android.material.tabs.TabLayout;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
 
 import android.view.Menu;
-import android.widget.TableLayout;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -43,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     BottomNavigationView bottomNavigationView;
-
-
+    VideoView videoView;
 
 
     @Override
@@ -58,10 +54,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-
 
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -74,14 +68,12 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-
 /*
         String path = "android.resource://com.example.chhots"+R.raw.vid;
         Uri u = Uri.parse(path);
         videoView.setVideoURI(u);
         videoView.requestFocus();
         videoView.start();
-
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
@@ -90,48 +82,75 @@ public class MainActivity extends AppCompatActivity {
         });
 */
 
+        Fragment f=new HomeFragment();
+        Fragment f2=new trending();
+        Fragment f1=new instructor();
+        Fragment f3=new favorite();
+        FragmentManager fe=getSupportFragmentManager();
+        Fragment active=f;
+        getSupportFragmentManager().beginTransaction().add(R.id.nav_host_fragment,f,"1").commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.nav_host_fragment,f1,"2").hide(f1).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.nav_host_fragment,f2,"3").hide(f2).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.nav_host_fragment,f3,"4").hide(f3).commit();
 
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
 
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_dashboard:
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.action_dashboard:
 
-                        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.nav_host_fragment,new HomeFragment());
-                        fragmentTransaction.commit();
+                                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                                Fragment f=new HomeFragment();
 
-                        break;
-                    case R.id.action_favorites:
+                                fragmentTransaction.replace(R.id.nav_host_fragment,f);
+                                fragmentTransaction.commit();
 
-                        FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction1.replace(R.id.nav_host_fragment,new favorite());
-                        fragmentTransaction1.commit();
-                        Toast.makeText(getApplicationContext(), "Favorites", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.action_trending:
+                                Toast.makeText(getApplicationContext(), "Dashboard", Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.action_favorites:
 
-                        FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction2.replace(R.id.nav_host_fragment,new trending());
-                        fragmentTransaction2.commit();
-                        Toast.makeText(getApplicationContext(), "Trending", Toast.LENGTH_SHORT).show();
-                        break;
+                                FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
+                                Fragment f1=new favorite();
+                                fragmentTransaction1.replace(R.id.nav_host_fragment,f1);
+                                fragmentTransaction1.commit();
+                                Toast.makeText(getApplicationContext(), "Favorites", Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.action_trending:
 
-                    case R.id.action_instructor:
+                                FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
+                                Fragment f2=new trending();
+                                fragmentTransaction2.replace(R.id.nav_host_fragment,f2);
+                                fragmentTransaction2.commit();
+                                Toast.makeText(getApplicationContext(), "Trending", Toast.LENGTH_SHORT).show();
+                                break;
 
-                        FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction3.replace(R.id.nav_host_fragment,new instructor());
-                        fragmentTransaction3.commit();
-                        Toast.makeText(getApplicationContext(), "Instructor", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-                return false;
-            }
+                            case R.id.action_instructor:
 
-        });
+                                FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
+                                Fragment f3=new instructor();
+                                fragmentTransaction3.replace(R.id.nav_host_fragment,f3);
+                                fragmentTransaction3.commit();
+                                Toast.makeText(getApplicationContext(), "Instructor", Toast.LENGTH_SHORT).show();
+                                break;
+
+
+                            default:
+                                FragmentTransaction fragmentTransaction5 = getSupportFragmentManager().beginTransaction();
+                                Fragment f5=new HomeFragment();
+
+                                fragmentTransaction5.replace(R.id.nav_host_fragment,f5);
+                                fragmentTransaction5.commit();
+
+                                Toast.makeText(getApplicationContext(), "Dashboard", Toast.LENGTH_SHORT).show();
+
+                        }
+                        return true;
+                    }
+
+                });
 
 
 
