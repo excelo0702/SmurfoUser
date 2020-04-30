@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.example.chhots.R;
-import com.example.chhots.category_view.booking;
+import com.example.chhots.category_view.Booking.booking;
 import com.example.chhots.category_view.Contest.contest;
 import com.example.chhots.category_view.Courses.courses;
 import com.example.chhots.category_view.live;

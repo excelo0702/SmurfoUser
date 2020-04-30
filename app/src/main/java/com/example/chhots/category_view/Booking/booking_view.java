@@ -1,7 +1,7 @@
-package com.example.chhots.category_view;
+package com.example.chhots.category_view.Booking;
+
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,17 +11,24 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.chhots.R;
 
-public class booking extends Fragment {
+import java.util.List;
 
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class booking_view extends Fragment {
+
+
+    public booking_view() {
+        // Required empty public constructor
+    }
 
 
     String[] name = {"tanish" ,"tanish" ,"tanish" ,"tanish" ,"tanish" ,"tanish" , "mommy"};
@@ -35,38 +42,31 @@ public class booking extends Fragment {
             R.drawable.image,
             R.drawable.image
     };
-    ListView listview;
+    ListView listview_judged,listview_workshop,listview_courses;
 
+    List<Model> models;
 
-    public booking() {
-        // Required empty public constructor
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_booking, container, false);
+        View view = inflater.inflate(R.layout.fragment_booking_view, container, false);
 
-        listview = (ListView)view.findViewById(R.id.list_booking_view);
+        listview_judged = (ListView)view.findViewById(R.id.judged);
+        listview_workshop = (ListView)view.findViewById(R.id.workshop);
+        listview_courses = (ListView)view.findViewById(R.id.courses);
 
         Myadapter myadapter = new Myadapter(getActivity(),name,danceform,imageId);
 
-        listview.setAdapter(myadapter);
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getContext(),name[i],Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
+        listview_judged.setAdapter(myadapter);
+        listview_workshop.setAdapter(myadapter);
+        listview_courses.setAdapter(myadapter);
 
         return view;
     }
 
-    class Myadapter extends ArrayAdapter<String>{
+    class Myadapter extends ArrayAdapter<String> {
         Context context;
         String[] name;
         String[] description;
@@ -95,9 +95,6 @@ public class booking extends Fragment {
             imageView.setImageResource(imgs[position]);
             title.setText(name[position]);
             desc.setText(description[position]);
-
-
-
 
             return row;
         }
