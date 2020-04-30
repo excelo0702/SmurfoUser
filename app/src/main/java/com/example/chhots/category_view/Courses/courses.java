@@ -1,24 +1,18 @@
 package com.example.chhots.category_view.Courses;
 
 import android.animation.ArgbEvaluator;
-import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.chhots.R;
 
@@ -91,6 +85,20 @@ public class courses extends Fragment {
             dance_form.setText(models.get(i).getDance_form());
             imageView.setImageResource(models.get(i).getImageId());
 
+            root.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Fragment fragment = new course_view();
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    //pass data too
+
+
+                }
+            });
+
             recently_viewed.addView(root);
         }
 
@@ -106,6 +114,20 @@ public class courses extends Fragment {
             name.setText(models.get(i).getName());
             dance_form.setText(models.get(i).getDance_form());
             imageView.setImageResource(models.get(i).getImageId());
+
+            root.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Fragment fragment = new course_view();
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    //pass data too
+
+
+                }
+            });
 
             recently_viewed.addView(root);
         }
@@ -123,6 +145,20 @@ public class courses extends Fragment {
             dance_form.setText(models.get(i).getDance_form());
             imageView.setImageResource(models.get(i).getImageId());
 
+            root.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Fragment fragment = new course_view();
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    //pass data too
+
+
+                }
+            });
+
             recently_viewed.addView(root);
         }
 
@@ -139,14 +175,22 @@ public class courses extends Fragment {
             dance_form.setText(models.get(i).getDance_form());
             imageView.setImageResource(models.get(i).getImageId());
 
+            root.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Fragment fragment = new course_view();
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    //pass data too
+
+
+                }
+            });
+
             recently_viewed.addView(root);
         }
-
-
-
-
-
-
 
         return view;
     }
