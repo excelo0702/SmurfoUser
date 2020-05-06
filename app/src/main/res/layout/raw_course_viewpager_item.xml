@@ -16,8 +16,8 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/image"
+            android:layout_height="match_parent"
+            android:src="@drawable/smurfooo"
             android:id="@+id/raw_course_viewpager_image">
 
         </ImageView>

@@ -7,8 +7,9 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/image"
+        android:layout_height="match_parent"
+        android:foregroundGravity="center"
+        android:src="@drawable/smurfooo"
         android:id="@+id/contest_view"
         ></ImageView>
 

@@ -12,36 +12,28 @@
         android:layout_height="200dp"
         android:layout_margin="15dp"
         android:layout_gravity="center_horizontal"
+        android:alpha="0.7"
         app:cardCornerRadius="30dp"
-        app:cardBackgroundColor="#242222"
+        app:cardBackgroundColor="#C9E9E0E0"
         android:padding="20dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:orientation="vertical"
             >
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:textColor="#FFFFFF"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
                     android:text="Song"
                     android:textStyle="bold"
-                    android:textSize="25dp"
+                    android:textSize="40dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
                     android:id="@+id/text"
                     />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:textColor="#FFFFFF"
-                    android:text="Instructor"
-                    android:layout_gravity="center_vertical"
-                    android:id="@+id/description"
-                    android:layout_marginLeft="15dp">
-                </TextView>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

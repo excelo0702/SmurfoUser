@@ -22,7 +22,7 @@
             <ImageView
                 android:layout_width="130dp"
                 android:layout_height="90dp"
-                app:srcCompat="@drawable/ic_sentiment"
+                app:srcCompat="@drawable/ic_sentiment_satisfied_black_24dp"
                 android:id="@+id/raw_image_course"
                 ></ImageView>
 

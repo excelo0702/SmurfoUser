@@ -74,7 +74,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/ic_account"
+                app:srcCompat="@drawable/ic_account_circle_black_24dp"
                 android:id="@+id/imageNotification"
                 ></ImageView>
 
@@ -128,7 +128,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/ic_account"
+                app:srcCompat="@drawable/ic_mobiledata"
                 ></ImageView>
 
             <LinearLayout
@@ -180,7 +180,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/ic_account"
+                app:srcCompat="@drawable/ic_plan"
                 ></ImageView>
 
             <LinearLayout
@@ -231,7 +231,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/ic_account"
+                app:srcCompat="@drawable/ic_theme"
                 ></ImageView>
 
             <LinearLayout
@@ -282,7 +282,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/ic_account"
+                app:srcCompat="@drawable/ic_terms_of_service"
                 ></ImageView>
 
             <LinearLayout
@@ -333,7 +333,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/ic_account"
+                app:srcCompat="@drawable/ic_phone_black_24dp"
                 ></ImageView>
 
             <LinearLayout
@@ -385,7 +385,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/ic_account"
+                app:srcCompat="@drawable/ic_username"
                 ></ImageView>
 
             <LinearLayout

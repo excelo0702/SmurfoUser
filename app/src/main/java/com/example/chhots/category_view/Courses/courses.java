@@ -1,6 +1,7 @@
 package com.example.chhots.category_view.Courses;
 
 import android.animation.ArgbEvaluator;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,8 +14,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.chhots.Login;
 import com.example.chhots.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +49,7 @@ public class courses extends Fragment {
 
         for(int i=0;i<5;i++)
         {
-            modelList.add(new ViewPageModel("Course Name","Dance Form",R.drawable.ic_sentiment));
+            modelList.add(new ViewPageModel("Course Name","Dance Form",R.drawable.ic_sentiment_satisfied_black_24dp));
         }
 
         adapter = new Adapter(modelList,getContext());
@@ -56,21 +60,9 @@ public class courses extends Fragment {
 
         models = new ArrayList<>();
 
-
-
-
-
-
-
-
-
-
-
-
-
         for(int i=0;i<5;i++)
         {
-            models.add(new Model("Course Name","Dance Form",R.drawable.ic_sentiment));
+            models.add(new Model("Course Name","Dance Form",R.drawable.ic_sentiment_satisfied_black_24dp));
         }
 
         recently_viewed = (LinearLayout)view.findViewById(R.id.recent_viewed_courses);
@@ -88,9 +80,20 @@ public class courses extends Fragment {
             root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+
+                    FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                    if(auth.getCurrentUser()==null)
+                    {
+                        Toast.makeText(getContext(),"To participate in contest you have to first login",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getContext(), Login.class);
+                        startActivity(intent);
+                    }
+
                     Fragment fragment = new course_view();
                     FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
+                    fragmentTransaction.replace(R.id.drawer_layout,fragment);
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                     //pass data too
@@ -120,7 +123,7 @@ public class courses extends Fragment {
                 public void onClick(View view) {
                     Fragment fragment = new course_view();
                     FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
+                    fragmentTransaction.replace(R.id.drawer_layout,fragment);
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                     //pass data too
@@ -150,7 +153,7 @@ public class courses extends Fragment {
                 public void onClick(View view) {
                     Fragment fragment = new course_view();
                     FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
+                    fragmentTransaction.replace(R.id.drawer_layout,fragment);
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                     //pass data too
@@ -180,7 +183,7 @@ public class courses extends Fragment {
                 public void onClick(View view) {
                     Fragment fragment = new course_view();
                     FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
+                    fragmentTransaction.replace(R.id.drawer_layout,fragment);
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                     //pass data too

@@ -35,7 +35,7 @@ public class form_contest extends Fragment {
             @Override
             public void onClick(View view) {
                 contest fragment = new contest();
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,fragment)
+                getFragmentManager().beginTransaction().replace(R.id.drawer_layout,fragment)
                         .commit();
             }
         });

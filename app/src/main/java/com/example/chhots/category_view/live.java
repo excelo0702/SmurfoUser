@@ -28,7 +28,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.chhots.Login;
 import com.example.chhots.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -39,6 +41,7 @@ public class live extends Fragment {
         // Required empty public constructor
     }
 
+    FirebaseAuth auth;
 
     String[] name = {"tanish" ,"tanish" ,"tanish" ,"tanish" ,"tanish" ,"tanish" , "mommy"};
     String[] danceform = {"tanish" ,"tanish" ,"tanish" ,"tanish" ,"tanish" ,"tanish" , "mommy"};;
@@ -64,11 +67,20 @@ public class live extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_live, container, false);
 
+        auth = FirebaseAuth.getInstance();
         listview = (ListView)view.findViewById(R.id.list_live_view);
         go_live = (Button)view.findViewById(R.id.live_button);
         go_live.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(auth.getCurrentUser()==null)
+                {
+                    Toast.makeText(getContext(),"You are not login",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), Login.class);
+                    startActivity(intent);
+                }
+
                 validateMobileLiveIntent(getContext());
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -88,6 +100,15 @@ public class live extends Fragment {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+                if(auth.getCurrentUser()==null)
+                {
+                    Toast.makeText(getContext(),"You are not login",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), Login.class);
+                    startActivity(intent);
+                }
+
                 Toast.makeText(getContext(),"Go live",Toast.LENGTH_SHORT).show();
            //     validateMobileLiveIntent(getContext());
                 String id = "l_NIgnb9J2g";

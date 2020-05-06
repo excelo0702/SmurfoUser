@@ -1,31 +1,46 @@
 package com.example.chhots;
 
-import android.media.MediaPlayer;
-import android.net.Uri;
+import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 
-import com.example.chhots.bottom_navigation_fragments.favorite;
-import com.example.chhots.bottom_navigation_fragments.instructor;
+import com.example.chhots.bottom_navigation_fragments.Favorite.favorite;
+import com.example.chhots.bottom_navigation_fragments.Explore.explore;
 import com.example.chhots.bottom_navigation_fragments.trending;
-import com.example.chhots.category_view.routine.routine;
+import com.example.chhots.ui.About_Deprrita.about;
+import com.example.chhots.ui.Category.category;
+import com.example.chhots.ui.Feedback.feedback;
+import com.example.chhots.ui.Setting.setting;
+import com.example.chhots.ui.Subscription.subscription;
+import com.example.chhots.ui.SupportUs.support;
+import com.example.chhots.ui.dashboard;
 import com.example.chhots.ui.home.HomeFragment;
+import com.example.chhots.User_Profile.userprofile;
+import com.example.chhots.ui.notifications.NotificationsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -33,14 +48,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private AppBarConfiguration mAppBarConfiguration;
     BottomNavigationView bottomNavigationView;
     VideoView videoView;
+    TextView login;
+    FirebaseAuth auth;
+    ImageView user_profile_header;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+    Button chatBtn;
+    ActionBarDrawerToggle t;
 
 
     @Override
@@ -49,24 +74,168 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        getSupportFragmentManager().beginTransaction().add(R.id.drawer_layout,new HomeFragment()).commit();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = findViewById(R.id.drawer);
+        t = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.Open,R.string.Close);
+        t.setDrawerIndicatorEnabled(true);
+
+        drawer.addDrawerListener(t);
+        t.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId())
+                {
+                    case R.id.nav_home:
+                        setFragment(new dashboard());
+                        drawer.closeDrawers();
+                        break;
+                    case R.id.nav_notification:
+                        setFragment(new NotificationsFragment());
+                        drawer.closeDrawers();
+                        break;
+                    case R.id.nav_subscription:
+                        setFragment(new subscription());
+                        drawer.closeDrawers();
+                        break;
+                    case R.id.nav_category:
+                        setFragment(new category());
+                        drawer.closeDrawers();
+                        break;
+                    case R.id.nav_setting:
+                        setFragment(new setting());
+                        drawer.closeDrawers();
+                        break;
+
+                    case R.id.nav_feedback:
+                        setFragment(new feedback());
+                        drawer.closeDrawers();
+                        break;
+                    case R.id.nav_about:
+                        setFragment(new about());
+                        drawer.closeDrawers();
+                        break;
+                    case R.id.nav_support:
+                        setFragment(new support());
+                        drawer.closeDrawers();
+                        break;
+                }
+                return true;
+            }
+        });
+
+        View headerview = navigationView.getHeaderView(0);
+        login = (TextView) headerview.findViewById(R.id.login_textview);
+        user_profile_header = headerview.findViewById(R.id.imageView_header);
+        SpannableString content = new SpannableString("Content");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+
+        auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() != null) {
+
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            databaseReference = firebaseDatabase.getReference("");
+            login.setText(user.getEmail());
+            login.setPaintFlags(login.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
+
+            Query query = databaseReference.child("Users").orderByChild("email").equalTo(user.getEmail().toString().trim());
+
+            if(user.getEmail().equals("tanish@gmail.com"))
+            {
+                Log.d("1111",user.getEmail().toLowerCase().trim());
+
+            }
+
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Log.d("999",postSnapshot.getValue().toString());
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) { }
+            });
+
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Toast.makeText(getApplicationContext(),dataSnapshot.getChildrenCount()+" hh ",Toast.LENGTH_SHORT).show();
+                    Log.d("12345678",dataSnapshot.getChildrenCount()+"");
+
+                    for(DataSnapshot ds : dataSnapshot.getChildren())
+                    {
+                        String image = ""+ds.child("image").getValue();
+                        Log.d("123456",image);
+                        try{
+                            if(image.equals(""))
+                            {
+                                Picasso.get().load(R.drawable.ic_username2).into(user_profile_header);
+                            }
+                            else {
+                                Picasso.get().load(image).into(user_profile_header);
+                            }
+                        }
+                        catch (Exception e){
+
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
 
 
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
+
+            login.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction().replace(R.id.drawer_layout,new userprofile(),"1");
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    drawer.closeDrawers();
+
+                }
+            });
+
+        }
+        else
+        {
+            login.setText("Login|Signup");
+            login.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //  FragmentTransaction fe=getSupportActionBar();
+                    // getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,fe,).addToBackStack(null).commit();
+                    Intent intent = new Intent(MainActivity.this,Login.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
+    /*    mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_notification, R.id.nav_subscription,
                 R.id.nav_category, R.id.nav_setting, R.id.nav_feedback,R.id.nav_about,
                 R.id.nav_support)
                 .setDrawerLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+
+*/
+
+
 
 /*
         String path = "android.resource://com.example.chhots"+R.raw.vid;
@@ -82,16 +251,6 @@ public class MainActivity extends AppCompatActivity {
         });
 */
 
-        Fragment f=new HomeFragment();
-        Fragment f2=new trending();
-        Fragment f1=new instructor();
-        Fragment f3=new favorite();
-        FragmentManager fe=getSupportFragmentManager();
-        Fragment active=f;
-        getSupportFragmentManager().beginTransaction().add(R.id.nav_host_fragment,f,"1").commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.nav_host_fragment,f1,"2").hide(f1).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.nav_host_fragment,f2,"3").hide(f2).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.nav_host_fragment,f3,"4").hide(f3).commit();
 
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -101,49 +260,27 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.action_dashboard:
-
-                                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                                Fragment f=new HomeFragment();
-
-                                fragmentTransaction.replace(R.id.nav_host_fragment,f);
-                                fragmentTransaction.commit();
+                                setFragment(new HomeFragment());
 
                                 Toast.makeText(getApplicationContext(), "Dashboard", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.action_favorites:
-
-                                FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
-                                Fragment f1=new favorite();
-                                fragmentTransaction1.replace(R.id.nav_host_fragment,f1);
-                                fragmentTransaction1.commit();
+                                setFragment(new favorite());
                                 Toast.makeText(getApplicationContext(), "Favorites", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.action_trending:
-
-                                FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
-                                Fragment f2=new trending();
-                                fragmentTransaction2.replace(R.id.nav_host_fragment,f2);
-                                fragmentTransaction2.commit();
+                                setFragment(new trending());
                                 Toast.makeText(getApplicationContext(), "Trending", Toast.LENGTH_SHORT).show();
                                 break;
 
                             case R.id.action_instructor:
-
-                                FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
-                                Fragment f3=new instructor();
-                                fragmentTransaction3.replace(R.id.nav_host_fragment,f3);
-                                fragmentTransaction3.commit();
+                                setFragment(new explore());
                                 Toast.makeText(getApplicationContext(), "Instructor", Toast.LENGTH_SHORT).show();
                                 break;
 
 
                             default:
-                                FragmentTransaction fragmentTransaction5 = getSupportFragmentManager().beginTransaction();
-                                Fragment f5=new HomeFragment();
-
-                                fragmentTransaction5.replace(R.id.nav_host_fragment,f5);
-                                fragmentTransaction5.commit();
-
+                                setFragment(new HomeFragment());
                                 Toast.makeText(getApplicationContext(), "Dashboard", Toast.LENGTH_SHORT).show();
 
                         }
@@ -151,9 +288,6 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 });
-
-
-
     }
 
     @Override
@@ -163,14 +297,25 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
-
-
     @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
     }
+
+    public void setFragment(Fragment fragment)
+    {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.drawer_layout,fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+
+    }
+
+
+
 
 }

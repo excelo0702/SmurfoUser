@@ -1,12 +1,14 @@
-package com.example.chhots.bottom_navigation_fragments;
+package com.example.chhots.bottom_navigation_fragments.Explore;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,39 +20,50 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.chhots.R;
-import com.example.chhots.category_view.routine.routine;
-import com.example.chhots.category_view.routine.routine_view;
+import com.example.chhots.Demo.demo;
+import com.example.chhots.category_view.Booking.booking_view;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class favorite extends Fragment {
+public class explore extends Fragment {
 
 
-    public favorite() {
+    public explore() {
         // Required empty public constructor
     }
 
 
     String[] name = {
-            "Song" ,
-            "Song" ,
-            "Song" ,
-            "Song" ,
-            "Song" ,
-            "Song" ,
-            "Song" ,
+            "Name" ,
+            "Name" ,
+            "Name" ,
+            "Name" ,
+            "Name" ,
+            "Name" ,
+            "Name" ,
 
+            "Name" ,
+            "Name" ,
+            "Name" ,
+            "Name" ,
     };
     String[] danceform = {
-            "Instructor" ,
-            "Instructor" ,
-            "Instructor" ,
-            "Instructor" ,
-            "Instructor" ,
-            "Instructor" ,
-            "Instructor" ,
-    };;
+            "Name" ,
+            "Name" ,
+            "Name" ,
+            "Name" ,
+            "Name" ,
+            "Name" ,
+            "Name" ,
+
+            "Name" ,
+            "Name" ,
+            "Name" ,
+            "Name" ,
+    };
+
+
     int[] imageId = {
             R.drawable.image,
             R.drawable.image,
@@ -58,12 +71,15 @@ public class favorite extends Fragment {
             R.drawable.image,
             R.drawable.image,
             R.drawable.image,
-            R.drawable.image
+            R.drawable.image,
+
+            R.drawable.image,
+            R.drawable.image,
+            R.drawable.image,
+            R.drawable.image,
     };
+
     ListView listview;
-
-
-
 
 
     @Override
@@ -71,33 +87,25 @@ public class favorite extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View view = inflater.inflate(R.layout.fragment_favorite, container, false);
-
-        listview = (ListView)view.findViewById(R.id.list_favorite_view);
+        View view = inflater.inflate(R.layout.fragment_instructor, container, false);
+        listview = (ListView)view.findViewById(R.id.list_instructor_view);
 
         Myadapter myadapter = new Myadapter(getActivity(),name,danceform,imageId);
 
         listview.setAdapter(myadapter);
-
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                routine_view fragment = new routine_view();
-                Bundle args = new Bundle();
-                args.putString("name",name[i]);
-                args.putString("danceform",danceform[i]);
-                args.putInt("image",imageId[i]);
-                fragment.setArguments(args);
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,fragment)
-                        .commit();
+                Fragment fragment = new upload_video();
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.drawer_layout,fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
-
-
-
-        return view;    }
-
+        return view;
+    }
     class Myadapter extends ArrayAdapter<String> {
         Context context;
         String[] name;
@@ -106,7 +114,7 @@ public class favorite extends Fragment {
 
 
         public Myadapter(Context context, String[] name, String[] description, int[] imgs) {
-            super(context,R.layout.raw_favourite_item,R.id.name_favorite,name);
+            super(context, R.layout.raw_instructor_item, R.id.name_instructor, name);
             this.context = context;
             this.name = name;
             this.description = description;
@@ -117,20 +125,15 @@ public class favorite extends Fragment {
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-            LayoutInflater layoutInflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View row = layoutInflater.inflate(R.layout.raw_favourite_item,parent,false);
-            ImageView imageView = row.findViewById(R.id.imageFavorite);
-            TextView title = row.findViewById(R.id.name_favorite);
-            TextView desc = row.findViewById(R.id.description_favorite);
-
+            LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View row = layoutInflater.inflate(R.layout.raw_instructor_item, parent, false);
+            ImageView imageView = row.findViewById(R.id.imageInstructor);
+            TextView title = row.findViewById(R.id.name_instructor);
+            TextView desc = row.findViewById(R.id.description_instructor);
 
             imageView.setImageResource(imgs[position]);
             title.setText(name[position]);
             desc.setText(description[position]);
-
-
-
-
             return row;
         }
     }

@@ -72,7 +72,7 @@ public class booking extends Fragment {
 
                 Fragment fragment = new booking_view();
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
+                fragmentTransaction.replace(R.id.drawer_layout,fragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }

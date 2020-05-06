@@ -7,7 +7,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +18,20 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chhots.R;
+import com.example.chhots.bottom_navigation_fragments.Explore.VideoModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class routine extends Fragment {
 
@@ -26,37 +39,13 @@ public class routine extends Fragment {
         // Required empty public constructor
     }
 
-    String[] name = {
-            "Song" ,
-            "Song" ,
-            "Song" ,
-            "Song" ,
-            "Song" ,
-            "Song" ,
-            "Song" ,
-
-    };
-    String[] danceform = {
-            "Instructor" ,
-            "Instructor" ,
-            "Instructor" ,
-            "Instructor" ,
-            "Instructor" ,
-            "Instructor" ,
-            "Instructor" ,
-    };;
-    int[] imageId = {
-            R.drawable.image,
-            R.drawable.image,
-            R.drawable.image,
-            R.drawable.image,
-            R.drawable.image,
-            R.drawable.image,
-            R.drawable.image
-    };
-    ListView listview;
-
-
+    RecyclerView recyclerView;
+    VideoAdapter mAdapter;
+    RecyclerView.LayoutManager mLayoutManager;
+    private ProgressBar mProgressCircle;
+    private DatabaseReference mDatabaseRef;
+    private List<VideoModel> videolist;
+    private static final String TAG = "Routine";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,68 +54,44 @@ public class routine extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_routine, container, false);
 
-        listview = (ListView)view.findViewById(R.id.list_routine_view);
-
-        Myadapter myadapter = new Myadapter(getActivity(),name,danceform,imageId);
-
-        listview.setAdapter(myadapter);
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        videolist = new ArrayList<>();
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_routine_view);
+        recyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("videos");
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                routine_view fragment = new routine_view();
-                Bundle args = new Bundle();
-                args.putString("name",name[i]);
-                args.putString("danceform",danceform[i]);
-                args.putInt("image",imageId[i]);
-                fragment.setArguments(args);
-                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,fragment).addToBackStack(null)
-                        .commit();
+//                Log.d(TAG,dataSnapshot.getValue().toString()+"");
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    VideoModel model = ds.getValue(VideoModel.class);
+                    videolist.add(model);
+                }
+                mAdapter = new VideoAdapter(videolist,getContext());
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setAdapter(mAdapter);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 
 
 
+
+
+
+/*        mAdapter.setOnItemClickListener(new VideoAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Toast.makeText(getContext(),"fdfdf",Toast.LENGTH_SHORT).show();
+            }
+        });*/
+
         return view;
     }
-
-    class Myadapter extends ArrayAdapter<String> {
-        Context context;
-        String[] name;
-        String[] description;
-        int imgs[];
-
-
-        public Myadapter(Context context, String[] name, String[] description, int[] imgs) {
-            super(context,R.layout.raw_routine_item,R.id.name_routine,name);
-            this.context = context;
-            this.name = name;
-            this.description = description;
-            this.imgs = imgs;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-            LayoutInflater layoutInflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View row = layoutInflater.inflate(R.layout.raw_routine_item,parent,false);
-            ImageView imageView = row.findViewById(R.id.imageRoutine);
-            TextView title = row.findViewById(R.id.name_routine);
-            TextView desc = row.findViewById(R.id.description_routine);
-
-
-            imageView.setImageResource(imgs[position]);
-            title.setText(name[position]);
-            desc.setText(description[position]);
-
-
-
-
-            return row;
-        }
-    }
-
 
 }

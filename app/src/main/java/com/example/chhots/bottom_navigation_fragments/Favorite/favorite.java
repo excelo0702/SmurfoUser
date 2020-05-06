@@ -1,4 +1,4 @@
-package com.example.chhots.bottom_navigation_fragments;
+package com.example.chhots.bottom_navigation_fragments.Favorite;
 
 
 import android.content.Context;
@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,10 +40,8 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class trending extends Fragment {
-
-
-    public trending() {
+public class favorite extends Fragment {
+    public favorite() {
         // Required empty public constructor
     }
 
@@ -52,47 +51,49 @@ public class trending extends Fragment {
     private ProgressBar mProgressCircle;
     private DatabaseReference mDatabaseRef;
     private List<VideoModel> videolist;
-    private static final String TAG = "Trending1235";
+    private static final String TAG = "Routine1235";
     private FirebaseAuth auth;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View view = inflater.inflate(R.layout.fragment_trending, container, false);
+        View view = inflater.inflate(R.layout.fragment_favorite, container, false);
         videolist = new ArrayList<>();
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_trending_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_favorite_view);
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
         auth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("");
+        if(mDatabaseRef.child("favorite").child(auth.getCurrentUser().getUid())!=null) {
+            mDatabaseRef.child("favorite").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    final List<String> VideoIds = new ArrayList<>();
 
-        mDatabaseRef.child("videos").limitToFirst(10).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Log.d(TAG, dataSnapshot.getValue().toString());
+                    VideoModel model = dataSnapshot.getValue(VideoModel.class);
+                    videolist.add((model));
 
-                Log.d(TAG, dataSnapshot.getValue().toString());
-                for(DataSnapshot ds: dataSnapshot.getChildren())
-                {
-                    Log.d(TAG, ds.getValue().toString());
-                    VideoModel model = ds.getValue(VideoModel.class);
-                    videolist.add(model);
+
+                    mAdapter = new VideoAdapter(videolist, getContext());
+                    recyclerView.setLayoutManager(mLayoutManager);
+                    recyclerView.setAdapter(mAdapter);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
-                mAdapter = new VideoAdapter(videolist, getContext());
-                recyclerView.setLayoutManager(mLayoutManager);
-                recyclerView.setAdapter(mAdapter);
-            }
+            });
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+
 
         return view;
     }
+
+
 }

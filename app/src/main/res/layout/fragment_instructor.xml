@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="710dp"
     android:orientation="vertical"
-    android:background="#FFFFFF"
+    android:background="@drawable/bcghome"
 
-    tools:context=".bottom_navigation_fragments.instructor">
+    tools:context=".bottom_navigation_fragments.Explore.explore">
 
     <TextView
         android:layout_width="wrap_content"

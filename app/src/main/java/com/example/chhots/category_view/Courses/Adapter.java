@@ -56,7 +56,18 @@ public class Adapter extends PagerAdapter {
             public void onClick(View view) {
 
 
-             /*   Fragment fragment =
+             /*
+
+FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                if(auth.getCurrentUser()==null)
+                {
+                    Toast.makeText(getContext(),"To participate in contest you have to first login",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), login.class);
+                    context.startActivity(intent);
+                }
+
+             Fragment fragment =
                 FragmentTransaction fragmentTransaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
                 fragmentTransaction.addToBackStack(null);

@@ -53,10 +53,8 @@ public class Adapter extends PagerAdapter {
 
         TextView txt1,des1;
         txt1 = (TextView)view.findViewById(R.id.text);
-        des1 = (TextView)view.findViewById(R.id.description);
 
         txt1.setText(models.get(position).getName());
-        des1.setText(models.get(position).getDescription());
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +94,7 @@ public class Adapter extends PagerAdapter {
     public void setFragment(Fragment fragment)
     {
         FragmentTransaction fragmentTransaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
+        fragmentTransaction.replace(R.id.drawer_layout,fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

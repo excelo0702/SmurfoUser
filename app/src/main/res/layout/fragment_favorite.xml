@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="#FFFFFF"
 
-    tools:context=".bottom_navigation_fragments.favorite">
+    tools:context=".bottom_navigation_fragments.Favorite.favorite">
 
 
     <LinearLayout
@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Favorite"
+            android:text="Explore"
             android:textSize="30dp"
             android:textStyle="bold"
             android:layout_marginRight="10dp"
@@ -56,11 +56,12 @@
         android:textSize="16dp"
         android:textColor="#000000"></TextView>
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_favorite_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/list_favorite_view"
-        ></ListView>
+        android:scrollbars="vertical"
+
+        android:layout_height="match_parent" />
 
 
 

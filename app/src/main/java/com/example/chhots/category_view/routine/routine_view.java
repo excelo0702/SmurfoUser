@@ -65,10 +65,10 @@ public class routine_view extends Fragment {
 
                 s1 = edtxt1.getText().toString();
                 s2 = edxt2.getText().toString();
-                Intent intent = new Intent(getContext(), checksum.class);
-                intent.putExtra("orderid", s1);
-                intent.putExtra("custid", s2);
-                startActivity(intent);
+             //   Intent intent = new Intent(getContext(), checksum.class);
+               // intent.putExtra("orderid", s1);
+                //intent.putExtra("custid", s2);
+                //startActivity(intent);
 
             }
         });
