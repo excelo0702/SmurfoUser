@@ -21,11 +21,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".ChatBox.ChatWithInstructor"></activity>
-        <activity android:name=".Login" />
-        <activity android:name=".Demo.demo2" />
-        <activity android:name=".Demo.demo" />
-        <activity android:name=".Signup" />
+        <activity android:name=".ChatBox.ChatWithInstructor"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="adjustPan"
+            ></activity>
+        <activity android:name=".Login"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+
+            />
+        <activity android:name=".Demo.demo2"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+
+            />
+        <activity android:name=".Demo.demo"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+
+            />
+        <activity android:name=".Signup"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            />
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"

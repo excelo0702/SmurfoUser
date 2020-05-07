@@ -17,7 +17,7 @@
         android:layout_height="230dp"
         android:layout_margin="15dp"
         app:cardCornerRadius="16dp"
-        app:cardBackgroundColor="#FFFFFF">
+        app:cardBackgroundColor="#431c52">
 
 
             <LinearLayout
@@ -36,21 +36,22 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:textColor="#000000"
-                        android:text="Premium Family"
-                        android:textSize="14dp"
+                        android:textColor="#ffffff"
+                        android:text="Routine Subscription"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
                         android:layout_marginTop="25dp"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="5dp"
                         />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#494848"
+                        android:textColor="#00"
                         android:inputType="textMultiLine"
-                        android:text="Free \n For 1 Month"
+                        android:text="Free \nFor 3 days"
                         android:textSize="16dp"
                         android:layout_marginTop="20dp"
-                        android:layout_marginLeft="150dp"
+                        android:layout_marginLeft="100dp"
                         >
                     </TextView>
                 </LinearLayout>
@@ -61,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#000000"
-                    android:text="Up to 6 Premium Account , Family Mix;\n    Up to 6 Premium Account , Fammm \n       Up to 6 Premium Account , Fam"
+                    android:text=" You can access any song-based choreography tutorial \n Rs 120 for 1 month \n Rs 670 for 6 months (Rs 50 off) \n Rs 1280 for 1 year (Rs 60 off)"
                     android:textSize="14dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="25dp"
@@ -72,7 +73,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="20dp"
-                        android:text="TRy 1 month premium"
+                        android:text="Choose any plan"
                         ></Button>
 
 
@@ -104,7 +105,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:textColor="#000000"
-                    android:text="Premium Family"
+                    android:text="Course Subscription"
                     android:textSize="14dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginLeft="15dp"
@@ -114,7 +115,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#494848"
                     android:inputType="textMultiLine"
-                    android:text="Free \n For 1 Month"
+                    android:text="Free \n For 3 days"
                     android:textSize="16dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="150dp"
@@ -128,7 +129,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
-                android:text="Up to 6 Premium Account , Family Mix;\n    Up to 6 Premium Account , Fammm \n       Up to 6 Premium Account , Fam"
+                android:text="You can access any course and start learing basics \n Rs 350 for 1 month \n Rs 2050 for 6 months (Rs 50 off) \n  Rs 3430 for 1 year"
                 android:textSize="14dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="25dp"
@@ -139,7 +140,74 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:text="TRy 1 month premium"
+                android:text="choose any plan"
+                ></Button>
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:layout_margin="15dp"
+        app:cardCornerRadius="16dp"
+        app:cardBackgroundColor="#FFFFFF">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:textColor="#000000"
+                    android:text="Full Subscription"
+                    android:textSize="14dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginLeft="15dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#494848"
+                    android:inputType="textMultiLine"
+                    android:text="Free \n For 3 days"
+                    android:textSize="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="150dp"
+                    >
+                </TextView>
+            </LinearLayout>
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:text=" You can access anything what you want\n Rs 120 for 3 days\n Rs 450 for 1 month\n Rs 2650 for 6 months\n Rs 5240 for 1 year"
+                android:textSize="14dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="0.1dp"
+                />
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="Choose any plan"
                 ></Button>
 
 
@@ -171,7 +239,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:textColor="#000000"
-                    android:text="Premium Family"
+                    android:text="No Subscription"
                     android:textSize="14dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginLeft="15dp"
@@ -181,7 +249,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#494848"
                     android:inputType="textMultiLine"
-                    android:text="Free \n For 1 Month"
+                    android:text="Free \n For 3 days"
                     android:textSize="16dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="150dp"
@@ -195,7 +263,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
-                android:text="Up to 6 Premium Account , Family Mix;\n    Up to 6 Premium Account , Fammm \n       Up to 6 Premium Account , Fam"
+                android:text=" Price of one video - Rs 30 \n Price of one course - Rs 80 \n Pay as You Learn"
                 android:textSize="14dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="25dp"
@@ -206,145 +274,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:text="TRy 1 month premium"
+                android:text="choose any plan"
                 ></Button>
 
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="230dp"
-        android:layout_margin="15dp"
-        app:cardCornerRadius="16dp"
-        app:cardBackgroundColor="#FFFFFF">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                >
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:textColor="#000000"
-                    android:text="Premium Family"
-                    android:textSize="14dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginLeft="15dp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#494848"
-                    android:inputType="textMultiLine"
-                    android:text="Free \n For 1 Month"
-                    android:textSize="16dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="150dp"
-                    >
-                </TextView>
-            </LinearLayout>
-
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:text="Up to 6 Premium Account , Family Mix;\n    Up to 6 Premium Account , Fammm \n       Up to 6 Premium Account , Fam"
-                android:textSize="14dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="25dp"
-                />
-
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:text="TRy 1 month premium"
-                ></Button>
-
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="230dp"
-        android:layout_margin="15dp"
-        app:cardCornerRadius="16dp"
-        app:cardBackgroundColor="#FFFFFF">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                >
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:textColor="#000000"
-                    android:text="Premium Family"
-                    android:textSize="14dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginLeft="15dp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#494848"
-                    android:inputType="textMultiLine"
-                    android:text="Free \n For 1 Month"
-                    android:textSize="16dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="150dp"
-                    >
-                </TextView>
-            </LinearLayout>
-
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:text="Up to 6 Premium Account , Family Mix;\n    Up to 6 Premium Account , Fammm \n       Up to 6 Premium Account , Fam"
-                android:textSize="14dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="25dp"
-                />
-
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:text="TRy 1 month premium"
-                ></Button>
-
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
     </LinearLayout>
 
 

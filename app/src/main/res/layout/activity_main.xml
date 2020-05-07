@@ -41,7 +41,7 @@
             android:layout_gravity="bottom"
             android:background="#FFFFFF"
             android:layout_alignParentBottom="true"
-            app:itemIconTint="#FFFFFF"
+            app:itemIconTint="#000000"
             app:itemTextColor="#FFFFFF"
             app:menu="@menu/bottom_nav_menu"
             />
@@ -56,7 +56,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
-        app:itemIconTint="#FFFFFF"
+        app:itemIconTint="#000000"
         app:menu="@menu/activity_main_drawer" />
 
 

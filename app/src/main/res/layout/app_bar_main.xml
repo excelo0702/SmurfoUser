@@ -15,7 +15,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:navigationIcon="@drawable/ic_drag"
+            app:navigationIcon="@drawable/ic_drag_handle_black_24dp"
+            android:foregroundTint="#000000"
             android:background="#FFFFFF">
 
             <ImageView

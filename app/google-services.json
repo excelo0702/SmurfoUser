@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "633617675460",
+    "firebase_url": "https://smurfo-eaf86.firebaseio.com",
+    "project_id": "smurfo-eaf86",
+    "storage_bucket": "smurfo-eaf86.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:633617675460:android:04676af0213d2201c58591",
+        "android_client_info": {
+          "package_name": "com.example.chhots"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "633617675460-3qj7lauu2sa0qb2vp9lntqa2qskl5ro5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chhots",
+            "certificate_hash": "82e72eac5f48dde5bd3ce1c7e46fa7a00f6dfd3e"
+          }
+        },
+        {
+          "client_id": "633617675460-q84u863008d6tpbjrel1lq3rr3kjpc03.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUsm_vivxKdBlFAOC3NR09j1Dln3SxyB0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "633617675460-q84u863008d6tpbjrel1lq3rr3kjpc03.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
