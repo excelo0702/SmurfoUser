@@ -13,6 +13,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,12 +36,27 @@
         android:layout_gravity="center_horizontal"
         ></TextView>
 
+    <VideoView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/form_contest_videoView"
+        ></VideoView>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose Video"
+        android:id="@+id/choose_video_form"
+        ></Button>
+
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:id="@+id/name"
+        android:id="@+id/userName"
         android:hint="Name"
         ></EditText>
 
@@ -47,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:id="@+id/email"
+        android:id="@+id/userEmail"
         android:hint="Email"
         ></EditText>
 
@@ -87,16 +105,15 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="200dp"
-        android:src="@drawable/image"
         android:layout_margin="20dp"
+        android:id="@+id/image_1_contest"
 
         ></ImageView>
-
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="200dp"
-        android:src="@drawable/image"
+        android:id="@+id/image_2_contest"
         ></ImageView>
 
 </LinearLayout>

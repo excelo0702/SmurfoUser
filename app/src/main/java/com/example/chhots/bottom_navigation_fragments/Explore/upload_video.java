@@ -191,8 +191,6 @@ public class upload_video extends Fragment {
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(videoUri));
     }
 
-
-
     private void uploadVideo()
     {
         progressBar.setVisibility(View.VISIBLE);

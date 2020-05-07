@@ -6,9 +6,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="#FFFFFF"
-
     tools:context=".category_view.Contest.contest">
 
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Host Contest"
+        android:id="@+id/host_contest"
+        ></Button>
 
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"

@@ -225,7 +225,6 @@ public class edit_profile extends Fragment {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     UserModel model = new UserModel(userName, email, about, phone, uri.toString());
-                                    String uploadId = databaseReference.push().getKey();
 
                                     databaseReference.child("users").child(user.getUid()).setValue(model)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -277,7 +276,6 @@ public class edit_profile extends Fragment {
                 }
                 Log.d("2323","success");
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 

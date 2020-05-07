@@ -2,27 +2,26 @@ package com.example.chhots.category_view.Contest;
 
 
 import android.animation.ArgbEvaluator;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.chhots.R;
-import com.example.chhots.category_view.routine.routine_view;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,21 +36,17 @@ public class contest extends Fragment {
         // Required empty public constructor
     }
 
-    int[] imageId = {
-            R.drawable.image,
-            R.drawable.image,
-            R.drawable.image,
-            R.drawable.image,
-            R.drawable.image,
-            R.drawable.image,
-            R.drawable.image
-    };
     ListView listview;
     ViewPager viewPager;
-    Adapter adapter;
-    List<Model> models;
+    ContestAdapter contestAdapter;
+    List<HostModel> list;
     ArgbEvaluator argbEvaluator = new ArgbEvaluator();
     TextView participate;
+    Button host_contest;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
+    private final String TAG = "Contest123";
+
 
 
     @Override
@@ -60,17 +55,62 @@ public class contest extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_contest, container, false);
-        models = new ArrayList<>();
-
-        for(int i = 0;i<imageId.length;i++)
-        {
-            models.add(new Model(imageId[i]));
-        }
-        adapter = new Adapter(models,getContext());
+        list = new ArrayList<>();
+        host_contest = view.findViewById(R.id.host_contest);
+        databaseReference = FirebaseDatabase.getInstance().getReference("");
         viewPager = (ViewPager)view.findViewById(R.id.view_contest_Pager);
-        viewPager.setAdapter(adapter);
+
+
+        showContests();
+
+        host_contest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().beginTransaction().replace(R.id.drawer_layout,new hostContest()).addToBackStack(null).commit();
+            }
+        });
+
+
 
         return view;
+    }
+
+    private void showContests() {
+        databaseReference.child("contest").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    Log.d(TAG,ds.getValue()+"\n");
+                    HostModel model = ds.getValue(HostModel.class);
+                    list.add(model);
+
+                }
+                contestAdapter = new ContestAdapter(list,getActivity());
+                if(contestAdapter.getCount()>0){
+                    Log.d(TAG,"not null");
+                }
+                else
+                {
+                    Log.d(TAG,"null");
+                }
+                viewPager.setAdapter(contestAdapter);
+                if(viewPager==null)
+                {
+                    Log.d(TAG,"null viewPager");
+                }
+                else
+                {
+                    Log.d(TAG,"not null pager");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 

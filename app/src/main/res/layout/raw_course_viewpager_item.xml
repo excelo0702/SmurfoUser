@@ -27,7 +27,7 @@
     android:layout_height="wrap_content"
     android:text="Course Name"
     android:layout_marginTop="180dp"
-    android:textColor="#FFFFFF"
+    android:textColor="#000000"
     android:id="@+id/raw_course_viewpager_name"
 
     ></TextView>
@@ -39,7 +39,7 @@
             android:text="Description"
             android:layout_marginTop="200dp"
             android:layout_marginBottom="20dp"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:id="@+id/raw_course_viewpager_description"
 
             ></TextView>

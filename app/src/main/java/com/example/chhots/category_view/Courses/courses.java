@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ public class courses extends Fragment {
     Adapter adapter;
     List<ViewPageModel> modelList;
     ArgbEvaluator argbEvaluator = new ArgbEvaluator();
+    Button upload_btn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,13 +46,24 @@ public class courses extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_courses, container, false);
+        upload_btn = view.findViewById(R.id.upload_course);
+        upload_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),upload_course.class);
+                startActivity(intent);
+            }
+        });
 
         modelList = new ArrayList<>();
 
-        for(int i=0;i<5;i++)
+        for(int i=0;i<4;i++)
         {
-            modelList.add(new ViewPageModel("Course Name","Dance Form",R.drawable.ic_sentiment_satisfied_black_24dp));
+            modelList.add(new ViewPageModel("Course Name","Dance Form",R.drawable.ic_account_circle_black_24dp));
         }
+        modelList.add(new ViewPageModel("Course Name","Dance Form",R.drawable.ic_sentiment_satisfied_black_24dp));
+        modelList.add(new ViewPageModel("Course Name","Dance Form",R.drawable.ic_add_to_favorite));
+
 
         adapter = new Adapter(modelList,getContext());
         viewPager = (ViewPager)view.findViewById(R.id.courses_viewPager);
@@ -60,7 +73,7 @@ public class courses extends Fragment {
 
         models = new ArrayList<>();
 
-        for(int i=0;i<5;i++)
+        for(int i=0;i<7;i++)
         {
             models.add(new Model("Course Name","Dance Form",R.drawable.ic_sentiment_satisfied_black_24dp));
         }

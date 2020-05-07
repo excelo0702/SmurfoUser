@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_alignParentLeft="true"
-        android:id="@+id/show_message"
+        android:id="@+id/show_message_left"
         android:text="Yo"
         android:background="@drawable/background_left"
         android:padding="8dp"

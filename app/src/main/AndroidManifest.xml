@@ -21,25 +21,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".ChatBox.ChatWithInstructor"
+        <activity android:name=".category_view.Courses.upload_course"></activity>
+        <activity
+            android:name=".ChatBox.ChatWithInstructor"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:windowSoftInputMode="adjustPan"
-            ></activity>
-        <activity android:name=".Login"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-
-            />
-        <activity android:name=".Demo.demo2"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-
-            />
-        <activity android:name=".Demo.demo"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-
-            />
-        <activity android:name=".Signup"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            />
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Login"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity
+            android:name=".Demo.demo2"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity
+            android:name=".Demo.demo"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity
+            android:name=".Signup"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -56,11 +54,9 @@
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
 
-
         <meta-data
             android:name="com.razorpay.ApiKey"
-            android:value="rzp_test_lGVIuQHCWOB1Ss"></meta-data>
-
+            android:value="rzp_test_lGVIuQHCWOB1Ss" />
     </application>
 
 </manifest>

@@ -41,7 +41,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
         if(viewType == 0)
         {
             view = LayoutInflater.from(context).inflate(R.layout.raw_chat_item_right,parent,false);
-
         }
         else
         {
@@ -55,22 +54,32 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         MessageModel model = list.get(position);
         Log.d(TAG,"vbn");
-        holder.message.setText(model.getMessage());
+        if(model.getFlag()==0)
+        {
+            holder.message.setText(model.getMessage());
+        }
+        else
+        {
+            holder.message_left.setText(model.getMessage());
+
+        }
     }
     @Override
     public int getItemCount() {
-        return 0;
+        return list.size();
     }
 
     public class MyHolder extends RecyclerView.ViewHolder{
 
-        public TextView message;
+        public TextView message_left,message;
 
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             Log.d(TAG,"fghjkk");
             message = itemView.findViewById(R.id.show_message);
+            message_left = itemView.findViewById(R.id.show_message_left);
+
         }
     }
 

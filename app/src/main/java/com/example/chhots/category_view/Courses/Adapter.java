@@ -1,6 +1,7 @@
 package com.example.chhots.category_view.Courses;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class Adapter extends PagerAdapter {
     private LayoutInflater layoutInflater;
     private Context context;
 
+
     public Adapter(List<ViewPageModel> models, Context context) {
         this.models = models;
         this.context = context;
@@ -42,6 +44,7 @@ public class Adapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull final ViewGroup container, final int position) {
 
+        Log.d("111111","fghjkllkjhg");
         layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.raw_course_viewpager_item,container,false);
 
@@ -50,6 +53,7 @@ public class Adapter extends PagerAdapter {
         course_name = (TextView)view.findViewById(R.id.raw_course_viewpager_name);
         des = (TextView)view.findViewById(R.id.raw_course_viewpager_description);
         img = (ImageView)view.findViewById(R.id.raw_course_viewpager_image);
+        img.setImageResource(models.get(position).getImageId());
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +79,7 @@ FirebaseAuth auth = FirebaseAuth.getInstance();
             }
         });
 
-        container.addView(view,0);
+        container.addView(view);
         return view;
     }
 
