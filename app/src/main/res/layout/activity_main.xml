@@ -42,7 +42,7 @@
             android:background="#FFFFFF"
             android:layout_alignParentBottom="true"
             app:itemIconTint="#000000"
-            app:itemTextColor="#FFFFFF"
+            app:itemTextColor="#000000"
             app:menu="@menu/bottom_nav_menu"
             />
 

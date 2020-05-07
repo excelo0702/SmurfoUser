@@ -40,6 +40,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.razorpay.PaymentResultListener;
 import com.squareup.picasso.Picasso;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -54,7 +55,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements PaymentResultListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     BottomNavigationView bottomNavigationView;
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity{
     DatabaseReference databaseReference;
     Button chatBtn;
     ActionBarDrawerToggle t;
+    private static final String TAG = MainActivity.class.getSimpleName();
+
 
 
     @Override
@@ -310,11 +313,29 @@ public class MainActivity extends AppCompatActivity{
     {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.drawer_layout,fragment);
-        fragmentTransaction.addToBackStack(null);
+    //    fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
     }
 
+
+
+    @Override
+    public void onPaymentSuccess(String s) {
+        try {
+            Toast.makeText(getApplicationContext(), "Payment Successful: " + s, Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.e(TAG, "Exception in onPaymentSuccess", e);
+        }    }
+
+    @Override
+    public void onPaymentError(int i, String s) {
+        //   Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
+        try {
+            Toast.makeText(getApplicationContext(), "Payment failed: " + i + " " + s, Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.e(TAG, "Exception in onPaymentError", e);
+        }    }
 
 
 
