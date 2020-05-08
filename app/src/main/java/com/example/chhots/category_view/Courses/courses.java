@@ -2,12 +2,18 @@ package com.example.chhots.category_view.Courses;
 
 import android.animation.ArgbEvaluator;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +26,14 @@ import android.widget.Toast;
 import com.example.chhots.Login;
 import com.example.chhots.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +46,16 @@ public class courses extends Fragment {
 
 
 
-    List<Model> models;
-    LinearLayout recently_viewed;
     ViewPager viewPager;
-    Adapter adapter;
-    List<ViewPageModel> modelList;
-    ArgbEvaluator argbEvaluator = new ArgbEvaluator();
+    List<CourseThumbnail> modelList;
     Button upload_btn;
+    private DatabaseReference databaseReference;
+    private final String TAG = "Courses123";
+    private String history,trending,mostly,for_you;
+    private RecyclerView recyclerView1,recyclerView2,recyclerView3,recyclerView4,recyclerView;
+    private HorizontalAdapter adapter;
+    private Adapter Pageradapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +64,7 @@ public class courses extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_courses, container, false);
         upload_btn = view.findViewById(R.id.upload_course);
+        databaseReference = FirebaseDatabase.getInstance().getReference("");
         upload_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,160 +73,167 @@ public class courses extends Fragment {
             }
         });
 
+
+        viewPager = view.findViewById(R.id.courses_viewPager);
+
+        recyclerView1 = view.findViewById(R.id.recycler_recently_course);
+        recyclerView1.setHasFixedSize(true);
+        recyclerView1.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+
+
+        recyclerView2 = view.findViewById(R.id.recycler_trending_course);
+        recyclerView2.setHasFixedSize(true);
+        recyclerView2.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+
+
+        recyclerView3 = view.findViewById(R.id.recycler_mostlyViewed_course);
+        recyclerView3.setHasFixedSize(true);
+        recyclerView3.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+
+
+        recyclerView4 = view.findViewById(R.id.recycler_ForYou_course);
+        recyclerView4.setHasFixedSize(true);
+        recyclerView4.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+
         modelList = new ArrayList<>();
+        showCoursesImageSlider();
+        showRecentCourse();
+        showTrendingCourse();
+        showMostlyViewedCourse();
+        showForYouCourse();
 
-        for(int i=0;i<4;i++)
-        {
-            modelList.add(new ViewPageModel("Course Name","Dance Form",R.drawable.ic_account_circle_black_24dp));
-        }
-        modelList.add(new ViewPageModel("Course Name","Dance Form",R.drawable.ic_sentiment_satisfied_black_24dp));
-        modelList.add(new ViewPageModel("Course Name","Dance Form",R.drawable.ic_add_to_favorite));
-
-
-        adapter = new Adapter(modelList,getContext());
-        viewPager = (ViewPager)view.findViewById(R.id.courses_viewPager);
-        viewPager.setAdapter(adapter);
-
-        LayoutInflater inflater1 = LayoutInflater.from(getContext());
-
-        models = new ArrayList<>();
-
-        for(int i=0;i<7;i++)
-        {
-            models.add(new Model("Course Name","Dance Form",R.drawable.ic_sentiment_satisfied_black_24dp));
-        }
-
-        recently_viewed = (LinearLayout)view.findViewById(R.id.recent_viewed_courses);
-        for(int i=0;i<models.size();i++)
-        {
-            View root = inflater.inflate(R.layout.raw_courses_item,recently_viewed,false);
-            TextView name = (TextView)root.findViewById(R.id.raw_course_name);
-            TextView dance_form = (TextView)root.findViewById(R.id.raw_dance_form);
-            ImageView imageView = (ImageView)root.findViewById(R.id.raw_image_course);
-
-            name.setText(models.get(i).getName());
-            dance_form.setText(models.get(i).getDance_form());
-            imageView.setImageResource(models.get(i).getImageId());
-
-            root.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-
-                    FirebaseAuth auth = FirebaseAuth.getInstance();
-
-                    if(auth.getCurrentUser()==null)
-                    {
-                        Toast.makeText(getContext(),"To participate in contest you have to first login",Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getContext(), Login.class);
-                        startActivity(intent);
-                    }
-
-                    Fragment fragment = new course_view();
-                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.drawer_layout,fragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                    //pass data too
-
-
-                }
-            });
-
-            recently_viewed.addView(root);
-        }
-
-
-        recently_viewed = (LinearLayout)view.findViewById(R.id.trending_courses);
-        for(int i=0;i<models.size();i++)
-        {
-            View root = inflater.inflate(R.layout.raw_courses_item,recently_viewed,false);
-            TextView name = (TextView)root.findViewById(R.id.raw_course_name);
-            TextView dance_form = (TextView)root.findViewById(R.id.raw_dance_form);
-            ImageView imageView = (ImageView)root.findViewById(R.id.raw_image_course);
-
-            name.setText(models.get(i).getName());
-            dance_form.setText(models.get(i).getDance_form());
-            imageView.setImageResource(models.get(i).getImageId());
-
-            root.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Fragment fragment = new course_view();
-                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.drawer_layout,fragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                    //pass data too
-
-
-                }
-            });
-
-            recently_viewed.addView(root);
-        }
-
-
-        recently_viewed = (LinearLayout)view.findViewById(R.id.most_viewed_courses);
-        for(int i=0;i<models.size();i++)
-        {
-            View root = inflater.inflate(R.layout.raw_courses_item,recently_viewed,false);
-            TextView name = (TextView)root.findViewById(R.id.raw_course_name);
-            TextView dance_form = (TextView)root.findViewById(R.id.raw_dance_form);
-            ImageView imageView = (ImageView)root.findViewById(R.id.raw_image_course);
-
-            name.setText(models.get(i).getName());
-            dance_form.setText(models.get(i).getDance_form());
-            imageView.setImageResource(models.get(i).getImageId());
-
-            root.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Fragment fragment = new course_view();
-                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.drawer_layout,fragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                    //pass data too
-
-
-                }
-            });
-
-            recently_viewed.addView(root);
-        }
-
-
-        recently_viewed = (LinearLayout)view.findViewById(R.id.for_you_courses);
-        for(int i=0;i<models.size();i++)
-        {
-            View root = inflater.inflate(R.layout.raw_courses_item,recently_viewed,false);
-            TextView name = (TextView)root.findViewById(R.id.raw_course_name);
-            TextView dance_form = (TextView)root.findViewById(R.id.raw_dance_form);
-            ImageView imageView = (ImageView)root.findViewById(R.id.raw_image_course);
-
-            name.setText(models.get(i).getName());
-            dance_form.setText(models.get(i).getDance_form());
-            imageView.setImageResource(models.get(i).getImageId());
-
-            root.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Fragment fragment = new course_view();
-                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.drawer_layout,fragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                    //pass data too
-
-
-                }
-            });
-
-            recently_viewed.addView(root);
-        }
 
         return view;
+    }
+
+    private void showForYouCourse() {
+        Query query = databaseReference.child("CoursesThumbnail").orderByKey().limitToFirst(5);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                modelList.clear();
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    Log.d(TAG+" jjjjjj   ",ds.getValue()+"");
+                    CourseThumbnail model = ds.getValue(CourseThumbnail.class);
+                    modelList.add(model);
+                }
+                adapter = new HorizontalAdapter(modelList,getContext());
+                recyclerView4.setAdapter(adapter);
+                Log.d(TAG,"fghjkk");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void showMostlyViewedCourse() {
+        Query query = databaseReference.child("CoursesThumbnail").orderByKey().limitToFirst(5);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                modelList.clear();
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    Log.d(TAG+" jjjjjj   ",ds.getValue()+"");
+                    CourseThumbnail model = ds.getValue(CourseThumbnail.class);
+                    modelList.add(model);
+                }
+                adapter = new HorizontalAdapter(modelList,getContext());
+                recyclerView3.setAdapter(adapter);
+                Log.d(TAG,"fghjkk");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
+    private void showTrendingCourse() {
+        Query query = databaseReference.child("CoursesThumbnail").orderByKey().limitToLast(5);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                modelList.clear();
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    Log.d(TAG+" jjjjjj   ",ds.getValue()+"");
+                    CourseThumbnail model = ds.getValue(CourseThumbnail.class);
+                    modelList.add(model);
+                }
+                adapter = new HorizontalAdapter(modelList,getContext());
+                recyclerView2.setAdapter(adapter);
+                Log.d(TAG,"fghjkk");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void showRecentCourse() {
+        Query query = databaseReference.child("CoursesThumbnail").orderByKey().limitToFirst(5);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                modelList.clear();
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    Log.d(TAG+" jjjjjj   ",ds.getValue()+"");
+                    CourseThumbnail model = ds.getValue(CourseThumbnail.class);
+                    modelList.add(model);
+                }
+                adapter = new HorizontalAdapter(modelList,getContext());
+                recyclerView1.setAdapter(adapter);
+                Log.d(TAG,"fghjkk");
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void showCoursesImageSlider() {
+        databaseReference.child("CoursesThumbnail").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("IIIImage",dataSnapshot.getChildrenCount()+"");
+
+                modelList.clear();
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    Log.d("IIIImage",ds.getValue().toString());
+                    CourseThumbnail model = ds.getValue(CourseThumbnail.class);
+                    modelList.add(model);
+
+                }
+                Pageradapter = new Adapter(modelList,getContext());
+                viewPager.setAdapter(Pageradapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 

@@ -50,25 +50,11 @@
 
         ></TextView>
 
-    <HorizontalScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="155dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        >
-
-
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/recent_viewed_courses"
-            ></LinearLayout>
-
-    </HorizontalScrollView>
-
+            android:id="@+id/recycler_recently_course"
+            ></androidx.recyclerview.widget.RecyclerView>
 
         <TextView
             android:layout_width="wrap_content"
@@ -81,25 +67,13 @@
 
             ></TextView>
 
-        <HorizontalScrollView
+
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="30dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            >
+            android:layout_height="wrap_content"
+            android:id="@+id/recycler_trending_course"
+            ></androidx.recyclerview.widget.RecyclerView>
 
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/trending_courses"
-                ></LinearLayout>
-
-
-        </HorizontalScrollView>
 
 
         <TextView
@@ -113,25 +87,13 @@
 
             ></TextView>
 
-        <HorizontalScrollView
+
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="30dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            >
+            android:layout_height="wrap_content"
+            android:id="@+id/recycler_mostlyViewed_course"
+            ></androidx.recyclerview.widget.RecyclerView>
 
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/most_viewed_courses"
-                ></LinearLayout>
-
-        </HorizontalScrollView>
 
 
         <TextView
@@ -145,25 +107,11 @@
 
             ></TextView>
 
-        <HorizontalScrollView
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="30dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            >
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/for_you_courses"
-                ></LinearLayout>
-
-
-        </HorizontalScrollView>
+            android:layout_height="wrap_content"
+            android:id="@+id/recycler_ForYou_course"
+            ></androidx.recyclerview.widget.RecyclerView>
 
 
     </LinearLayout>

@@ -29,21 +29,6 @@ public class booking extends Fragment {
 
 
 
-    String[] name = {"tanish" ,"tanish" ,"tanish" ,"tanish" ,"tanish" ,"tanish" , "mommy"};
-    String[] danceform = {"tanish" ,"tanish" ,"tanish" ,"tanish" ,"tanish" ,"tanish" , "mommy"};;
-    int[] imageId = {
-            R.drawable.image,
-            R.drawable.image,
-            R.drawable.image,
-            R.drawable.image,
-            R.drawable.image,
-            R.drawable.image,
-            R.drawable.image
-    };
-    ListView listview;
-
-    List<Model> models;
-
     public booking() {
         // Required empty public constructor
     }
@@ -53,69 +38,7 @@ public class booking extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_booking, container, false);
-
-        models = new ArrayList<>();
-        for(int i=0;i<name.length;i++)
-        {
-            models.add(new Model(name[i],danceform[i],imageId[i]));
-        }
-
-        listview = (ListView)view.findViewById(R.id.list_booking_view);
-
-        Myadapter myadapter = new Myadapter(getActivity(),name,danceform,imageId);
-
-        listview.setAdapter(myadapter);
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Fragment fragment = new booking_view();
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.drawer_layout,fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            }
-        });
-
-
-
         return view;
     }
-
-    class Myadapter extends ArrayAdapter<String>{
-        Context context;
-        String[] name;
-        String[] description;
-        int imgs[];
-
-
-        public Myadapter(Context context, String[] name, String[] description, int[] imgs) {
-            super(context,R.layout.raw_booking_item,R.id.name_booking,name);
-            this.context = context;
-            this.name = name;
-            this.description = description;
-            this.imgs = imgs;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-            LayoutInflater layoutInflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View row = layoutInflater.inflate(R.layout.raw_booking_item,parent,false);
-            ImageView imageView = row.findViewById(R.id.imageBooking);
-            TextView title = row.findViewById(R.id.name_booking);
-            TextView desc = row.findViewById(R.id.desciption_booking);
-
-
-            imageView.setImageResource(imgs[position]);
-            title.setText(name[position]);
-            desc.setText(description[position]);
-
-            return row;
-        }
-    }
-
 
 }

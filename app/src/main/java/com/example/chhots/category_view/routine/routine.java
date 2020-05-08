@@ -59,7 +59,7 @@ public class routine extends Fragment {
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("videos");
-        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+        mDatabaseRef.limitToFirst(20).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 

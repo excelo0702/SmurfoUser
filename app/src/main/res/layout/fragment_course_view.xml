@@ -5,15 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".category_view.Courses.course_view"
     android:orientation="vertical"
-    android:background="#FFFFFF"
-
-    >
-
+    android:background="#FFFFFF">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="260dp"
-        android:background="#854545"
         android:id="@+id/video_space_course"
         ></FrameLayout>
 

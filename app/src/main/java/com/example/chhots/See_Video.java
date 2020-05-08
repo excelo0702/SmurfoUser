@@ -66,9 +66,6 @@ public class See_Video extends Fragment {
 
     List<CommentModel> list;
 
-
-
-
     public See_Video() {
         // Required empty public constructor
     }
@@ -167,16 +164,12 @@ public class See_Video extends Fragment {
                         Log.e(TAG, "onCancelled", databaseError.toException());
                     }
                 });
-
-
             }
         });
 
         favorite_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
             }
         });
 
@@ -202,12 +195,6 @@ public class See_Video extends Fragment {
 
         showVideo();
         showComments();
-
-
-
-
-
-
         return view;
     }
 
@@ -283,5 +270,6 @@ public class See_Video extends Fragment {
         CommentModel model = new CommentModel(comment_message.getText().toString(),time,user.getUid());
         mDatabaseRef.child("comments").child(videoId).child(time).setValue(model);
     }
+
 
 }

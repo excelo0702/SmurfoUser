@@ -47,6 +47,12 @@
             android:id="@+id/upload_video_course"
             ></Button>
 
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/upload_course_image"
+            android:src="@mipmap/ic_launcher_round"></ImageView>
+
         <Button
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"

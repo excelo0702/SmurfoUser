@@ -228,19 +228,15 @@ public class upload_video extends Fragment {
                                     getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                                 }
                             });
-
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressBar.setVisibility(View.INVISIBLE);
-
                             Toast.makeText(getContext(),e.getMessage()+"Failed",Toast.LENGTH_SHORT).show();
-
                         }
                     });
-
             uploadBtn.setEnabled(true);
             choosebtn.setEnabled(true);
         }

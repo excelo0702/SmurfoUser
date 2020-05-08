@@ -38,6 +38,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 
@@ -57,6 +58,12 @@ public class upload_course extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseUser user;
     final String time = System.currentTimeMillis()+"";
+    ImageView image;
+    private Uri mImageUri;
+    private static final int PICK_IMAGE_REQUEST = 2;
+    private static final int PICK_VIDEO_REQUEST = 1;
+
+
 
     private static final String TAG = "Upload_Course";
 
@@ -66,6 +73,13 @@ public class upload_course extends AppCompatActivity {
         setContentView(R.layout.activity_upload_course);
 
         init();
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFileChooser();
+            }
+        });
 
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -92,7 +106,7 @@ public class upload_course extends AppCompatActivity {
             }
         });
 
-        uploadBtn.setOnClickListener(new View.OnClickListener() {
+       uploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 choosebtn.setEnabled(false);
@@ -104,13 +118,41 @@ public class upload_course extends AppCompatActivity {
         Done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                CreateCourse();
             }
         });
 
 
     }
 
+    private void CreateCourse() {
+        if(mImageUri!=null)
+        {
+            final StorageReference reference = storageReference.child("CoursesThumbnail").child(System.currentTimeMillis()+"."+getFileExtension(mImageUri));
+            reference.putFile(mImageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            reference.getDownloadUrl()
+                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            Log.d(TAG,mImageUri.toString());
+                                            CourseThumbnail thumbnail = new CourseThumbnail("course Name",time,uri.toString());
+                                            databaseReference.child("CoursesThumbnail").child(time).setValue(thumbnail)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Toast.makeText(getApplicationContext(), "Course Created", Toast.LENGTH_SHORT).show();
+                                                            onBackPressed();
+                                                        }
+                                                    });
+                                        }
+                                    });
+                        }
+                    });
+        }
+    }
     @Override
     public void onBackPressed() {
         Toast.makeText(getApplicationContext(),"Course Uploaded",Toast.LENGTH_SHORT).show();
@@ -144,7 +186,30 @@ public class upload_course extends AppCompatActivity {
             videoView.setVideoURI(videouri);
 
         }
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            mImageUri = data.getData();
+            Picasso.get().load(mImageUri).into(image);
+        }
     }
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver cR = getApplicationContext().getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+
+
+
+    private void openFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+
+
     private String getfilterExt(Uri videoUri)
     {
         ContentResolver contentResolver = getContentResolver();
@@ -170,7 +235,7 @@ public class upload_course extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(Uri uri) {
                                             String courseId = time;
-                                            UploadCourseModel model = new UploadCourseModel(time,user.getUid(),"courseName",videouri.toString());
+                                            UploadCourseModel model = new UploadCourseModel(time,user.getUid(),"courseName",uri.toString());
                                             databaseReference.child("Courses").child(courseId).child(sequence+title).setValue(model);
                                             VideoModel video_model = new VideoModel(user.getUid(),title,"category",time,"No Comment Yet",uri.toString(),0,0,0);
                                             databaseReference.child("videos").child(time2).setValue(video_model);
@@ -198,6 +263,7 @@ public class upload_course extends AppCompatActivity {
         user = auth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         storageReference = FirebaseStorage.getInstance().getReference();
+        image = findViewById(R.id.upload_course_image);
 
     }
 }
