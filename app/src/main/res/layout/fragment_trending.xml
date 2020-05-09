@@ -30,17 +30,18 @@
             android:layout_height="wrap_content"
             android:text="Filter"
             android:textSize="18dp"
+            android:id="@+id/filter_trending"
 
             android:layout_marginRight="10dp"
             android:layout_marginLeft="130dp"
             android:textColor="#000000"></TextView>
-
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sort"
             android:layout_marginRight="10dp"
+            android:id="@+id/sort_trending"
             android:layout_marginLeft="10dp"
             android:textSize="18dp"
             android:textColor="#000000"></TextView>

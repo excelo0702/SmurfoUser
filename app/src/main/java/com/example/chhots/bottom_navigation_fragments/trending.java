@@ -12,12 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -54,6 +57,7 @@ public class trending extends Fragment {
     private List<VideoModel> videolist;
     private static final String TAG = "Trending1235";
     private FirebaseAuth auth;
+    TextView filter,sort;
 
 
 
@@ -69,6 +73,92 @@ public class trending extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         auth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("");
+        filter = view.findViewById(R.id.filter_trending);
+        sort = view.findViewById(R.id.sort_trending);
+
+
+        sort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(getContext(),view);
+                MenuInflater inflater = popupMenu.getMenuInflater();
+                inflater.inflate(R.menu.sort_menu,popupMenu.getMenu());
+                popupMenu.show();
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        switch (menuItem.getItemId())
+                        {
+                            case R.id.latest:
+                                showTrending();
+                                break;
+                            case R.id.old:
+                                showTrendingOld();
+                                break;
+                            case R.id.price_low:
+                                showTrendinglowPrice();
+                                break;
+                            case R.id.price_high:
+                                showTrendingHighPrice();
+                                break;
+                            default:
+                                showTrending();
+                                break;
+
+                        }
+                        return true;
+                    }
+                });
+            }
+        });
+
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(getContext(),view);
+                MenuInflater inflater = popupMenu.getMenuInflater();
+                inflater.inflate(R.menu.filter_menu,popupMenu.getMenu());
+                popupMenu.show();
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        switch (menuItem.getItemId())
+                        {
+                            case R.id.street:
+                                showTrendingStreet();
+                                break;
+
+                            case R.id.classical:
+                                showTrendingClassical();
+                                break;
+
+                            case R.id.other:
+                                showTrendingOthers();
+                                break;
+
+                            default:
+                                showTrending();
+                                break;
+                        }
+                        return true;
+                    }
+                });
+
+            }
+        });
+
+
+
+
+        return view;
+    }
+
+
+
+    private void showTrending() {
+        videolist.clear();
 
         mDatabaseRef.child("videos").limitToFirst(10).addValueEventListener(new ValueEventListener() {
             @Override
@@ -92,7 +182,171 @@ public class trending extends Fragment {
 
             }
         });
-
-        return view;
     }
+
+    private void showTrendingOld() {
+        videolist.clear();
+
+        mDatabaseRef.child("videos").limitToFirst(10).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Log.d(TAG, dataSnapshot.getValue().toString());
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    Log.d(TAG, ds.getValue().toString());
+                    VideoModel model = ds.getValue(VideoModel.class);
+                    videolist.add(model);
+
+                }
+                mAdapter = new VideoAdapter(videolist, getContext());
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void showTrendinglowPrice() {
+        videolist.clear();
+        mDatabaseRef.child("videos").limitToFirst(10).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Log.d(TAG, dataSnapshot.getValue().toString());
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    Log.d(TAG, ds.getValue().toString());
+                    VideoModel model = ds.getValue(VideoModel.class);
+                    videolist.add(model);
+
+                }
+                mAdapter = new VideoAdapter(videolist, getContext());
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void showTrendingHighPrice() {
+        videolist.clear();
+
+        mDatabaseRef.child("videos").limitToFirst(10).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Log.d(TAG, dataSnapshot.getValue().toString());
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    Log.d(TAG, ds.getValue().toString());
+                    VideoModel model = ds.getValue(VideoModel.class);
+                    videolist.add(model);
+
+                }
+                mAdapter = new VideoAdapter(videolist, getContext());
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void showTrendingStreet() {
+        videolist.clear();
+
+        mDatabaseRef.child("videos").limitToFirst(10).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Log.d(TAG, dataSnapshot.getValue().toString());
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    Log.d(TAG, ds.getValue().toString());
+                    VideoModel model = ds.getValue(VideoModel.class);
+                    videolist.add(model);
+
+                }
+                mAdapter = new VideoAdapter(videolist, getContext());
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void showTrendingClassical() {
+        videolist.clear();
+
+        mDatabaseRef.child("videos").limitToFirst(10).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Log.d(TAG, dataSnapshot.getValue().toString());
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    Log.d(TAG, ds.getValue().toString());
+                    VideoModel model = ds.getValue(VideoModel.class);
+                    videolist.add(model);
+
+                }
+                mAdapter = new VideoAdapter(videolist, getContext());
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void showTrendingOthers() {
+        videolist.clear();
+
+        mDatabaseRef.child("videos").limitToFirst(10).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Log.d(TAG, dataSnapshot.getValue().toString());
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    Log.d(TAG, ds.getValue().toString());
+                    VideoModel model = ds.getValue(VideoModel.class);
+                    videolist.add(model);
+
+                }
+                mAdapter = new VideoAdapter(videolist, getContext());
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+
+
+
 }
