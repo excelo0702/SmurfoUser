@@ -19,6 +19,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -45,6 +46,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -94,14 +96,12 @@ public class upload_video extends Fragment {
 
         choosebtn = (Button)view.findViewById(R.id.chhose_btn);
         uploadBtn = (Button)view.findViewById(R.id.upload_btn);
-        DemotwoBtn = (Button)view.findViewById(R.id.demo2_btn);
         video_title = view.findViewById(R.id.video_title);
         choose_category = view.findViewById(R.id.choose_category);
-        thumb_nail = view.findViewById(R.id.thumbnail);
 
         videoView = view.findViewById(R.id.video_view);
         progress_seekBar = view.findViewById(R.id.progress_bar);
-        progressBar = view.findViewById(R.id.progress_Bar);
+
 
         auth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -193,7 +193,6 @@ public class upload_video extends Fragment {
 
     private void uploadVideo()
     {
-        progressBar.setVisibility(View.VISIBLE);
         if(videouri!=null)
         {
             //   Toast.makeText(getApplicationContext(),"upl88",Toast.LENGTH_SHORT).show();
@@ -222,10 +221,20 @@ public class upload_video extends Fragment {
                                 public void onSuccess(Uri uri) {
 
                                     progressBar.setVisibility(View.INVISIBLE);
+
+                                    Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            progress_seekBar.setProgress(0);
+                                        }
+                                    },500);
+
                                     VideoModel model = new VideoModel(user.getUid(),title,category,upload,"No Comment yet",uri.toString(),0,0,0);
                                     databaseReference.child(upload).setValue(model);
                                     Toast.makeText(getContext(),"uploaded",Toast.LENGTH_SHORT).show();
-                                    getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                    uploadBtn.setEnabled(true);
+                                    choosebtn.setEnabled(true);
                                 }
                             });
                         }
@@ -233,10 +242,19 @@ public class upload_video extends Fragment {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            progressBar.setVisibility(View.INVISIBLE);
                             Toast.makeText(getContext(),e.getMessage()+"Failed",Toast.LENGTH_SHORT).show();
+                            uploadBtn.setEnabled(true);
+                            choosebtn.setEnabled(true);
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0* taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                            progress_seekBar.setProgress((int) progress);
                         }
                     });
+
             uploadBtn.setEnabled(true);
             choosebtn.setEnabled(true);
         }

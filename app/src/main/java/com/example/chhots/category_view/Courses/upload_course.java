@@ -1,5 +1,6 @@
 package com.example.chhots.category_view.Courses;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,7 @@ import android.widget.VideoView;
 import com.example.chhots.R;
 import com.example.chhots.bottom_navigation_fragments.Explore.VideoModel;
 import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +38,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
@@ -62,6 +65,7 @@ public class upload_course extends AppCompatActivity {
     private Uri mImageUri;
     private static final int PICK_IMAGE_REQUEST = 2;
     private static final int PICK_VIDEO_REQUEST = 1;
+    private ProgressBar progress_seekBar,progress_seekBar2;
 
 
 
@@ -149,6 +153,19 @@ public class upload_course extends AppCompatActivity {
                                                     });
                                         }
                                     });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
+                            progress_seekBar2.setProgress((int)progress);
                         }
                     });
         }
@@ -244,6 +261,19 @@ public class upload_course extends AppCompatActivity {
                                         }
                                     });
                         }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
+                            progress_seekBar.setProgress((int)progress);
+                        }
                     });
         }
         uploadBtn.setEnabled(true);
@@ -264,6 +294,8 @@ public class upload_course extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference();
         storageReference = FirebaseStorage.getInstance().getReference();
         image = findViewById(R.id.upload_course_image);
+        progress_seekBar = findViewById(R.id.progress_bar_upload_course);
+        progress_seekBar2 = findViewById(R.id.progress_bar_upload_course_image);
 
     }
 }

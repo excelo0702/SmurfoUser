@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
@@ -24,11 +25,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.chhots.R;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,6 +39,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
@@ -67,6 +71,7 @@ public class form_contest extends Fragment {
     private MediaController mediaController;
     private Button choose_video;
     private Uri videouri;
+    private ProgressBar progress_seekBar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -170,6 +175,7 @@ public class form_contest extends Fragment {
         storageReference = firebaseStorage.getReference();
         databaseReference = FirebaseDatabase.getInstance().getReference("");
         choose_video = v.findViewById(R.id.choose_video_form);
+        progress_seekBar = v.findViewById(R.id.progress_bar_upload_contest_video);
     }
 
     private void RegisterUser()
@@ -190,8 +196,24 @@ public class form_contest extends Fragment {
                                             FormContestModel model = new FormContestModel(user_name,contestId,uri.toString());
                                             databaseReference.child("ContestVideos").child(contestId).child(user.getUid()).setValue(model);
                                             Toast.makeText(getContext(),"Uploaded",Toast.LENGTH_LONG).show();
+
+                                            register.setEnabled(true);
+                                            choose_video.setEnabled(true);
                                         }
                                     });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred())/taskSnapshot.getBytesTransferred();
+                            progress_seekBar.setProgress((int)progress);
                         }
                     });
 

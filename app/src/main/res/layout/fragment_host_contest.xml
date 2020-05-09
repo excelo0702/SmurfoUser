@@ -28,4 +28,13 @@
         android:id="@+id/contest_upload"></Button>
 
 
+    <ProgressBar
+        android:id="@+id/progress_bar_creating_contest"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_margin="10dp"
+        android:progress="0"/>
+
+
 </LinearLayout>

@@ -362,7 +362,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:textColor="#000000"
-                android:text=""
+                android:text="Kuchipudi"
                 android:textSize="16dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
@@ -392,7 +392,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:textColor="#000000"
-                android:text="Khatak"
+                android:text="Manipuri"
                 android:textSize="16dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
@@ -422,7 +422,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:textColor="#000000"
-                android:text="Khatak"
+                android:text="Mohiniyattam"
                 android:textSize="16dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
@@ -452,22 +452,55 @@
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:textColor="#000000"
-                android:text="Khatak"
+                android:text="Odissi"
                 android:textSize="16dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 />
         </LinearLayout>
+
+
     </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:padding="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    app:srcCompat="@drawable/ic_category"
+                    ></ImageView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:textColor="#000000"
+                    android:text="Sattriya"
+                    android:textSize="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    />
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hip Hop">
+        android:text="Other Dance Forms">
         ></TextView>
 
 
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -490,36 +523,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:textColor="#000000"
-                android:text="Khatak"
-                android:textSize="16dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:padding="5dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                app:srcCompat="@drawable/ic_category"
-                ></ImageView>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:textColor="#000000"
-                android:text="Khatak"
+                android:text="Afro"
                 android:textSize="16dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
@@ -549,7 +553,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:textColor="#000000"
-                android:text="Khatak"
+                android:text="Ballet"
                 android:textSize="16dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
@@ -579,7 +583,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:textColor="#000000"
-                android:text="Khatak"
+                android:text="Contemporary"
                 android:textSize="16dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
@@ -609,7 +613,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:textColor="#000000"
-                android:text="Khatak"
+                android:text="Dance Hall"
                 android:textSize="16dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
@@ -639,7 +643,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:textColor="#000000"
-                android:text="Khatak"
+                android:text="Jazz"
                 android:textSize="16dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
@@ -669,7 +673,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:textColor="#000000"
-                android:text="Khatak"
+                android:text="LItefeet"
                 android:textSize="16dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
@@ -678,162 +682,6 @@
     </androidx.cardview.widget.CardView>
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Others">
-        ></TextView>
-
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:padding="5dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                app:srcCompat="@drawable/ic_category"
-                ></ImageView>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:textColor="#000000"
-                android:text="Khatak"
-                android:textSize="16dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:padding="5dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                app:srcCompat="@drawable/ic_category"
-                ></ImageView>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:textColor="#000000"
-                android:text="Khatak"
-                android:textSize="16dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:padding="5dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                app:srcCompat="@drawable/ic_category"
-                ></ImageView>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:textColor="#000000"
-                android:text="Khatak"
-                android:textSize="16dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:padding="5dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                app:srcCompat="@drawable/ic_category"
-                ></ImageView>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:textColor="#000000"
-                android:text="Khatak"
-                android:textSize="16dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:padding="5dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                app:srcCompat="@drawable/ic_category"
-                ></ImageView>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:textColor="#000000"
-                android:text="Khatak"
-                android:textSize="16dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
 
 
 

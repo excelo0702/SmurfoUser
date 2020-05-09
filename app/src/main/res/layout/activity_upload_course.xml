@@ -39,6 +39,15 @@
             ></EditText>
 
 
+
+        <ProgressBar
+            android:id="@+id/progress_bar_upload_course"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_margin="10dp"
+            android:progress="0"/>
+
         <Button
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"
@@ -52,6 +61,15 @@
             android:layout_height="100dp"
             android:id="@+id/upload_course_image"
             android:src="@mipmap/ic_launcher_round"></ImageView>
+
+
+        <ProgressBar
+            android:id="@+id/progress_bar_upload_course_image"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_margin="10dp"
+            android:progress="0"/>
 
         <Button
             android:layout_width="match_parent"
