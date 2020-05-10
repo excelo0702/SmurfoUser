@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,23 +9,27 @@
     android:background="#FFFFFF"
     >
 
-    <VideoView
+    <com.google.android.exoplayer2.ui.PlayerView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="400dp"
         android:id="@+id/video_view"
-        ></VideoView>
+        app:resize_mode="zoom"
+        app:surface_type="texture_view"
+        ></com.google.android.exoplayer2.ui.PlayerView>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/chhose_btn"
         android:text="chhose video"
+        android:layout_below="@id/video_view"
         ></Button>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Video title"
+        android:layout_below="@id/chhose_btn"
         android:id="@+id/video_title"
         ></EditText>
 
@@ -34,6 +38,7 @@
         android:layout_height="wrap_content"
         android:hint="Choose Category"
         android:id="@+id/choose_category"
+        android:layout_below="@id/video_title"
         ></EditText>
 
     <ProgressBar
@@ -42,6 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:layout_margin="10dp"
+        android:layout_below="@id/choose_category"
         android:progress="0"/>
 
 
@@ -50,12 +56,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/upload_btn"
         android:text="Upload"
+        android:layout_below="@id/progress_bar"
         ></Button>
 
-
-
-
-
-
-
-</LinearLayout>
+</RelativeLayout>

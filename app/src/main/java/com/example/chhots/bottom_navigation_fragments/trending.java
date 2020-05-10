@@ -346,7 +346,4 @@ public class trending extends Fragment {
     }
 
 
-
-
-
 }
