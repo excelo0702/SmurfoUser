@@ -2,23 +2,28 @@ package com.example.chhots;
 
 import android.content.Intent;
 import android.graphics.Paint;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
-import com.example.chhots.bottom_navigation_fragments.Favorite.favorite;
 import com.example.chhots.bottom_navigation_fragments.Explore.explore;
+import com.example.chhots.bottom_navigation_fragments.Explore.upload_video;
 import com.example.chhots.bottom_navigation_fragments.trending;
+import com.example.chhots.category_view.Contest.form_contest;
+import com.example.chhots.category_view.routine.routine_view;
 import com.example.chhots.ui.About_Deprrita.about;
 import com.example.chhots.ui.Category.category;
+import com.example.chhots.ui.Dashboard.dashboard;
 import com.example.chhots.ui.Feedback.feedback;
 import com.example.chhots.ui.Setting.setting;
 import com.example.chhots.ui.Subscription.subscription;
 import com.example.chhots.ui.SupportUs.support;
-import com.example.chhots.ui.dashboard;
 import com.example.chhots.ui.home.HomeFragment;
 import com.example.chhots.User_Profile.userprofile;
 import com.example.chhots.ui.notifications.NotificationsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import android.provider.Settings;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
@@ -55,7 +60,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-public class MainActivity extends AppCompatActivity implements PaymentResultListener {
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements  PaymentListener{
 
     private AppBarConfiguration mAppBarConfiguration;
     BottomNavigationView bottomNavigationView;
@@ -138,6 +145,9 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
         user_profile_header = headerview.findViewById(R.id.imageView_header);
         SpannableString content = new SpannableString("Content");
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+
+
+        askPermission();
 
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
@@ -268,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
                                 Toast.makeText(getApplicationContext(), "Dashboard", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.action_favorites:
-                                setFragment(new favorite());
+                                setFragment(new explore());
                                 Toast.makeText(getApplicationContext(), "Favorites", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.action_trending:
@@ -277,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
                                 break;
 
                             case R.id.action_instructor:
-                                setFragment(new explore());
+                                setFragment(new instructor());
                                 Toast.makeText(getApplicationContext(), "Instructor", Toast.LENGTH_SHORT).show();
                                 break;
 
@@ -291,6 +301,15 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
                     }
 
                 });
+    }
+
+    private void askPermission() {
+        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this))
+        {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:"+getPackageName()));
+            startActivityForResult(intent,2004);
+        }
     }
 
     @Override
@@ -322,11 +341,27 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
 
     @Override
     public void onPaymentSuccess(String s) {
+
+        try{
+
+            List<Fragment> fragments = getSupportFragmentManager().getFragments();
+            for(Fragment f : fragments) {
+                if (f != null && f instanceof routine_view)
+                    ((routine_view) f).onPaymentSuccess(s);
+            }
+        }
+        catch (Exception e)
+        {
+
+        }
+
+/*
         try {
             Toast.makeText(getApplicationContext(), "Payment Successful: " + s, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Log.e(TAG, "Exception in onPaymentSuccess", e);
-        }    }
+        }   */
+    }
 
     @Override
     public void onPaymentError(int i, String s) {
@@ -336,6 +371,23 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
         } catch (Exception e) {
             Log.e(TAG, "Exception in onPaymentError", e);
         }    }
+
+    @Override
+    public void onBackPressed() {
+        tellFragments();
+        super.onBackPressed();
+    }
+
+    private void tellFragments(){
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for(Fragment f : fragments){
+            if(f != null && (f instanceof upload_video))
+                ((upload_video)f).onBackPressed();
+
+            if(f != null && (f instanceof form_contest))
+                ((form_contest)f).onBackPressed();
+        }
+    }
 
 
 

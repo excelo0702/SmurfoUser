@@ -11,10 +11,9 @@
 
     <com.google.android.exoplayer2.ui.PlayerView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="300dp"
         android:id="@+id/video_view"
-        app:resize_mode="zoom"
-        app:surface_type="texture_view"
+        app:resize_mode="fit"
         ></com.google.android.exoplayer2.ui.PlayerView>
 
     <Button
@@ -26,20 +25,61 @@
         ></Button>
 
     <EditText
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_marginBottom="10dp"
         android:hint="Video title"
         android:layout_below="@id/chhose_btn"
+        android:layout_toRightOf="@id/upload_thumbnail"
         android:id="@+id/video_title"
         ></EditText>
+
+
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:hint="Choose Category Create Spinner here"
+        android:id="@+id/choose_category"
+        android:layout_toRightOf="@id/upload_thumbnail"
+        android:layout_below="@id/video_title"
+        ></EditText>
+
+
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Choose Category"
-        android:id="@+id/choose_category"
-        android:layout_below="@id/video_title"
+        android:hint="Description"
+        android:layout_margin="5dp"
+        android:inputType="textMultiLine"
+        android:id="@+id/descriptioin_upload_video"
+        android:layout_below="@id/upload_thumbnail"
         ></EditText>
+
+
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_below="@id/chhose_btn"
+        android:id="@+id/upload_thumbnail"
+        android:src="@mipmap/ic_launcher_round"
+        ></ImageView>
+
+    <EditText
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberSigned"
+        android:hint="Price"
+        android:id="@+id/video_price"
+        android:layout_below="@id/choose_category"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/upload_thumbnail"
+        ></EditText>
+
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -47,7 +87,7 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:layout_margin="10dp"
-        android:layout_below="@id/choose_category"
+        android:layout_below="@id/descriptioin_upload_video"
         android:progress="0"/>
 
 

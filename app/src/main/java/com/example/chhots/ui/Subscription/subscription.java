@@ -140,7 +140,6 @@ public class subscription extends Fragment{
 
 
 
-
         return root;
     }
 

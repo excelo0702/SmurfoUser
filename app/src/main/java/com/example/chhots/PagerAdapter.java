@@ -5,8 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.chhots.bottom_navigation_fragments.Favorite.favorite;
-import com.example.chhots.bottom_navigation_fragments.Explore.explore;
 import com.example.chhots.bottom_navigation_fragments.trending;
 import com.example.chhots.ui.home.HomeFragment;
 
@@ -34,7 +32,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
                 return new trending();
 
             case 3:
-                return new explore();
+                return new instructor();
                 default:
                     return new HomeFragment();
 

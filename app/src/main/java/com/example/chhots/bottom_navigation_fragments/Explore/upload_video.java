@@ -44,6 +44,8 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.chhots.R;
+import com.example.chhots.Services.FloatingWidgetService;
+import com.example.chhots.onBackPressed;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -64,6 +66,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -72,11 +75,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static android.view.View.GONE;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class upload_video extends Fragment {
+public class upload_video extends Fragment implements onBackPressed {
 
 
     private Button choosebtn;
@@ -84,8 +88,9 @@ public class upload_video extends Fragment {
     private ImageView thumb_nail;
     private Button DemotwoBtn;
     private EditText video_title;
-    private EditText choose_category;
-    private Uri videouri;
+    private EditText choose_category,description,price;
+    private ImageView thumbnail;
+    private Uri videouri,mImageUri;
     private MediaController mediaController;
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
@@ -93,6 +98,7 @@ public class upload_video extends Fragment {
     private FirebaseAuth auth;
     private FirebaseUser user;
     private static final String TAG = "Upload_Video";
+    RelativeLayout rr;
 
     //exoplayer implementation
     PlayerView playerView;
@@ -103,6 +109,8 @@ public class upload_video extends Fragment {
     ImageView fullScreenButton;
     boolean fullScreen = false;
 
+    private String subCategory;
+    private static final int PICK_IMAGE_REQUEST = 2;
 
 
     public upload_video() {
@@ -112,36 +120,50 @@ public class upload_video extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_upload_video, container, false);
+
+        Bundle bundle = getArguments();
+        subCategory = bundle.getString("subCategory");
 
 
         choosebtn = (Button)view.findViewById(R.id.chhose_btn);
         uploadBtn = (Button)view.findViewById(R.id.upload_btn);
         video_title = view.findViewById(R.id.video_title);
         choose_category = view.findViewById(R.id.choose_category);
+        description = view.findViewById(R.id.descriptioin_upload_video);
+        thumbnail = view.findViewById(R.id.upload_thumbnail);
+        price = view.findViewById(R.id.video_price);
+        rr = view.findViewById(R.id.enter_your_comment);
 
         progress_seekBar = view.findViewById(R.id.progress_bar);
         playerView = view.findViewById(R.id.video_view);
         fullScreenButton = playerView.findViewById(R.id.exo_fullscreen_icon);
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
-        playerView.setPaddingRelative(0,0,0,0);
-        playerView.setPadding(0,0,0,0);
-
-
-
+        playerView.setPadding(5,0,5,0);
 
         auth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
+        storageReference = FirebaseStorage.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
 
-        storageReference = FirebaseStorage.getInstance().getReference().child("videos");
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("videos");
-
+        //check the subCategory of video
+        if(subCategory.equals("NormalVideos"))
+        {
+            price.setEnabled(false);
+            price.setVisibility(View.GONE);
+        }
+        else if(subCategory.equals("RoutineVideos"))
+        {
+            price.setEnabled(true);
+            price.setVisibility(View.VISIBLE);
+        }
+        Toast.makeText(getContext(),subCategory,Toast.LENGTH_LONG).show();
 
 
         choosebtn.setOnClickListener(new View.OnClickListener() {
@@ -164,14 +186,27 @@ public class upload_video extends Fragment {
                     uploadVideo();
                     uploadBtn.setEnabled(false);
                     choosebtn.setEnabled(false);
+                    thumbnail.setEnabled(false);
                 }
+            }
+        });
+
+        thumbnail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFileChooser();
             }
         });
 
         fullScreenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 FullScreen();
+          //      Intent intent = new Intent(getContext(), FloatingWidgetService.class);
+            //    intent.putExtra("videoUri",videouri.toString());
+              //  getActivity().startService(intent);
+
             }
         });
 
@@ -220,11 +255,13 @@ public class upload_video extends Fragment {
             playerView.setLayoutParams(params);
 
             View BottomnavBar = getActivity().findViewById(R.id.bottom_navigation);
-            BottomnavBar.setVisibility(View.GONE);
+            BottomnavBar.setVisibility(GONE);
+
+            rr.setVisibility(GONE);
 
 
             View NavBar = getActivity().findViewById(R.id.nav_view);
-            NavBar.setVisibility(View.GONE);
+            NavBar.setVisibility(GONE);
 
             fullScreen = true;
         }
@@ -245,7 +282,12 @@ public class upload_video extends Fragment {
         getActivity().startActivityForResult(intent,1);
     }
 
-
+    private void openFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -257,8 +299,14 @@ public class upload_video extends Fragment {
             videouri = data.getData();
             initializePlayer();
         }
-    }
 
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            mImageUri = data.getData();
+            Picasso.get().load(mImageUri).into(thumbnail);
+        }
+
+    }
 
     private void initializePlayer() {
 
@@ -289,7 +337,6 @@ public class upload_video extends Fragment {
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
 
-
     @Override
     public void onPause() {
         super.onPause();
@@ -297,7 +344,6 @@ public class upload_video extends Fragment {
             releasePlayer();
         }
     }
-
 
     @Override
     public void onStop() {
@@ -317,7 +363,6 @@ public class upload_video extends Fragment {
         }
     }
 
-
     private String getfilterExt(Uri videoUri)
     {
         ContentResolver contentResolver = getActivity().getContentResolver();
@@ -333,6 +378,25 @@ public class upload_video extends Fragment {
 
             final String title = video_title.getText().toString();
             final String category = choose_category.getText().toString();
+            final String descriptio = description.getText().toString();
+            final String sub_category;
+            if(subCategory.equals("NormalVideos"))
+            {
+                price.setText("-1");
+                sub_category = "Normal";
+
+
+            }
+            else if(subCategory.equals("RoutineVideos"))
+            {
+                sub_category="ROUTINE";
+            }
+            else
+            {
+                sub_category="ROUTINE";
+
+            }
+            final String Price = price.getText().toString();
             if(title.equals(""))
             {
                 Toast.makeText(getContext(),"Title cant be null",Toast.LENGTH_SHORT).show();
@@ -343,30 +407,50 @@ public class upload_video extends Fragment {
                 Toast.makeText(getContext(),"Category cant be null",Toast.LENGTH_SHORT).show();
                 return;
             }
-            final String upload = System.currentTimeMillis()+"";
             Log.d("222222","2222222");
-            final StorageReference reference = storageReference.child(user.getUid()).child(upload+getfilterExt(videouri));
+            if(videouri==null )
+            {
+                Toast.makeText(getContext(),"You didn't choose any video",Toast.LENGTH_SHORT).show();
+            }
+            if(mImageUri==null)
+            {
+                Toast.makeText(getContext(),"Choose thumbnail for dislpayng it",Toast.LENGTH_SHORT).show();
+            }
+            final String upload = System.currentTimeMillis()+"";
+            final StorageReference reference = storageReference.child("VIDEOS").child(user.getUid()).child(upload+getfilterExt(videouri));
             reference.putFile(videouri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
-                                public void onSuccess(Uri uri) {
+                                public void onSuccess(final Uri videouri) {
 
-                                    progressBar.setVisibility(View.INVISIBLE);
+                                    final StorageReference imageReference = storageReference.child("THUMBNAIL").child(upload+getfilterExt(mImageUri));
+                                    imageReference.putFile(mImageUri)
+                                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                    imageReference.getDownloadUrl()
+                                                            .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                                @Override
+                                                                public void onSuccess(Uri imageuri) {
 
-                                    Handler handler = new Handler();
-                                    handler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            progress_seekBar.setProgress(0);
-                                        }
-                                    },500);
+                                                                    Handler handler = new Handler();
+                                                                    handler.postDelayed(new Runnable() {
+                                                                        @Override
+                                                                        public void run() {
+                                                                            progress_seekBar.setProgress(0);
+                                                                        }
+                                                                    },100);
 
-                                    VideoModel model = new VideoModel(user.getUid(),title,category,upload,"No Comment yet",uri.toString(),0,0,0);
-                                    databaseReference.child(upload).setValue(model);
-                                    Toast.makeText(getContext(),"uploaded",Toast.LENGTH_SHORT).show();
+                                                                    VideoModel model = new VideoModel(user.getUid(),title,category,descriptio,videouri.toString(),imageuri.toString(),"NONE","NONE",Price,upload,"0","0","0",sub_category);
+                                                                    databaseReference.child("VIDEOS").child(upload).setValue(model);
+                                                                }
+                                                            });
+                                                }
+                                            });
+                                    Toast.makeText(getContext(),"uploaded",Toast.LENGTH_LONG).show();
                                     uploadBtn.setEnabled(true);
                                     choosebtn.setEnabled(true);
                                 }
@@ -391,5 +475,11 @@ public class upload_video extends Fragment {
             uploadBtn.setEnabled(true);
             choosebtn.setEnabled(true);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        player.setPlayWhenReady(false);
+        player.release();
     }
 }

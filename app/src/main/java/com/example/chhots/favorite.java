@@ -1,4 +1,4 @@
-package com.example.chhots.bottom_navigation_fragments.Favorite;
+package com.example.chhots;
 
 
 import android.content.Context;

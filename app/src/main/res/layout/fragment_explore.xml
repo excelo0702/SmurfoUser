@@ -4,9 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFFFFF"
+    tools:context=".bottom_navigation_fragments.Explore.explore">
 
-    tools:context=".favorite">
 
 
     <LinearLayout
@@ -18,7 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Explore"
+            android:text="EXPLORE"
             android:textSize="30dp"
             android:textStyle="bold"
             android:layout_marginRight="10dp"
@@ -27,42 +26,47 @@
 
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Filter"
+            android:layout_width="70dp"
+            android:layout_height="60dp"
+            android:text="Normal Videos"
             android:textSize="18dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="5dp"
+            android:id="@+id/normal_videos"
             android:layout_marginLeft="130dp"
             android:textColor="#000000"></TextView>
 
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:text="Sort"
+            android:text="Contest Videos"
             android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="2dp"
+            android:inputType="textMultiLine"
+            android:id="@+id/contest_videos"
             android:textSize="18dp"
             android:textColor="#000000"></TextView>
 
     </LinearLayout>
 
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tap and Learn"
+        android:text="Add a Post"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
+        android:id="@+id/add_normal_videos"
         android:textSize="16dp"
         android:textColor="#000000"></TextView>
 
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_favorite_view"
+        android:id="@+id/recycler_explore_view"
         android:layout_width="match_parent"
         android:scrollbars="vertical"
-
+        android:layout_margin="10dp"
         android:layout_height="match_parent" />
-
 
 
 </LinearLayout>

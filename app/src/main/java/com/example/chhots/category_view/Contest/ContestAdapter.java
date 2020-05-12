@@ -81,7 +81,6 @@ public class ContestAdapter extends PagerAdapter {
                     context.startActivity(intent);
                 }
                 else {
-                    Toast.makeText(context,"To participate in contest you have to first logout",Toast.LENGTH_SHORT).show();
                     setFragment(new form_contest(),info,contestId,models.get(position).getImageUrl());
                     //TODO: also need to send data
                 }

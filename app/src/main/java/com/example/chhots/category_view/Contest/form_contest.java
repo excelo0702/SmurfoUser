@@ -1,9 +1,11 @@
 package com.example.chhots.category_view.Contest;
 
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -13,6 +15,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -26,11 +30,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.chhots.R;
+import com.example.chhots.bottom_navigation_fragments.Explore.VideoModel;
+import com.example.chhots.onBackPressed;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,11 +63,12 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 
 import static android.app.Activity.RESULT_OK;
+import static android.view.View.GONE;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class form_contest extends Fragment {
+public class form_contest extends Fragment implements onBackPressed {
 
 
     public form_contest() {
@@ -72,6 +89,18 @@ public class form_contest extends Fragment {
     private Button choose_video;
     private Uri videouri;
     private ProgressBar progress_seekBar;
+
+
+    //exoplayer implementation
+    PlayerView playerView;
+    SimpleExoPlayer player;
+    private boolean playWhenReady = true;
+    private int currentWindow = 0;
+    private long playbackPosition = 0;
+    ImageView fullScreenButton;
+    boolean fullScreen = false;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,21 +116,24 @@ public class form_contest extends Fragment {
         Picasso.get().load(Uri.parse(imageUrl)).into(image_2);
 
 
-        video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mP) {
-                mP.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
-                    @Override
-                    public void onVideoSizeChanged(MediaPlayer mediaPlayer, int i, int i1) {
+        playerView = view.findViewById(R.id.form_contest_videoView);
+        fullScreenButton = playerView.findViewById(R.id.exo_fullscreen_icon);
+        playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+        playerView.setPadding(5,0,5,0);
 
-                        mediaController = new MediaController(getContext());
-                        video.setMediaController(mediaController);
-                        mediaController.setAnchorView(video);
-                    }
-                });
+
+
+        fullScreenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FullScreen();
+                //      Intent intent = new Intent(getContext(), FloatingWidgetService.class);
+                //    intent.putExtra("videoUri",videouri.toString());
+                //  getActivity().startService(intent);
+
             }
         });
-        video.start();
 
         choose_video.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,6 +217,7 @@ public class form_contest extends Fragment {
             final String user_name = userName.getText().toString();
             final String user_email = userEmail.getText().toString();
             final StorageReference reference = storageReference.child("ContestVideos").child(contestId).child(user.getUid()+getfilterExt(videouri));
+            final String videoId = System.currentTimeMillis()+"";
             reference.putFile(videouri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -196,6 +229,10 @@ public class form_contest extends Fragment {
                                             FormContestModel model = new FormContestModel(user_name,contestId,uri.toString());
                                             databaseReference.child("ContestVideos").child(contestId).child(user.getUid()).setValue(model);
                                             Toast.makeText(getContext(),"Uploaded",Toast.LENGTH_LONG).show();
+
+
+                                            VideoModel mode = new VideoModel(user.getUid(),"User Name","Contest","",uri.toString(),imageUrl,contestId,"NONE","",videoId,"0","0","0","CONTEST");
+                                            databaseReference.child("VIDEOS").child(videoId).setValue(mode);
 
                                             register.setEnabled(true);
                                             choose_video.setEnabled(true);
@@ -226,6 +263,120 @@ public class form_contest extends Fragment {
 
     }
 
+
+
+    private void FullScreen() {
+        if(fullScreen)
+        {
+            fullScreenButton.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_fullscreen_black_24dp));
+            playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_ZOOM);
+
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            if (((AppCompatActivity)getActivity()).getSupportActionBar()!=null)
+                ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+            ((AppCompatActivity)getActivity()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)playerView.getLayoutParams();
+            params.width = params.MATCH_PARENT;
+            params.height = (int)( 330 * getContext().getResources().getDisplayMetrics().density);
+            playerView.setLayoutParams(params);
+            fullScreen = false;
+        }
+        else{
+            fullScreenButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_fullscreen_black_24dp));
+
+            ((AppCompatActivity)getActivity()).getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
+            );
+
+            if(((AppCompatActivity)getActivity()).getSupportActionBar() != null){
+                ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+            }
+
+            ((AppCompatActivity)getActivity()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+            ((AppCompatActivity)getActivity()).getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
+                    |View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    |View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) playerView.getLayoutParams();
+            params.width = params.MATCH_PARENT;
+            params.setMargins(0,0,0,0);
+            params.height = params.MATCH_PARENT;
+
+            playerView.setLayoutParams(params);
+
+            View BottomnavBar = getActivity().findViewById(R.id.bottom_navigation);
+            BottomnavBar.setVisibility(GONE);
+
+
+
+            View NavBar = getActivity().findViewById(R.id.nav_view);
+            NavBar.setVisibility(GONE);
+
+            fullScreen = true;
+        }
+    }
+
+
+    private void initializePlayer() {
+
+        player = ExoPlayerFactory.newSimpleInstance(getContext());
+        playerView.setPlayer(player);
+
+        MediaSource mediaSource = buildMediaSource(videouri);
+
+        player.setPlayWhenReady(playWhenReady);
+        //  player.seekTo(currentWindow, playbackPosition);
+        player.prepare(mediaSource, false, false);
+    }
+
+    private MediaSource buildMediaSource(Uri uri) {
+        DataSource.Factory dataSourceFactory =
+                new DefaultDataSourceFactory(getContext(), "exoplayer-codelab");
+        return new ProgressiveMediaSource.Factory(dataSourceFactory)
+                .createMediaSource(uri);
+    }
+
+    @SuppressLint("InlinedApi")
+    private void hideSystemUi() {
+        playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23) {
+            releasePlayer();
+        }
+    }
+
+    private void releasePlayer() {
+        if (player != null) {
+            playbackPosition = player.getCurrentPosition();
+            currentWindow = player.getCurrentWindowIndex();
+            playWhenReady = player.getPlayWhenReady();
+            player.release();
+            player = null;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        player.setPlayWhenReady(false);
+        player.release();
+    }
 
 
 }

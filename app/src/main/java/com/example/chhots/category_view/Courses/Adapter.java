@@ -69,12 +69,10 @@ public class Adapter extends PagerAdapter {
                 Bundle bundle = new Bundle();
                 bundle.putString("courseId",models.get(position).getCourseId());
                 fragment.setArguments(bundle);
-
                 FragmentTransaction fragmentTransaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.drawer_layout,fragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-
             }
         });
 
