@@ -1,27 +1,19 @@
-package com.example.chhots.ui.notifications;
+package com.example.chhots.ui.Dashboard;
 
-import android.content.Context;
+
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.example.chhots.R;
-import com.example.chhots.category_view.routine.routine;
-import com.example.chhots.ui.Dashboard.HistoryAdapter;
+import com.example.chhots.category_view.routine.VideoAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,60 +26,62 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class NotificationsFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class history extends Fragment {
 
 
-
-    public NotificationsFragment() {
+    public history() {
         // Required empty public constructor
     }
 
-
     private RecyclerView recyclerView;
-    private NotificationAdapter mAdapter;
+    private HistoryAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private List<NotificationModel> list;
+    private List<HistoryModel> list;
 
 
     private DatabaseReference mDatabaseRef;
-    private static final String TAG = "Notification";
+    private static final String TAG = "Favorite";
     private FirebaseAuth auth;
     private FirebaseUser user;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_notification, container, false);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_history, container, false);
+
         list = new ArrayList<>();
-        recyclerView = view.findViewById(R.id.recycler_notification);
+        recyclerView = view.findViewById(R.id.recycler_history_view);
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
 
-        showNotification();
-
-
+        showHistory();
 
         return view;
     }
 
-    private void showNotification() {
+    private void showHistory() {
         list.clear();
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("NOTIFICATION");
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("HISTORY").child(user.getUid());
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds: dataSnapshot.getChildren())
                 {
-                    Log.d(TAG,ds.getValue()+"");
-                    NotificationModel model = ds.getValue(NotificationModel.class);
+                    HistoryModel model = ds.getValue(HistoryModel.class);
                     list.add(model);
                 }
                 Collections.reverse(list);
-                mAdapter = new NotificationAdapter(list,getContext());
+                mAdapter = new HistoryAdapter(list,getContext());
                 recyclerView.setLayoutManager(mLayoutManager);
                 recyclerView.setAdapter(mAdapter);
+
             }
 
             @Override
@@ -96,6 +90,5 @@ public class NotificationsFragment extends Fragment {
             }
         });
     }
+
 }
-
-

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/dashboard_dashboard"
+        android:enabled="true"
+        android:title="Dashboard"
+        app:showAsAction="always"></item>
+
+    <item
+        android:id="@+id/favorite_dashboard"
+        android:enabled="true"
+        android:title="Favorite"
+        app:showAsAction="always"></item>
+    <item
+        android:id="@+id/community_dashboard"
+        android:enabled="true"
+        android:title="Community"
+        app:showAsAction="always"></item>
+    <item
+        android:id="@+id/certificates_dashboard"
+        android:enabled="true"
+        android:title="Certificates"
+        app:showAsAction="always"></item>
+    <item
+        android:id="@+id/approve_videos_dashboard"
+        android:enabled="true"
+        android:title="Approve videos"
+        app:showAsAction="always"></item>
+
+</menu>

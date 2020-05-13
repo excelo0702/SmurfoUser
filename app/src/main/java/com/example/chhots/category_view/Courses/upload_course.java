@@ -164,7 +164,7 @@ public class upload_course extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(Uri uri) {
                                             Log.d(TAG,mImageUri.toString());
-                                            CourseThumbnail thumbnail = new CourseThumbnail("course Name",time,uri.toString());
+                                            CourseThumbnail thumbnail = new CourseThumbnail("course Name",time,uri.toString(),user.getUid());
                                             databaseReference.child("CoursesThumbnail").child(time).setValue(thumbnail)
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
@@ -406,8 +406,6 @@ public class upload_course extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        player.setPlayWhenReady(false);
-        player.release();
     }
 
 

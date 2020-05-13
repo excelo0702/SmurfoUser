@@ -32,6 +32,7 @@ import android.widget.VideoView;
 import com.example.chhots.ChatBox.ChatWithInstructor;
 import com.example.chhots.bottom_navigation_fragments.Explore.VideoModel;
 import com.example.chhots.category_view.routine.VideoAdapter;
+import com.example.chhots.ui.Dashboard.HistoryModel;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -84,6 +85,7 @@ public class See_Video extends Fragment {
     FirebaseUser user;
 
     List<CommentModel> list;
+    String htitle,hvideoName;
 
 
     //exoplayer implementation
@@ -151,6 +153,7 @@ public class See_Video extends Fragment {
         Bundle bundle = this.getArguments();
         videoId = bundle.getString("videoId");
 
+
         upvote_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,7 +166,7 @@ public class See_Video extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        mDatabaseRef.child("FAVORITE").child(auth.getCurrentUser().getUid()).setValue(current);
+                        mDatabaseRef.child("FAVORITE").child(auth.getCurrentUser().getUid()).child(videoId).setValue(current);
                         upvote_icon.setEnabled(false);
                         downvote_icon.setEnabled(true);
                         Toast.makeText(getContext(),"Added to Liked Videos",Toast.LENGTH_SHORT).show();
@@ -187,10 +190,8 @@ public class See_Video extends Fragment {
                 //enable downvote and disable upvote
                 upvote_icon.setEnabled(true);
                 downvote_icon.setEnabled(false);
-                mDatabaseRef.child("FAVORITE").child(user.getUid()).removeValue();
+                mDatabaseRef.child("FAVORITE").child(user.getUid()).child(videoId).removeValue();
                 Toast.makeText(getContext(),"Remove From Liked Videos",Toast.LENGTH_SHORT).show();
-
-
             }
         });
 
@@ -205,12 +206,17 @@ public class See_Video extends Fragment {
 
 
 
-
         showVideo();
         showComments();
 
-
         return view;
+    }
+
+    private void pushHistory() {
+        String time = System.currentTimeMillis()+"";
+        Log.d(TAG,htitle+hvideoName);
+        HistoryModel model = new HistoryModel(htitle,hvideoName,videoId);
+        mDatabaseRef.child("HISTORY").child(user.getUid()).child(time).setValue(model);
     }
 
 
@@ -322,7 +328,7 @@ public class See_Video extends Fragment {
 
 
     private void showVideo() {
-        mDatabaseRef.child("VIDEOS").child(videoId).addValueEventListener(new ValueEventListener() {
+        mDatabaseRef.child("VIDEOS").child(videoId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -331,12 +337,15 @@ public class See_Video extends Fragment {
 
                 current = dataSnapshot.getValue(VideoModel.class);
                 instructorId = current.getUser();
+                htitle = current.getTitle();
+                hvideoName = current.getTitle();
                 title.setText(current.getTitle());
                 upvote.setText(String.valueOf(current.getLike()));
                 views.setText(String.valueOf(current.getView()));
                 videouri=(Uri.parse(current.getUrl()));
                 current.setView(String.valueOf(Integer.parseInt(current.getView())+1));
 
+                pushHistory();
                 initializePlayer();
 
 

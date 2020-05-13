@@ -75,9 +75,10 @@ public class routine extends Fragment{
         addRoutine = view.findViewById(R.id.add_routine_video);
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
+
         showRoutine();
 
-
+        isvideoalreadyLiked();
 
         addRoutine.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,6 +161,9 @@ public class routine extends Fragment{
 
 
         return view;
+    }
+
+    private void isvideoalreadyLiked() {
     }
 
     private void addVideos() {

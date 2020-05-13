@@ -1,4 +1,4 @@
-package com.example.chhots;
+package com.example.chhots.ui.Dashboard;
 
 
 import android.content.Context;
@@ -28,6 +28,7 @@ import com.example.chhots.category_view.routine.VideoAdapter;
 import com.example.chhots.category_view.routine.routine;
 import com.example.chhots.category_view.routine.routine_view;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -48,11 +50,12 @@ public class favorite extends Fragment {
     RecyclerView recyclerView;
     VideoAdapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
-    private ProgressBar mProgressCircle;
-    private DatabaseReference mDatabaseRef;
     private List<VideoModel> videolist;
-    private static final String TAG = "Routine1235";
+
+    private DatabaseReference mDatabaseRef;
+    private static final String TAG = "Favorite";
     private FirebaseAuth auth;
+    private FirebaseUser user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,39 +63,43 @@ public class favorite extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
+
         videolist = new ArrayList<>();
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_favorite_view);
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
         auth = FirebaseAuth.getInstance();
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("");
-        if(mDatabaseRef.child("favorite").child(auth.getCurrentUser().getUid())!=null) {
-            mDatabaseRef.child("favorite").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    final List<String> VideoIds = new ArrayList<>();
-
-                    Log.d(TAG, dataSnapshot.getValue().toString());
-                    VideoModel model = dataSnapshot.getValue(VideoModel.class);
-                    videolist.add((model));
-
-
-                    mAdapter = new VideoAdapter(videolist, getContext());
-                    recyclerView.setLayoutManager(mLayoutManager);
-                    recyclerView.setAdapter(mAdapter);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-
-
+        user = auth.getCurrentUser();
+        showFavorites();
 
         return view;
+    }
+
+    private void showFavorites() {
+        videolist.clear();
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("FAVORITE").child(user.getUid());
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+//                Log.d(TAG,dataSnapshot.getValue().toString()+"");
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    VideoModel model = ds.getValue(VideoModel.class);
+                    if(model.getSub_category()!=null && model.getSub_category().equals("Routine"))
+                        videolist.add(model);
+                }
+                Collections.reverse(videolist);
+                mAdapter = new VideoAdapter(videolist,getContext());
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setAdapter(mAdapter);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 

@@ -38,6 +38,7 @@ import android.widget.VideoView;
 import com.example.chhots.R;
 import com.example.chhots.bottom_navigation_fragments.Explore.VideoModel;
 import com.example.chhots.onBackPressed;
+import com.example.chhots.ui.notifications.NotificationModel;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -159,7 +160,6 @@ public class form_contest extends Fragment implements onBackPressed {
         return view;
     }
 
-
     private Uri getImageUri(Context context, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
@@ -233,6 +233,7 @@ public class form_contest extends Fragment implements onBackPressed {
 
                                             VideoModel mode = new VideoModel(user.getUid(),"User Name","Contest","",uri.toString(),imageUrl,contestId,"NONE","",videoId,"0","0","0","CONTEST");
                                             databaseReference.child("VIDEOS").child(videoId).setValue(mode);
+
 
                                             register.setEnabled(true);
                                             choose_video.setEnabled(true);

@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.VideoView;
 
 import com.example.chhots.R;
+import com.example.chhots.onBackPressed;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -41,7 +42,7 @@ import static android.app.Activity.RESULT_OK;
  * A simple {@link Fragment} subclass.
  */
 
-public class video_course extends Fragment {
+public class video_course extends Fragment implements onBackPressed {
 
     public video_course() {// Required empty public constructor
     }
@@ -101,6 +102,9 @@ public class video_course extends Fragment {
             params.width = params.MATCH_PARENT;
             params.height = (int)( 330 * getContext().getResources().getDisplayMetrics().density);
             playerView.setLayoutParams(params);
+
+            View BottomnavBar = getActivity().findViewById(R.id.bottom_navigation);
+            BottomnavBar.setVisibility(View.VISIBLE);
             fullScreen = false;
         }
         else{
@@ -196,6 +200,12 @@ public class video_course extends Fragment {
     }
 
 
-
-
+    @Override
+    public void onBackPressed() {
+        View BottomnavBar = getActivity().findViewById(R.id.bottom_navigation);
+        BottomnavBar.setVisibility(View.VISIBLE);
+        releasePlayer();
+        player.setPlayWhenReady(false);
+        player.release();
+    }
 }

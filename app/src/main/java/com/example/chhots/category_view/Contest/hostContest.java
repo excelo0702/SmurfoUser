@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.chhots.R;
+import com.example.chhots.ui.notifications.NotificationModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -130,6 +131,10 @@ public class hostContest extends Fragment {
                                                     getFragmentManager().beginTransaction().replace(R.id.drawer_layout, new contest()).commit();
                                                 }
                                             });
+
+                                    NotificationModel notify = new NotificationModel(time,"category",user.getUid(),"description",uri.toString());
+                                    databaseReference.child("NOTIFICATION").child(time).setValue(notify);
+
                                 }
                             });
                         }

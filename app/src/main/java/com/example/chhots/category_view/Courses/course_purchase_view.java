@@ -1,17 +1,10 @@
-package com.example.chhots.category_view.routine;
+package com.example.chhots.category_view.Courses;
 
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -20,24 +13,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.chhots.MainActivity;
 import com.example.chhots.PaymentListener;
 import com.example.chhots.R;
 import com.example.chhots.See_Video;
 import com.example.chhots.UserClass;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.razorpay.Checkout;
 import com.squareup.picasso.Picasso;
 
@@ -46,19 +33,20 @@ import org.json.JSONObject;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class routine_view extends Fragment implements PaymentListener {
+public class course_purchase_view extends Fragment implements PaymentListener{
 
 
-    public routine_view() {
+    public course_purchase_view() {
         // Required empty public constructor
     }
 
+
     private TextView title,description;
-    private ImageView videoThumbnail,userImage;
+    private ImageView courseThumbnail,userImage;
     private Button buy_now;
 
     private static final String TAGR = "RazorPay";
-    String videoId;
+    String courseId,instructorId,thumbnail;
 
     private FirebaseUser user;
     private DatabaseReference mDatabaseReference;
@@ -70,32 +58,44 @@ public class routine_view extends Fragment implements PaymentListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_routine_view, container, false);
-        title = view.findViewById(R.id.routine_view_title);
-        description = view.findViewById(R.id.routine_description);
-        videoThumbnail = view.findViewById(R.id.routine_view_image);
-        userImage = view.findViewById(R.id.routine_user_image);
+        View view =  inflater.inflate(R.layout.fragment_course_purchase_view, container, false);
+        title = view.findViewById(R.id.course_view_title);
+        description = view.findViewById(R.id.course_description);
+        courseThumbnail = view.findViewById(R.id.course_view_image);
+        userImage = view.findViewById(R.id.course_user_image);
+        buy_now = view.findViewById(R.id.course_buy_now);
         Bundle bundle = this.getArguments();
-        videoId = bundle.getString("videoId");
-        String thumbnail = bundle.getString("thumbnail");
-         String instructorId = bundle.getString("instructorId");
-//TODO: change variable name of userId to instructor Id
-        Picasso.get().load(Uri.parse(thumbnail)).into(videoThumbnail);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("");
 
-        buy_now = view.findViewById(R.id.routine_buy_now);
+
+
+        courseId = bundle.getString("courseId");
+        thumbnail = bundle.getString("thumbnail");
+        instructorId = bundle.getString("instructorId");
+
+
+        Log.d(TAGR,thumbnail+"  yy  ");
+
+//       Picasso.get().load(Uri.parse(thumbnail)).into(courseThumbnail);
+
+
+        //fetch all the info of instructor
+
+
         buy_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startPayment("Tanish","Tanish","0723237826","https://s3.amazonaws.com/rzp-mobile/images/rzp.png","4000");
+                startPayment("Tanish","Tanish","0723237826",thumbnail,"4000");
             }
         });
 
 
+
         return view;
     }
+
 
     public void startPayment(String merchant,String desc,String order,String imageUrl,String amoun) {
 
@@ -159,18 +159,16 @@ public class routine_view extends Fragment implements PaymentListener {
         }
     }
 
-
     @Override
     public void onPaymentSuccess(String s) {
         try{
             String time = System.currentTimeMillis()+"";
-            UserClass model = new UserClass(videoId,time);
-            mDatabaseReference.child("USERS").child(user.getUid()).child("videos").child(videoId).setValue(model);
+            UserClass model = new UserClass(time,courseId,0);
+            mDatabaseReference.child("USERS").child(user.getUid()).child("courses").child(courseId).setValue(model);
 
-
-            Fragment fragment = new See_Video();
+            Fragment fragment = new course_view();
             Bundle bundle = new Bundle();
-            bundle.putString("videoId", videoId);
+            bundle.putString("courseId", courseId);
             fragment.setArguments(bundle);
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.drawer_layout, fragment);
@@ -190,6 +188,7 @@ public class routine_view extends Fragment implements PaymentListener {
     public void onPaymentError(int i, String s) {
         Toast.makeText(getContext(),"Nop Fragment",Toast.LENGTH_SHORT).show();
     }
+
 
 
 

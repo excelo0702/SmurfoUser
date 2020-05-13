@@ -6,6 +6,23 @@ public class UserClass {
 
     private String videoId;
     private String time;
+    private String courseId;
+
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
+    int k;
+
+    public UserClass(String time, String courseId,int k) {
+        this.time = time;
+        this.courseId = courseId;
+        this.k=k;
+    }
 
     public String getVideoId() {
         return videoId;

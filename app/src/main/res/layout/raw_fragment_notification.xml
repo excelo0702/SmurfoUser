@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:src="@drawable/smurfooo"
-                android:id="@+id/imageNotification"
+                android:id="@+id/imageNotification_fragment"
                 ></ImageView>
 
             <LinearLayout
@@ -41,7 +41,7 @@
                     android:textSize="14dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="5dp"
-                    android:id="@+id/name_notification"
+                    android:id="@+id/name_notification_fragment"
                     />
                 <TextView
                     android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                     android:inputType="textMultiLine"
                     android:text="Your 5000 KRW OFF coupon is valid untill 2020,07,07 at 8:35 Am.Please use this coupon before the expiration date"
                     android:textSize="11dp"
-                    android:id="@+id/description_notification"
+                    android:id="@+id/description_notification_fragment"
                     android:layout_marginLeft="5dp"
                     >
                 </TextView>
@@ -63,7 +63,7 @@
                     android:inputType="textMultiLine"
                     android:text="2020.04.27 5:05AM"
                     android:textSize="11dp"
-                    android:id="@+id/timing_notification"
+                    android:id="@+id/timing_notification_fragment"
                     android:layout_marginTop="2dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginBottom="5dp"

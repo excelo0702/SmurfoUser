@@ -10,6 +10,8 @@ import com.example.chhots.bottom_navigation_fragments.Explore.explore;
 import com.example.chhots.bottom_navigation_fragments.Explore.upload_video;
 import com.example.chhots.bottom_navigation_fragments.trending;
 import com.example.chhots.category_view.Contest.form_contest;
+import com.example.chhots.category_view.Courses.course_purchase_view;
+import com.example.chhots.category_view.Courses.video_course;
 import com.example.chhots.category_view.routine.routine_view;
 import com.example.chhots.ui.About_Deprrita.about;
 import com.example.chhots.ui.Category.category;
@@ -45,7 +47,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.razorpay.PaymentResultListener;
 import com.squareup.picasso.Picasso;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -332,9 +333,11 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
     {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.drawer_layout,fragment);
-    //    fragmentTransaction.addToBackStack(null);
+        if(fragment.equals(new dashboard()))
+        {
+            fragmentTransaction.addToBackStack(null);
+        }
         fragmentTransaction.commit();
-
     }
 
 
@@ -348,6 +351,9 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
             for(Fragment f : fragments) {
                 if (f != null && f instanceof routine_view)
                     ((routine_view) f).onPaymentSuccess(s);
+                if (f != null && f instanceof course_purchase_view)
+                    ((course_purchase_view) f).onPaymentSuccess(s);
+
             }
         }
         catch (Exception e)
@@ -386,6 +392,11 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
 
             if(f != null && (f instanceof form_contest))
                 ((form_contest)f).onBackPressed();
+
+            if(f != null && (f instanceof video_course))
+                ((video_course)f).onBackPressed();
+
+
         }
     }
 

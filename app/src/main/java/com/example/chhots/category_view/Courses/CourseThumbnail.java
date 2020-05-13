@@ -3,6 +3,7 @@ package com.example.chhots.category_view.Courses;
 public class CourseThumbnail {
 
     private String CourseName,CourseId,CourseImage;
+    private String instructorId;
 
     public String getCourseName() {
         return CourseName;
@@ -28,10 +29,19 @@ public class CourseThumbnail {
         CourseImage = courseImage;
     }
 
-    public CourseThumbnail(String courseName, String courseId, String courseImage) {
+    public String getInstructorId() {
+        return instructorId;
+    }
+
+    public void setInstructorId(String instructorId) {
+        this.instructorId = instructorId;
+    }
+
+    public CourseThumbnail(String courseName, String courseId, String courseImage, String instructorId) {
         CourseName = courseName;
         CourseId = courseId;
         CourseImage = courseImage;
+        this.instructorId = instructorId;
     }
 
     public CourseThumbnail() {

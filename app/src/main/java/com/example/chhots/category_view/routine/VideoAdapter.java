@@ -174,12 +174,12 @@ public class VideoAdapter extends
                         fragmentTransaction.replace(R.id.drawer_layout, fragment);
                         fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
+
                     }
                     else
                     {
                         //Create Pop up to Buy this Video
                         //Redirect to routine_view
-
                         Fragment fragment = new routine_view();
                         Bundle bundle = new Bundle();
                         bundle.putString("videoId", value);
