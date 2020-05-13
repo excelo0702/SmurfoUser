@@ -53,7 +53,7 @@ public class VideoAdapter extends
     private static final String TAG = "VideoViewRecAdapter";
     private  OnItemClickListener mListener;
 
-    private final List<VideoModel> localVideoTracks;
+    private List<VideoModel> localVideoTracks;
     private Context context;
 
     public interface OnItemClickListener{
@@ -110,6 +110,16 @@ public class VideoAdapter extends
         holder.userId = current.getUser();
         Picasso.get().load(Uri.parse(current.getThumbnail())).into(holder.videoview);
         Log.d(TAG,current.getTitle()+"  "+current.getUrl());
+    }
+
+
+    public String getLastItemVideoId(){
+        return localVideoTracks.get(localVideoTracks.size()-1).getVideoId();
+    }
+
+    public void setData(List<VideoModel> localVideoTracks)
+    {
+        this.localVideoTracks =localVideoTracks;
     }
 
     @Override

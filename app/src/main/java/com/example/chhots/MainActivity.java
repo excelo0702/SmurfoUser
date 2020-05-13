@@ -6,12 +6,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.example.chhots.bottom_navigation_fragments.Explore.VideoModel;
 import com.example.chhots.bottom_navigation_fragments.Explore.explore;
 import com.example.chhots.bottom_navigation_fragments.Explore.upload_video;
 import com.example.chhots.bottom_navigation_fragments.trending;
 import com.example.chhots.category_view.Contest.form_contest;
 import com.example.chhots.category_view.Courses.course_purchase_view;
 import com.example.chhots.category_view.Courses.video_course;
+import com.example.chhots.category_view.routine.VideoAdapter;
 import com.example.chhots.category_view.routine.routine_view;
 import com.example.chhots.ui.About_Deprrita.about;
 import com.example.chhots.ui.Category.category;
@@ -23,6 +25,7 @@ import com.example.chhots.ui.SupportUs.support;
 import com.example.chhots.ui.home.HomeFragment;
 import com.example.chhots.User_Profile.userprofile;
 import com.example.chhots.ui.notifications.NotificationsFragment;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import android.provider.Settings;
@@ -55,6 +58,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -317,6 +321,19 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.action_search:
+            //    Toast.makeText(getApplicationContext(),"Search",Toast.LENGTH_SHORT).show();
+
+
+                break;
+        }
         return true;
     }
 

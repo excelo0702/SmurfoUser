@@ -76,6 +76,7 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.10.5'
     implementation 'com.google.android.exoplayer:exoplayer:2.10.5'
 
+    implementation 'com.firebaseui:firebase-ui-database:6.2.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
