@@ -61,7 +61,7 @@ public class routine extends Fragment{
     private static final String TAG = "Routine";
     boolean isScrolling=false;
     int currentItems,scrolloutItems,TotalItems;
-    String mLastKey,category;
+    String mLastKey,category,tempkey;
 
     FirebaseAuth auth;
     FirebaseUser user;
@@ -141,11 +141,11 @@ public class routine extends Fragment{
                     }
                     else if(so==2)
                     {
-
+                        datafetchlowPrice(category);
                     }
                     else if(so==3)
                     {
-
+                        datafetchHighPrice(category);
                     }
 
 
@@ -557,12 +557,18 @@ public class routine extends Fragment{
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                    int p=0;
 //                Log.d(TAG,dataSnapshot.getValue().toString()+"");
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
+
                         VideoModel model = ds.getValue(VideoModel.class);
                         if (model.getSub_category() != null && model.getSub_category().equals("ROUTINE")) {
                             videolist.add(0, model);
                         }
+                        if(p==0) {
+                            tempkey = model.getVideoId();
+                        }
+                        p++;
 
                     }
                     if(videolist.size()==0)
@@ -618,6 +624,8 @@ public class routine extends Fragment{
             });
         }
     }
+
+
 
     private void showRoutineOld(final String category) {
         videolist.clear();
@@ -797,7 +805,4 @@ public class routine extends Fragment{
             });
         }
     }
-
-
-
 }

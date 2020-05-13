@@ -5,32 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/bcghome"
+    android:background="@color/white"
     tools:context=".Login">
 
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:cardBackgroundColor="#000000">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Smurfo Studio"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:textSize="35dp"
-            android:layout_gravity="center"
-            ></TextView>
 
-    </androidx.cardview.widget.CardView>
+    <ImageView
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:src="@drawable/smurfooo"
+        android:layout_width="300dp"
+        android:layout_height="150dp"/>
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/buttonbackground"
         android:id="@+id/email_login_TIL"
         >
 
@@ -39,8 +34,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/email_login"
             android:hint="Email"
+            android:textStyle="bold"
+            android:textColorHint="@color/black"
             android:layout_margin="10dp"
-            ></EditText>
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -48,10 +45,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:id="@+id/password_login_TIL"
+        android:background="@drawable/buttonbackground"
+
         >
 
         <EditText
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/password_login"
@@ -59,49 +64,56 @@
             android:hint="Password"
             android:layout_margin="10dp"
 
-            ></EditText>
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
 
     <Button
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center"
+        android:background="@drawable/buttonbackground1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:id="@+id/login_btn"
+        android:textColor="@color/black"
         android:text="Login"
-        android:layout_margin="10dp"
+        />
 
-        ></Button>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_width="match_parent"
+        android:background="@color/black"
+        android:layout_height="1dp"/>
 
-
-    <LinearLayout
+    <Button
+        android:textAllCaps="false"
+        android:layout_gravity="center"
+        android:background="@drawable/buttonbackground1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/signup_text"
+        android:textColor="@color/black"
+        android:text="Create Account"
+        />
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        >
+        android:layout_marginTop="5dp"
+        android:id="@+id/forgot_password_text"
+        android:layout_marginRight="10dp"
+        android:textSize="14dp"
+        android:layout_gravity="right"
+        android:text="Forgot Password?"
+        android:textColor="#000000"
+        />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/signup_text"
-            android:textSize="14dp"
-            android:layout_gravity="center"
-            android:text="Register here/ "
-            android:textColor="#000000"
-            ></TextView>
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/forgot_password_text"
-            android:textSize="14dp"
-            android:layout_gravity="center"
-            android:text="Forgot Password"
-            android:textColor="#000000"
-            ></TextView>
-
-    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressBar_login"
@@ -110,10 +122,5 @@
         android:layout_gravity="center|bottom"
         android:layout_marginBottom="20dp"
         android:visibility="gone" />
-
-
-
-
-
 
 </LinearLayout>

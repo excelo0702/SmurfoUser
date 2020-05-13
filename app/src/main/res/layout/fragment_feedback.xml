@@ -12,89 +12,79 @@
         android:layout_height="110dp"
         app:srcCompat="@drawable/ic_sentiment_satisfied_black_24dp"
         android:layout_marginTop="30dp"
-        ></ImageView>
+        />
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="130dp"
+        android:layout_marginLeft="110dp"
         android:inputType="textMultiLine"
         android:layout_marginBottom="20dp"
         android:textSize="15dp"
-        android:text="      We are really Sorry \n Tell Us What Went Wrong"
-        ></TextView>
+        android:text="We would like to hear from you \nGive us Your valuable Feedback"
+        />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Rating"
-        ></TextView>
+        />
 
-    <RatingBar
+    <com.hsalf.smileyrating.SmileyRating
+        android:id="@+id/smile_rating1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:rating="2"
-        android:id="@+id/r1"
-        ></RatingBar>
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Rating"
-
-        ></TextView>
-
-    <RatingBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:rating="2"
-        android:id="@+id/r2"
-
-        ></RatingBar>
+        android:layout_height="wrap_content" />
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Rating"
-        ></TextView>
 
-    <RatingBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:rating="2"
-        android:id="@+id/r3"
+        />
 
-        ></RatingBar>
+    <com.hsalf.smileyrating.SmileyRating
+        android:id="@+id/smile_rating2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Rating"
-        ></TextView>
+        />
 
-    <RatingBar
-        android:layout_width="wrap_content"
+    <com.hsalf.smileyrating.SmileyRating
+        android:id="@+id/smile_rating3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:rating="2"
-        android:id="@+id/r4"
+        android:text="Rating"
+        />
 
-        ></RatingBar>
-
+    <com.hsalf.smileyrating.SmileyRating
+        android:id="@+id/smile_rating4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Other"
-        ></TextView>
+        />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        ></EditText>
+        android:id="@+id/feedback_text"
+        android:inputType="textMultiLine"
+        />
 
     <Button
         android:layout_width="250dp"
@@ -104,7 +94,7 @@
         android:id="@+id/submit_feedback"
         android:background="#FFFFFF"
         android:textSize="16dp"
-        ></Button>
+        />
 
 
 

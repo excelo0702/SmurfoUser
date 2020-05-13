@@ -86,4 +86,7 @@ dependencies {
         transitive = true;
     }
 
+    implementation 'com.squareup.okhttp3:okhttp:4.6.0'
+    implementation 'com.github.sujithkanna:smileyrating:2.0.0'
+
 }

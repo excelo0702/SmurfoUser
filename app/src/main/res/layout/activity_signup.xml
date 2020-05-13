@@ -9,24 +9,13 @@
 
 
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:cardBackgroundColor="#000000"
-        android:layout_marginBottom="10dp"
-        >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Smurfo Studio"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:textSize="35dp"
-            android:layout_gravity="center"
-            ></TextView>
-
-    </androidx.cardview.widget.CardView>
+    <ImageView
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:src="@drawable/smurfooo"
+        android:layout_width="300dp"
+        android:layout_height="150dp"/>
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -35,13 +24,13 @@
         android:id="@+id/emailTIL"
         >
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/email"
-        android:hint="Email"
-        android:layout_margin="10dp"
-        ></EditText>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/email"
+            android:hint="Email"
+            android:layout_margin="10dp"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -52,26 +41,49 @@
         android:id="@+id/passwordTIL"
         >
 
-    <EditText
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/password"
+            android:inputType="textPassword"
+            android:hint="Password"
+            android:layout_margin="10dp"
+
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/password"
-        android:inputType="textPassword"
-        android:hint="Password"
-        android:layout_margin="10dp"
+        app:passwordToggleEnabled="true"
+        android:id="@+id/cnfpasswordTIL"
+        >
 
-        ></EditText>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cnfpassword"
+            android:inputType="textPassword"
+            android:hint="Confirm Password"
+            android:layout_margin="10dp"
+
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/signup"
-        android:text="Signup"
-        android:layout_margin="10dp"
 
-        ></Button>
+    <Button
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center"
+        android:background="@drawable/buttonbackground1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/signup"
+        android:textColor="@color/black"
+        android:text="Register"
+        />
 
     <ProgressBar
         android:id="@+id/progressBar"
