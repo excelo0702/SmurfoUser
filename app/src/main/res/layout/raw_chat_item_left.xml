@@ -2,7 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
+
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:layout_width="220dp"
+        android:layout_height="250dp"
+        android:id="@+id/video_view_chat">
+    </com.google.android.exoplayer2.ui.PlayerView>
 
 
     <TextView
@@ -12,6 +19,8 @@
         android:layout_alignParentLeft="true"
         android:id="@+id/show_message_left"
         android:text="Yo"
+        android:textSize="18dp"
+        android:textColor="#000000"
         android:background="@drawable/background_left"
         android:padding="8dp"
         ></TextView>

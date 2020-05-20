@@ -73,6 +73,8 @@ public class video_course extends Fragment implements onBackPressed {
          videouri = Uri.parse(bundle.getString("videoURL"));
         fullScreenButton = playerView.findViewById(R.id.exo_fullscreen_icon);
 
+        player = ExoPlayerFactory.newSimpleInstance(getContext());
+
         initializePlayer();
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
         playerView.setPaddingRelative(0,0,0,0);
@@ -143,7 +145,6 @@ public class video_course extends Fragment implements onBackPressed {
 
     private void initializePlayer() {
 
-        player = ExoPlayerFactory.newSimpleInstance(getContext());
         playerView.setPlayer(player);
 
         MediaSource mediaSource = buildMediaSource(videouri);
@@ -205,7 +206,6 @@ public class video_course extends Fragment implements onBackPressed {
         View BottomnavBar = getActivity().findViewById(R.id.bottom_navigation);
         BottomnavBar.setVisibility(View.VISIBLE);
         releasePlayer();
-        player.setPlayWhenReady(false);
-        player.release();
+
     }
 }

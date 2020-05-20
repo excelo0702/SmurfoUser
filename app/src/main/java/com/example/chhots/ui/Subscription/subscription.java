@@ -12,14 +12,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.chhots.R;
+import com.example.chhots.onBackPressed;
+import com.example.chhots.ui.home.HomeFragment;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 
 import org.json.JSONObject;
 
-public class subscription extends Fragment{
+public class subscription extends Fragment implements onBackPressed {
 
 
     private TextView routine_1,routine_2,routine_3,routine_4;
@@ -225,6 +228,16 @@ public class subscription extends Fragment{
     }
 
 
+    private void setFragment(Fragment fragment) {
+
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.drawer_layout,fragment).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        setFragment(new HomeFragment());
+    }
 
 
 

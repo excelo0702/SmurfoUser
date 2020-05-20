@@ -15,7 +15,9 @@
         <com.google.android.exoplayer2.ui.PlayerView
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:id="@+id/video_course"></com.google.android.exoplayer2.ui.PlayerView>
+            android:id="@+id/video_course"
+            app:resize_mode="fill">
+        </com.google.android.exoplayer2.ui.PlayerView>
 
         <Button
             android:layout_width="match_parent"
@@ -57,7 +59,7 @@
             ></Button>
 
         <ImageView
-            android:layout_width="100dp"
+            android:layout_width="300dp"
             android:layout_height="100dp"
             android:id="@+id/upload_course_image"
             android:src="@mipmap/ic_launcher_round"></ImageView>

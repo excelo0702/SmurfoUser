@@ -46,9 +46,8 @@ public class MessageModel {
         this.flag = flag;
     }
 
-    public MessageModel(String message, String time, int flag, String video, String image) {
+    public MessageModel(String message, String time, int flag, String video) {
         this.video = video;
-        this.image = image;
         this.message = message;
         this.time = time;
         this.flag = flag;

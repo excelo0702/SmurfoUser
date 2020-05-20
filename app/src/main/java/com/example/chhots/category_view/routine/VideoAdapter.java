@@ -1,21 +1,16 @@
 package com.example.chhots.category_view.routine;
 
 import android.content.Context;
-import android.media.MediaPlayer;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,11 +18,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.chhots.Login;
 import com.example.chhots.R;
 import com.example.chhots.See_Video;
 import com.example.chhots.SubscriptionModel;
 import com.example.chhots.UserClass;
-import com.example.chhots.User_Profile.UserModel;
 import com.example.chhots.bottom_navigation_fragments.Explore.VideoModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,8 +34,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
-import static com.paytm.pgsdk.easypay.manager.PaytmAssist.getContext;
 
 
 /*
@@ -55,6 +48,7 @@ public class VideoAdapter extends
 
     private List<VideoModel> localVideoTracks;
     private Context context;
+
 
     public interface OnItemClickListener{
         void onItemClick(int position);
@@ -156,57 +150,61 @@ public class VideoAdapter extends
             comment_icon = view.findViewById(R.id.video_comment);
             videoview = view.findViewById(R.id.video_view_item);
 
+
             user = FirebaseAuth.getInstance().getCurrentUser();
             mDatabaseReference = FirebaseDatabase.getInstance().getReference();
             videoview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    int p=1;
-                    if(sub_category.equals("Routine"))
+                    if(user==null)
                     {
-                        // TODO: check subscription of user
+                        Toast.makeText(context,"Login First",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, Login.class);
+                        context.startActivity(intent);
+
+                    }
+                    else {
+
+                        int p = 1;
+                        if (sub_category.equals("ROUTINE")) {
+                            // TODO: check subscription of user
                             p = checkSubscription();
-                            Log.d(TAG,p+" p ");
-                            if(p==0)
-                            {
-                                p=checkPurchased();
-                                Log.d(TAG,p+" q ");
-
+                            Log.d(TAG, p + " p ");
+                            if (p == 0) {
+                                p = checkPurchased();
+                                Log.d(TAG, p + " q ");
                             }
-                    }
-                    if(p==1) {
-                        Fragment fragment = new See_Video();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("videoId", value);
-                        fragment.setArguments(bundle);
-                        FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.drawer_layout, fragment);
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
+                        }
+                        if (p == 1) {
+                            Fragment fragment = new See_Video();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("videoId", value);
+                            fragment.setArguments(bundle);
+                            FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.drawer_layout, fragment);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
 
-                    }
-                    else
-                    {
-                        //Create Pop up to Buy this Video
-                        //Redirect to routine_view
-                        Fragment fragment = new routine_view();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("videoId", value);
-                        bundle.putString("thumbnail",thumbnail);
-                        bundle.putString("instructorId",userId);
-                        fragment.setArguments(bundle);
-                        FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.drawer_layout, fragment);
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
+                        } else {
+                            //Create Pop up to Buy this Video
+                            //Redirect to routine_purchase
+                            Fragment fragment = new routine_purchase();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("videoId", value);
+                            bundle.putString("thumbnail", thumbnail);
+                            bundle.putString("instructorId", userId);
+                            fragment.setArguments(bundle);
+                            FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.drawer_layout, fragment);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
 
+                        }
                     }
 
                 }
             });
-
-
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

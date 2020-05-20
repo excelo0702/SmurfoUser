@@ -27,7 +27,6 @@ public class Signup extends AppCompatActivity {
     private EditText email,password;
     Button signup;
     ProgressBar progressBar;
-    private FirebaseAuth auth;
     TextInputLayout passwordTIL,emailTIL;
 
     @Override
@@ -43,36 +42,11 @@ public class Signup extends AppCompatActivity {
         emailTIL = findViewById(R.id.emailTIL);
 
 
-        auth = FirebaseAuth.getInstance();
+
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signup.setEnabled(false);
-                new Thread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(2*
-                                    30*
-                                    100);//min secs millisecs
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
-                        }
-
-                        Signup.this.runOnUiThread(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                signup.setEnabled(true);
-
-                            }
-                        });
-                    }
-                }).start();
-
                 //disable button for 2 min
 
                 String Semail = email.getText().toString().trim();
@@ -98,26 +72,14 @@ public class Signup extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Password too short, enter minimum 7 characters!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                Intent intent = new Intent(Signup.this,SignUpNextScreen.class);
+                intent.putExtra("email",Semail);
+                intent.putExtra("password",Spassword);
+                startActivity(intent);
                 progressBar.setVisibility(View.VISIBLE);
+                signup.setEnabled(true);
+                finish();
 
-                auth.createUserWithEmailAndPassword(Semail,Spassword)
-                        .addOnCompleteListener(Signup.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Toast.makeText(Signup.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.GONE);
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(Signup.this, "Authentication failed." + task.getException(),
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            startActivity(new Intent(Signup.this, MainActivity.class));
-                            finish();
-                        }
-                    }
-                });
             }
         });
     }

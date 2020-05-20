@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.media.MediaPlayer;
 import android.media.ThumbnailUtils;
@@ -19,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -33,6 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +43,7 @@ import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -91,14 +95,14 @@ public class upload_video extends Fragment implements onBackPressed {
     private EditText choose_category,description,price;
     private ImageView thumbnail;
     private Uri videouri,mImageUri;
-    private MediaController mediaController;
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
     private ProgressBar progressBar,progress_seekBar;
     private FirebaseAuth auth;
     private FirebaseUser user;
     private static final String TAG = "Upload_Video";
-    RelativeLayout rr;
+    RelativeLayout tt;
+    Spinner spinner;
 
     //exoplayer implementation
     PlayerView playerView;
@@ -109,7 +113,7 @@ public class upload_video extends Fragment implements onBackPressed {
     ImageView fullScreenButton;
     boolean fullScreen = false;
 
-    private String subCategory;
+    private String subCategory,descriptio;
     private static final int PICK_IMAGE_REQUEST = 2;
 
 
@@ -137,19 +141,25 @@ public class upload_video extends Fragment implements onBackPressed {
         description = view.findViewById(R.id.descriptioin_upload_video);
         thumbnail = view.findViewById(R.id.upload_thumbnail);
         price = view.findViewById(R.id.video_price);
-        rr = view.findViewById(R.id.enter_your_comment);
+        spinner =view.findViewById(R.id.category_spinner);
 
         progress_seekBar = view.findViewById(R.id.progress_bar);
         playerView = view.findViewById(R.id.video_view);
         fullScreenButton = playerView.findViewById(R.id.exo_fullscreen_icon);
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
-        playerView.setPadding(5,0,5,0);
+        playerView.setPadding(0,0,0,0);
 
         auth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         storageReference = FirebaseStorage.getInstance().getReference();
         databaseReference = FirebaseDatabase.getInstance().getReference();
+
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),R.array.category_list,android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
 
 
         //check the subCategory of video
@@ -220,44 +230,55 @@ public class upload_video extends Fragment implements onBackPressed {
         if(fullScreen)
         {
             fullScreenButton.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_fullscreen_black_24dp));
-            playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_ZOOM);
+
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)playerView.getLayoutParams();
+            params.width = params.MATCH_PARENT;
+            params.height = (int)( 300 * getContext().getResources().getDisplayMetrics().density);
+            playerView.setLayoutParams(params);
+            player.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT);
+
+
+            ((AppCompatActivity)getActivity()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
             getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
             if (((AppCompatActivity)getActivity()).getSupportActionBar()!=null)
                 ((AppCompatActivity)getActivity()).getSupportActionBar().show();
             ((AppCompatActivity)getActivity()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)playerView.getLayoutParams();
-            params.width = params.MATCH_PARENT;
-            params.height = (int)( 330 * getContext().getResources().getDisplayMetrics().density);
-            playerView.setLayoutParams(params);
+
             fullScreen = false;
         }
         else{
             fullScreenButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_fullscreen_black_24dp));
+            ((AppCompatActivity)getActivity()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-            ((AppCompatActivity)getActivity()).getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
-                   );
+            ((AppCompatActivity)getActivity()).getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
             if(((AppCompatActivity)getActivity()).getSupportActionBar() != null){
                 ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
             }
-
-            ((AppCompatActivity)getActivity()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
-            ((AppCompatActivity)getActivity()).getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
-                    |View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                    |View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) playerView.getLayoutParams();
-            params.width = params.MATCH_PARENT;
-            params.setMargins(0,0,0,0);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)playerView.getLayoutParams();
             params.height = params.MATCH_PARENT;
-
+            params.width = (int)( (params.height*4)/3);
+            playerView.setBackgroundColor(Color.parseColor("#000000"));
             playerView.setLayoutParams(params);
+            player.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT);
+
+
+            //  player.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
+
 
             View BottomnavBar = getActivity().findViewById(R.id.bottom_navigation);
             BottomnavBar.setVisibility(GONE);
 
-            rr.setVisibility(GONE);
+            Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+            toolbar.setVisibility(GONE);
+
+            tt = getActivity().findViewById(R.id.tt);
+            tt.setVisibility(GONE);
 
 
             View NavBar = getActivity().findViewById(R.id.nav_view);
@@ -316,6 +337,8 @@ public class upload_video extends Fragment implements onBackPressed {
         MediaSource mediaSource = buildMediaSource(videouri);
 
         player.setPlayWhenReady(playWhenReady);
+        playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+        player.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT);
         //  player.seekTo(currentWindow, playbackPosition);
         player.prepare(mediaSource, false, false);
     }
@@ -329,10 +352,9 @@ public class upload_video extends Fragment implements onBackPressed {
 
     @SuppressLint("InlinedApi")
     private void hideSystemUi() {
-        playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+         playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
@@ -370,6 +392,7 @@ public class upload_video extends Fragment implements onBackPressed {
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(videoUri));
     }
 
+
     private void uploadVideo()
     {
         if(videouri!=null)
@@ -378,8 +401,20 @@ public class upload_video extends Fragment implements onBackPressed {
 
             final String title = video_title.getText().toString();
             final String category = choose_category.getText().toString();
-            final String descriptio = description.getText().toString();
             final String sub_category;
+
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    descriptio = adapterView.getItemAtPosition(i).toString();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
             if(subCategory.equals("NormalVideos"))
             {
                 price.setText("-1");
@@ -479,6 +514,7 @@ public class upload_video extends Fragment implements onBackPressed {
 
     @Override
     public void onBackPressed() {
+        ((AppCompatActivity)getActivity()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         player.setPlayWhenReady(false);
         player.release();
     }

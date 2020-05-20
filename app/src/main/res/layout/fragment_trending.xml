@@ -17,29 +17,37 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Trending"
+            android:text="Admin"
             android:textSize="30dp"
             android:textStyle="bold"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:textColor="#000000"></TextView>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Routine"
+            android:textSize="18dp"
+            android:id="@+id/admin_routine"
+            android:layout_marginRight="10dp"
+
+            android:textColor="#000000"></TextView>
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Filter"
+            android:text="Routine"
             android:textSize="18dp"
             android:id="@+id/filter_trending"
 
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="130dp"
             android:textColor="#000000"></TextView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sort"
+            android:text="Course"
             android:layout_marginRight="10dp"
             android:id="@+id/sort_trending"
             android:layout_marginLeft="10dp"

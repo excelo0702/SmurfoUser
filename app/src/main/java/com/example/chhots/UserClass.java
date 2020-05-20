@@ -4,9 +4,11 @@ public class UserClass {
     public UserClass() {
     }
 
+    //videoId====routineId
     private String videoId;
     private String time;
     private String courseId;
+
 
     public String getCourseId() {
         return courseId;

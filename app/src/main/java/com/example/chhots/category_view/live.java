@@ -110,20 +110,15 @@ public class live extends Fragment {
                 }
 
                 Toast.makeText(getContext(),"Go live",Toast.LENGTH_SHORT).show();
-           //     validateMobileLiveIntent(getContext());
+                //     validateMobileLiveIntent(getContext());
                 String id = "l_NIgnb9J2g";
                 Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.youtube.com/watch?v="+id));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setPackage("com.google.android.youtube");
                 startActivity(intent);
-
             }
         });
-
-
-
         return view;
-
     }
 
     private void alertDialog() {
@@ -217,13 +212,9 @@ public class live extends Fragment {
             TextView title = row.findViewById(R.id.name_live);
             TextView desc = row.findViewById(R.id.description_live);
 
-
             imageView.setImageResource(imgs[position]);
             title.setText(name[position]);
             desc.setText(description[position]);
-
-
-
 
             return row;
         }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".category_view.Courses.AllCourse">
+
+
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+      <androidx.recyclerview.widget.RecyclerView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/search_all_courses_view"></androidx.recyclerview.widget.RecyclerView>
+
+      <androidx.recyclerview.widget.RecyclerView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/recycler_all_course_view"
+          android:layout_below="@id/search_all_courses_view"
+          android:layout_marginTop="10dp"
+          ></androidx.recyclerview.widget.RecyclerView>
+
+
+      <ProgressBar
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:id="@+id/progress_bar_all_course"
+          android:layout_centerHorizontal="true"
+          android:layout_alignParentBottom="true"
+          android:visibility="gone"
+          ></ProgressBar>
+
+  </RelativeLayout>
+
+
+</ScrollView>

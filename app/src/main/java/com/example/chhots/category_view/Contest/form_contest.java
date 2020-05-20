@@ -2,6 +2,7 @@ package com.example.chhots.category_view.Contest;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
 import android.util.Log;
@@ -35,8 +37,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.chhots.PaymentListener;
 import com.example.chhots.R;
+import com.example.chhots.UserClass;
+import com.example.chhots.UserInfoModel;
 import com.example.chhots.bottom_navigation_fragments.Explore.VideoModel;
+import com.example.chhots.category_view.routine.routine_view;
 import com.example.chhots.onBackPressed;
 import com.example.chhots.ui.notifications.NotificationModel;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -53,13 +59,18 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.razorpay.Checkout;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 
@@ -69,7 +80,7 @@ import static android.view.View.GONE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class form_contest extends Fragment implements onBackPressed {
+public class form_contest extends Fragment implements onBackPressed, PaymentListener {
 
 
     public form_contest() {
@@ -80,7 +91,6 @@ public class form_contest extends Fragment implements onBackPressed {
     private TextView register,info;
     private String contestId,imageUrl;
     private EditText userName,userEmail;
-    private VideoView video;
     private ImageView image_1,image_2;
     private FirebaseUser user;
     private FirebaseStorage firebaseStorage;
@@ -111,7 +121,7 @@ public class form_contest extends Fragment implements onBackPressed {
         contestId= bundle.getString("contestId");
         imageUrl = bundle.getString("imageUrl");
         init(view);
-        userName.setText(user.getUid());
+        fetchUserInfo();
         userEmail.setText(user.getEmail());
         Picasso.get().load(Uri.parse(imageUrl)).into(image_1);
         Picasso.get().load(Uri.parse(imageUrl)).into(image_2);
@@ -149,9 +159,9 @@ public class form_contest extends Fragment implements onBackPressed {
             @Override
             public void onClick(View view) {
 
+                startPayment("Tanish","Tanish","0723237826","https://s3.amazonaws.com/rzp-mobile/images/rzp.png","4000");
                 register.setEnabled(false);
                 choose_video.setEnabled(false);
-                RegisterUser();
                 Toast.makeText(getContext(),"Start uploading",Toast.LENGTH_LONG).show();
 
             }
@@ -159,6 +169,24 @@ public class form_contest extends Fragment implements onBackPressed {
 
         return view;
     }
+
+
+    private void fetchUserInfo()
+    {
+        databaseReference.child("UserInfo").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserInfoModel model = dataSnapshot.getValue(UserInfoModel.class);
+                userName.setText( model.getUserName());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     private Uri getImageUri(Context context, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -182,7 +210,7 @@ public class form_contest extends Fragment implements onBackPressed {
         if(requestCode == 1 && resultCode == RESULT_OK && data!=null && data.getData()!=null)
         {
             videouri = data.getData();
-            video.setVideoURI(videouri);
+            initializePlayer();
 
         }
     }
@@ -201,7 +229,6 @@ public class form_contest extends Fragment implements onBackPressed {
         userEmail = v.findViewById(R.id.userEmail);
         image_1 = v.findViewById(R.id.image_1_contest);
         image_2 = v.findViewById(R.id.image_2_contest);
-        video = v.findViewById(R.id.form_contest_videoView);
         user = FirebaseAuth.getInstance().getCurrentUser();
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
@@ -378,6 +405,92 @@ public class form_contest extends Fragment implements onBackPressed {
         player.setPlayWhenReady(false);
         player.release();
     }
+
+
+    public void startPayment(String merchant,String desc,String order,String imageUrl,String amoun) {
+
+
+        String merchantName = merchant;
+        String description = desc;
+        String orderId = order;
+        String image = imageUrl;
+        String amount = amoun;
+
+        /**
+         * Instantiate Checkout
+         */
+        Checkout checkout = new Checkout();
+
+
+        /**
+         * Set your logo here
+         */
+        checkout.setImage(R.drawable.ic_launcher_background);
+
+        /**
+         * Reference to current activity
+         */
+        final Activity activity = getActivity();
+
+        /**
+         * Pass your payment options to the Razorpay Checkout as a JSONObject
+         */
+        try {
+            JSONObject options = new JSONObject();
+
+            /**
+             * Merchant Name
+             * eg: ACME Corp || HasGeek etc.
+             */
+            options.put("name", merchantName);
+
+            /**
+             * Description can be anything
+             * eg: Reference No. #123123 - This order number is passed by you for your internal reference. This is not the `razorpay_order_id`.
+             *     Invoice Payment
+             *     etc.
+             */
+            options.put("description", desc);
+            options.put("image", image);
+            //    options.put("order_id", "order_9A33XWu170gUtm");
+            options.put("currency", "INR");
+
+            /**
+             * Amount is always passed in currency subunits
+             * Eg: "500" = INR 5.00
+             */
+            options.put("amount", amount);
+
+            checkout.open(activity, options);
+        } catch(Exception e) {
+            Toast.makeText(activity, "Error in payment: " + e.getMessage(), Toast.LENGTH_SHORT)
+                    .show();
+            Log.e("gggggg", "Error in starting Razorpay Checkout", e);
+        }
+    }
+
+
+    @Override
+    public void onPaymentSuccess(String s) {
+        try{
+            String time = System.currentTimeMillis()+"";
+           // UserClass model = new UserClass(routineId,time);
+         //   mDatabaseReference.child("USERS").child(user.getUid()).child("routines").child(routineId).setValue(model);
+            RegisterUser();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+    @Override
+    public void onPaymentError(int i, String s) {
+        Toast.makeText(getContext(),"Nop Fragment",Toast.LENGTH_SHORT).show();
+    }
+
+
 
 
 }

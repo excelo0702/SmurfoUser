@@ -6,15 +6,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.example.chhots.bottom_navigation_fragments.Explore.VideoModel;
 import com.example.chhots.bottom_navigation_fragments.Explore.explore;
 import com.example.chhots.bottom_navigation_fragments.Explore.upload_video;
 import com.example.chhots.bottom_navigation_fragments.trending;
 import com.example.chhots.category_view.Contest.form_contest;
 import com.example.chhots.category_view.Courses.course_purchase_view;
 import com.example.chhots.category_view.Courses.video_course;
-import com.example.chhots.category_view.routine.VideoAdapter;
-import com.example.chhots.category_view.routine.routine_view;
+import com.example.chhots.category_view.routine.routine_purchase;
 import com.example.chhots.ui.About_Deprrita.about;
 import com.example.chhots.ui.Category.category;
 import com.example.chhots.ui.Dashboard.dashboard;
@@ -25,9 +23,9 @@ import com.example.chhots.ui.SupportUs.support;
 import com.example.chhots.ui.home.HomeFragment;
 import com.example.chhots.User_Profile.userprofile;
 import com.example.chhots.ui.notifications.NotificationsFragment;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import android.os.Handler;
 import android.provider.Settings;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -37,6 +35,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -58,7 +57,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -76,9 +74,11 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
     FirebaseAuth auth;
     ImageView user_profile_header;
     FirebaseDatabase firebaseDatabase;
+    FirebaseUser user;
     DatabaseReference databaseReference;
     Button chatBtn;
     ActionBarDrawerToggle t;
+    LoadingDialog loadingDialog;
     private static final String TAG = MainActivity.class.getSimpleName();
 
 
@@ -88,9 +88,10 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        loadingDialog = new LoadingDialog(MainActivity.this);
         getSupportFragmentManager().beginTransaction().add(R.id.drawer_layout,new HomeFragment()).commit();
-
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final DrawerLayout drawer = findViewById(R.id.drawer);
@@ -108,6 +109,12 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
                 switch (item.getItemId())
                 {
                     case R.id.nav_home:
+                        if(user==null)
+                        {
+                            Toast.makeText(getApplicationContext(),"Login First",Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(MainActivity.this,Login.class);
+                            startActivity(intent);
+                        }
                         setFragment(new dashboard());
                         drawer.closeDrawers();
                         break;
@@ -145,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
             }
         });
 
+
         View headerview = navigationView.getHeaderView(0);
         login = (TextView) headerview.findViewById(R.id.login_textview);
         user_profile_header = headerview.findViewById(R.id.imageView_header);
@@ -152,11 +160,11 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
 
 
+
         askPermission();
 
-        auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() != null) {
 
+        if (auth.getCurrentUser() != null) {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
             firebaseDatabase = FirebaseDatabase.getInstance();
@@ -164,49 +172,13 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
             login.setText(user.getEmail());
             login.setPaintFlags(login.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
 
-            Query query = databaseReference.child("Users").orderByChild("email").equalTo(user.getEmail().toString().trim());
-
-            if(user.getEmail().equals("tanish@gmail.com"))
-            {
-                Log.d("1111",user.getEmail().toLowerCase().trim());
-
-            }
-
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        Log.d("999",postSnapshot.getValue().toString());
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) { }
-            });
-
+            Query query = databaseReference.child("UserInfo").child(auth.getCurrentUser().getUid());
             query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Toast.makeText(getApplicationContext(),dataSnapshot.getChildrenCount()+" hh ",Toast.LENGTH_SHORT).show();
-                    Log.d("12345678",dataSnapshot.getChildrenCount()+"");
-
-                    for(DataSnapshot ds : dataSnapshot.getChildren())
-                    {
-                        String image = ""+ds.child("image").getValue();
-                        Log.d("123456",image);
-                        try{
-                            if(image.equals(""))
-                            {
-                                Picasso.get().load(R.drawable.ic_username2).into(user_profile_header);
-                            }
-                            else {
-                                Picasso.get().load(image).into(user_profile_header);
-                            }
-                        }
-                        catch (Exception e){
-
-                        }
-                    }
+                    UserInfoModel model = dataSnapshot.getValue(UserInfoModel.class);
+                    login.setText(model.getUserName());
+                    Picasso.get().load(Uri.parse(model.getUserImageurl())).placeholder(R.mipmap.ic_logo).into(user_profile_header);
                 }
 
                 @Override
@@ -214,7 +186,6 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
 
                 }
             });
-
 
 
             login.setOnClickListener(new View.OnClickListener() {
@@ -243,31 +214,6 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
                 }
             });
         }
-
-    /*    mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_notification, R.id.nav_subscription,
-                R.id.nav_category, R.id.nav_setting, R.id.nav_feedback,R.id.nav_about,
-                R.id.nav_support)
-                .setDrawerLayout(drawer)
-                .build();
-
-*/
-
-
-
-/*
-        String path = "android.resource://com.example.chhots"+R.raw.vid;
-        Uri u = Uri.parse(path);
-        videoView.setVideoURI(u);
-        videoView.requestFocus();
-        videoView.start();
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.setLooping(true);
-            }
-        });
-*/
 
 
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
@@ -317,25 +263,36 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
         }
     }
 
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        MenuItem item2 = menu.findItem(R.id.action_search_fragment);
+        item2.setVisible(false);
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //search for instructors name,users name,artist name
+                Toast.makeText(getApplicationContext(),query,Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Toast.makeText(getApplicationContext(),newText,Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId())
-        {
-            case R.id.action_search:
-            //    Toast.makeText(getApplicationContext(),"Search",Toast.LENGTH_SHORT).show();
 
-
-                break;
-        }
-        return true;
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -354,6 +311,7 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
         {
             fragmentTransaction.addToBackStack(null);
         }
+
         fragmentTransaction.commit();
     }
 
@@ -366,11 +324,12 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
 
             List<Fragment> fragments = getSupportFragmentManager().getFragments();
             for(Fragment f : fragments) {
-                if (f != null && f instanceof routine_view)
-                    ((routine_view) f).onPaymentSuccess(s);
+                if (f != null && f instanceof routine_purchase)
+                    ((routine_purchase) f).onPaymentSuccess(s);
                 if (f != null && f instanceof course_purchase_view)
                     ((course_purchase_view) f).onPaymentSuccess(s);
-
+                if (f != null && f instanceof form_contest)
+                    ((form_contest) f).onPaymentSuccess(s);
             }
         }
         catch (Exception e)
@@ -397,24 +356,49 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
 
     @Override
     public void onBackPressed() {
-        tellFragments();
-        super.onBackPressed();
+        int p = tellFragments();
+
+        if(p==0) {
+            super.onBackPressed();
+        }
     }
 
-    private void tellFragments(){
+    private int tellFragments(){
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
         for(Fragment f : fragments){
-            if(f != null && (f instanceof upload_video))
-                ((upload_video)f).onBackPressed();
+            if(f != null && (f instanceof upload_video)) {
+                ((upload_video) f).onBackPressed();
+            }
 
-            if(f != null && (f instanceof form_contest))
-                ((form_contest)f).onBackPressed();
+            if(f != null && (f instanceof form_contest)) {
+                ((form_contest) f).onBackPressed();
+            }
 
-            if(f != null && (f instanceof video_course))
-                ((video_course)f).onBackPressed();
-
-
+            if(f != null && (f instanceof video_course)) {
+                ((video_course) f).onBackPressed();
+            }
+            if(f != null && (f instanceof dashboard)) {
+                ((dashboard) f).onBackPressed();
+                return 1;
+            }
+            if(f != null && (f instanceof NotificationsFragment)) {
+                ((NotificationsFragment) f).onBackPressed();
+                return 1;
+            }
+            if(f != null && (f instanceof category)) {
+                ((category) f).onBackPressed();
+                return 1;
+            }
+            if(f != null && (f instanceof setting)) {
+                ((setting) f).onBackPressed();
+                return 1;
+            }
+            if(f != null && (f instanceof feedback)) {
+                ((feedback) f).onBackPressed();
+                return 1;
+            }
         }
+        return 0;
     }
 
 

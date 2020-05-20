@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chhots.R;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -41,6 +42,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
         if(viewType == 0)
         {
             view = LayoutInflater.from(context).inflate(R.layout.raw_chat_item_right,parent,false);
+
         }
         else
         {
@@ -50,6 +52,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
         return new MyHolder(view);
     }
 
+    public void setData(List<MessageModel>list)
+    {
+        this.list=list;
+    }
+
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         MessageModel model = list.get(position);
@@ -57,10 +64,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
         if(model.getFlag()==0)
         {
             holder.message.setText(model.getMessage());
+            holder.playerView.getLayoutParams().height=0;
+            holder.playerView.getLayoutParams().width = 0;
         }
         else
         {
             holder.message_left.setText(model.getMessage());
+
+            holder.playerView.getLayoutParams().height=0;
+            holder.playerView.getLayoutParams().width = 0;
 
         }
     }
@@ -72,6 +84,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
     public class MyHolder extends RecyclerView.ViewHolder{
 
         public TextView message_left,message;
+        public PlayerView playerView;
 
 
         public MyHolder(@NonNull View itemView) {
@@ -79,6 +92,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
             Log.d(TAG,"fghjkk");
             message = itemView.findViewById(R.id.show_message);
             message_left = itemView.findViewById(R.id.show_message_left);
+            playerView = itemView.findViewById(R.id.video_view_chat);
 
         }
     }

@@ -15,8 +15,10 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.chhots.R;
+import com.example.chhots.onBackPressed;
+import com.example.chhots.ui.home.HomeFragment;
 
-public class category extends Fragment {
+public class category extends Fragment implements onBackPressed {
 
 
     private TextView Breaking,Krump,locking,popping,house,waacking,hip_hop,bharatnatyam;
@@ -198,4 +200,12 @@ public class category extends Fragment {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.drawer_layout,fragment).addToBackStack(null).commit();
     }
+
+    @Override
+    public void onBackPressed() {
+        View BottomnavBar = getActivity().findViewById(R.id.bottom_navigation);
+        BottomnavBar.setVisibility(View.VISIBLE);
+        setFragment(new HomeFragment(),"");
+    }
+
 }

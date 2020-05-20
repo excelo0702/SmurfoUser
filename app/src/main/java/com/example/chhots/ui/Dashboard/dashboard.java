@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.chhots.R;
+import com.example.chhots.onBackPressed;
+import com.example.chhots.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -22,7 +24,7 @@ import static android.view.View.GONE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class dashboard extends Fragment {
+public class dashboard extends Fragment implements onBackPressed {
 
 
     public dashboard() {
@@ -64,7 +66,7 @@ public class dashboard extends Fragment {
                         break;
 
                     case R.id.approve_videos_dashboard:
-                        setFragment(new favorite());
+                        setFragment(new ApproveVideo());
                         break;
                 }
                 return true;
@@ -83,6 +85,8 @@ public class dashboard extends Fragment {
 
     }
 
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -99,5 +103,13 @@ public class dashboard extends Fragment {
         View BottomnavBar = getActivity().findViewById(R.id.bottom_navigation);
         BottomnavBar.setVisibility(View.VISIBLE);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        View BottomnavBar = getActivity().findViewById(R.id.bottom_navigation);
+        BottomnavBar.setVisibility(View.VISIBLE);
+        bottomNavigationView.setVisibility(GONE);
+        setFragment(new HomeFragment());
     }
 }

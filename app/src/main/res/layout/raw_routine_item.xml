@@ -3,11 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:layout_margin="10dp"
+    android:padding="5dp"
     android:layout_height="match_parent">
-
-
-
-
 
     <androidx.cardview.widget.CardView
         android:orientation="vertical"
@@ -35,7 +33,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:padding="10dp"
+
                 android:layout_margin="15dp"
                 android:src="@drawable/smurfooo"
                 android:id="@+id/video_view_item"></ImageView>

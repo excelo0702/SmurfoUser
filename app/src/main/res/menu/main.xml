@@ -5,5 +5,13 @@
         android:id="@+id/action_search"
         android:title="Search"
         android:icon="@drawable/ic_search_black_24dp"
-        app:showAsAction="always" />
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+
+    <item
+        android:id="@+id/action_search_fragment"
+        android:title="Search"
+        android:icon="@drawable/ic_search_black_24dp"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
 </menu>

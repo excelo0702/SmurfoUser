@@ -1,8 +1,10 @@
 package com.example.chhots.ui.Dashboard;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -10,9 +12,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.chhots.R;
+import com.example.chhots.UserInfoModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import static android.view.View.GONE;
 
@@ -28,6 +40,11 @@ public class dashboard_bottom extends Fragment {
 
     private Button history,leaderboard;
     BottomNavigationView bottomNavigationView;
+    private ImageView userImage;
+    TextView userName;
+
+    private FirebaseAuth auth;
+    private DatabaseReference databaseReference;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +57,22 @@ public class dashboard_bottom extends Fragment {
         View BottomnavBar = getActivity().findViewById(R.id.bottom_navigation);
         BottomnavBar.setVisibility(GONE);
 
+        userImage = view.findViewById(R.id.user_dashboard_profile);
+        userName = view.findViewById(R.id.user_dashboard_name);
+
+        auth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("UserInfo").child(auth.getCurrentUser().getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        UserInfoModel model = dataSnapshot.getValue(UserInfoModel.class);
+                        Picasso.get().load(Uri.parse(model.getUserImageurl())).into(userImage);
+                        userName.setText(model.getUserName());
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {}
+                });
 
         history.setOnClickListener(new View.OnClickListener() {
             @Override

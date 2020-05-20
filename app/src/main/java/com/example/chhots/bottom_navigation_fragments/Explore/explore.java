@@ -4,6 +4,7 @@ package com.example.chhots.bottom_navigation_fragments.Explore;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,6 +14,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -21,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chhots.R;
+import com.example.chhots.category_view.routine.SearchAdapter;
 import com.example.chhots.category_view.routine.VideoAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -46,7 +51,7 @@ public class explore extends Fragment {
 
     RecyclerView recyclerView;
     VideoAdapter mAdapter;
-    LinearLayoutManager mLayoutManager;
+    LinearLayoutManager mLayoutManager,sLayoutManager;
     private ProgressBar mProgressCircle;
     private DatabaseReference mDatabaseRef;
     private List<VideoModel> videolist;
@@ -63,6 +68,12 @@ public class explore extends Fragment {
     ProgressBar progressBar;
     int flag=0;
     boolean isScrolling=false;
+
+
+    private List<VideoModel> searchlist;
+    private SearchAdapter searchAdapter;
+    private SearchView searchView;
+    private RecyclerView srecyclerView;
 
 
     @Override
@@ -84,7 +95,15 @@ public class explore extends Fragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("VIDEOS");
 
-        category="NORMAL";
+
+        searchlist = new ArrayList<>();
+        searchAdapter = new SearchAdapter(searchlist,getContext());
+        srecyclerView = view.findViewById(R.id.search_recycler_explore_view);
+        srecyclerView.setHasFixedSize(true);
+        sLayoutManager = new LinearLayoutManager(getContext());
+
+
+        category="Normal";
         swipeRefreshLayout = view.findViewById(R.id.swipe_explore);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -142,7 +161,7 @@ public class explore extends Fragment {
             @Override
             public void onClick(View view) {
                 flag=0;
-                category="NORMAL";
+                category="Normal";
                 showVideos(category);
             }
         });
@@ -151,7 +170,7 @@ public class explore extends Fragment {
             @Override
             public void onClick(View view) {
                 flag=1;
-                category="Contest";
+                category="CONTEST";
                 showVideos(category);
             }
         });
@@ -276,5 +295,86 @@ public class explore extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if (menu != null) {
+            final MenuItem activitySearchMenu = menu.findItem(R.id.action_search);
+            final MenuItem item = menu.findItem(R.id.action_search_fragment);
+            activitySearchMenu.setVisible(false);
+            item.setVisible(true);
+
+            searchView= (SearchView) item.getActionView();
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    searchlist.clear();
+                    Toast.makeText(getContext(),"hhhh",Toast.LENGTH_SHORT).show();
+                    Query firebasequery = mDatabaseRef.orderByChild("title").startAt(newText).endAt(newText+"\uf8ff");
+                    firebasequery.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                     //       Log.d(TAG, dataSnapshot.getChildrenCount() + "  ppp  ");
+
+                            for (DataSnapshot ds: dataSnapshot.getChildren())
+                            {
+                                VideoModel model = ds.getValue(VideoModel.class);
+                                if(model.getSub_category().equals("NORMAL") || model.getSub_category().equals("Contest"))
+                                {
+                                    searchlist.add(model);
+                                //    Log.d(TAG+"  gggg ::",model.getDescription()+"   ppp ");
+                                }
+                            }
+                            searchAdapter.setData(searchlist);
+                            //    Collections.reverse(videolist);
+                         //   Log.d(TAG, searchlist.size() + " popop  ");
+                            srecyclerView.setLayoutManager(sLayoutManager);
+                            srecyclerView.setAdapter(searchAdapter);
+
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) { }
+                    });
+                    return true;
+                }
+            });
+
+            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                @Override
+                public boolean onClose() {
+                    searchlist.clear();
+                    searchAdapter.setData(searchlist);
+                    searchAdapter.notify();
+                    recyclerView.setLayoutManager(mLayoutManager);
+                    recyclerView.setAdapter(mAdapter);
+                    return true;
+                }
+            });
+
+
+
+
+        }
+    }
+
+
+
+
+
 
 }

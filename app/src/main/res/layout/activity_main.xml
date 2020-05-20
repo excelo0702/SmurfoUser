@@ -11,52 +11,56 @@
 
 
 
-    <RelativeLayout
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/tt">
+    <include
+        layout="@layout/app_bar_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-
-        <include
-            layout="@layout/app_bar_main"
-            android:layout_width="match_parent"
-            android:id="@+id/include"
-            android:layout_height="wrap_content" />
+        android:id="@+id/include"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/drawer_layout"
         android:layout_above="@id/bottom_navigation"
-        android:layout_below="@id/include"
+        android:layout_below="@id/tt"
         >
 
     </FrameLayout>
 
 
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="#FFFFFF"
-            android:layout_alignParentBottom="true"
-            app:itemIconTint="#000000"
-            app:itemTextColor="#000000"
-            app:menu="@menu/bottom_nav_menu"
-            />
-
-    </RelativeLayout>
-
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#FFFFFF"
+        android:layout_alignParentBottom="true"
         app:itemIconTint="#000000"
-        app:menu="@menu/activity_main_drawer" />
+        app:itemTextColor="#000000"
+        app:menu="@menu/bottom_nav_menu"
+        />
+
+  </RelativeLayout>
+
+
+  <com.google.android.material.navigation.NavigationView
+      android:id="@+id/nav_view"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_gravity="start"
+      android:fitsSystemWindows="true"
+      app:headerLayout="@layout/nav_header_main"
+      app:itemIconTint="#000000"
+      app:menu="@menu/activity_main_drawer" />
 
 
 

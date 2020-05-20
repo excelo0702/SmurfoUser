@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUpNextScreen">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@mipmap/ic_logo"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="130dp"
+        android:id="@+id/userImage_signup"
+        ></de.hdodenhof.circleimageview.CircleImageView>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userImage_signup"
+        android:id="@+id/user_name_signup"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:hint="User Name"
+        ></EditText>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_name_signup"
+        android:layout_margin="10dp"
+        android:id="@+id/user_profession_signup"
+        android:padding="10dp"
+        android:hint="Profession"
+        ></EditText>
+
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_profession_signup"
+        android:id="@+id/user_dancer_level"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        ></Spinner>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/radio_button_grp1"
+        android:layout_below="@id/user_dancer_level"
+        android:orientation="horizontal"
+        >
+
+    <RadioButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:id="@+id/r1"
+        android:background="@mipmap/ic_logo"
+        android:onClick="onRadioButtonClicked"></RadioButton>
+
+    <RadioButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:layout_weight="1"
+        android:id="@+id/r2"
+        android:background="@mipmap/ic_logo"
+        android:onClick="onRadioButtonClicked"></RadioButton>
+
+    <RadioButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:layout_weight="1"
+        android:id="@+id/r3"
+        android:background="@mipmap/ic_logo"
+        android:onClick="onRadioButtonClicked"></RadioButton>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/radio_button_grp2"
+        android:layout_below="@id/radio_button_grp1"
+        android:orientation="horizontal"
+        >
+    <RadioButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:id="@+id/r4"
+        android:background="@mipmap/ic_logo"
+        android:layout_weight="1"
+        android:onClick="onRadioButtonClicked"></RadioButton>
+
+    <RadioButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:id="@+id/r5"
+        android:background="@mipmap/ic_logo"
+        android:layout_weight="1"
+        android:onClick="onRadioButtonClicked"></RadioButton>
+
+    <RadioButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:id="@+id/r6"
+        android:background="@mipmap/ic_logo"
+        android:layout_weight="1"
+        android:onClick="onRadioButtonClicked"></RadioButton>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/signup_next_submit"
+        android:layout_below="@id/radio_button_grp2"></Button>
+    <ProgressBar
+        android:id="@+id/progressBar_signup_next"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone" />
+
+
+</RelativeLayout>

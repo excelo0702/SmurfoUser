@@ -65,7 +65,7 @@ import static android.view.View.GONE;
 public class See_Video extends Fragment {
 
 
-    public TextView title,upvote,downvote,comments,share,views;
+    public TextView title,upvote,downvote,comments,share,views,chat;
     public ImageView favorite_icon,share_icon;
     public ImageButton upvote_icon,downvote_icon;
     private ImageView send_comment,camera_comment;
@@ -86,6 +86,7 @@ public class See_Video extends Fragment {
 
     List<CommentModel> list;
     String htitle,hvideoName;
+    UserInfoModel usermodel;
 
 
     //exoplayer implementation
@@ -109,7 +110,7 @@ public class See_Video extends Fragment {
 
         title = view.findViewById(R.id.video_adapter_title_see);
         upvote = view.findViewById(R.id.video_likess_see);
-        comments = view.findViewById(R.id.video_commentt_see);
+        chat = view.findViewById(R.id.chat_with_insttructor);
         views = view.findViewById(R.id.video_views_see);
         upvote_icon = view.findViewById(R.id.video_likes_see);
         downvote_icon = view.findViewById(R.id.video_downvote_see);
@@ -126,6 +127,8 @@ public class See_Video extends Fragment {
         recyclerView = view.findViewById(R.id.comments);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
 
 
 
@@ -148,9 +151,21 @@ public class See_Video extends Fragment {
         });
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("");
+        mDatabaseRef.child("UserInfo").child(user.getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        usermodel = dataSnapshot.getValue(UserInfoModel.class);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
 
-        Bundle bundle = this.getArguments();
+                Bundle bundle = this.getArguments();
         videoId = bundle.getString("videoId");
 
 
@@ -160,6 +175,7 @@ public class See_Video extends Fragment {
                 mDatabaseRef.child("VIDEOS").child(videoId).child("like").setValue(String.valueOf(Integer.parseInt(upvote.getText().toString())+1));
                 current.setLike(String.valueOf(Integer.parseInt(current.getLike())+1));
                 //enable downvote and disable upvote
+                upvote.setText(String.valueOf(Integer.parseInt(upvote.getText().toString())+1));
                 upvote_icon.setEnabled(false);
                 downvote_icon.setEnabled(true);
                 mDatabaseRef.child("FAVORITE").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -190,6 +206,8 @@ public class See_Video extends Fragment {
                 //enable downvote and disable upvote
                 upvote_icon.setEnabled(true);
                 downvote_icon.setEnabled(false);
+                upvote.setText(String.valueOf(Integer.parseInt(upvote.getText().toString())-1));
+
                 mDatabaseRef.child("FAVORITE").child(user.getUid()).child(videoId).removeValue();
                 Toast.makeText(getContext(),"Remove From Liked Videos",Toast.LENGTH_SHORT).show();
             }
@@ -347,9 +365,6 @@ public class See_Video extends Fragment {
 
                 pushHistory();
                 initializePlayer();
-
-
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -386,7 +401,7 @@ public class See_Video extends Fragment {
     private void sendComment()
     {
         String time = System.currentTimeMillis()+"";
-        CommentModel model = new CommentModel(comment_message.getText().toString(),time,user.getUid());
+        CommentModel model = new CommentModel(comment_message.getText().toString(),time,user.getUid(),usermodel.getUserImageurl(),usermodel.getUserName());
         mDatabaseRef.child("COMMENTS").child(videoId).child(time).setValue(model);
         comment_message.setText("");
     }

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChatBox.ChatWithUser">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#000000"
+        android:id="@+id/card1"
+        ></FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="70dp"
+        android:layout_below="@id/card1"
+        android:id="@+id/instructor_profile_layout"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/image"
+            android:id="@+id/instructor_profile_image1"
+            ></ImageView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Instructor Name"
+            android:textSize="20dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/instructor_profile_name1"
+            ></TextView>
+
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_below="@id/instructor_profile_layout"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:id="@+id/recycler_chat_view1"
+        android:layout_above="@id/bottom_chat"
+
+        ></androidx.recyclerview.widget.RecyclerView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/bottom_chat"
+        android:layout_margin="15dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="4dp"
+            android:layout_weight="0.3"
+            android:id="@+id/send_video_chat1"
+            android:src="@drawable/ic_camera"></ImageView>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_weight="5"
+            android:background="#FFFFFF"
+            android:id="@+id/message1"
+            android:text="Type here"
+            ></EditText>
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/send_message1"
+            android:layout_weight="0.3"
+            android:src="@drawable/ic_send_black_24dp"></ImageView>
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

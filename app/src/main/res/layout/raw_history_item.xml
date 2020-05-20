@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:padding="10dp"
+    android:layout_margin="5dp"
+    android:background="#FFFFFF"
     android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/smurfoo_dp"
+        android:id="@+id/history_image"
+        ></de.hdodenhof.circleimageview.CircleImageView>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:layout_toRightOf="@id/history_image"
         android:text="UserName"
+        android:textColor="#000000"
+        android:textSize="20dp"
         android:id="@+id/history_username"
         ></TextView>
 
@@ -16,10 +29,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Video Title"
-        android:textSize="20dp"
+        android:layout_toRightOf="@id/history_image"
+        android:layout_below="@id/history_username"
+        android:textSize="14dp"
         android:layout_margin="5dp"
         android:id="@+id/history_video_title"
         ></TextView>
 
 
-</LinearLayout>
+</RelativeLayout>

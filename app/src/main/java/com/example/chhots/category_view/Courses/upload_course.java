@@ -271,7 +271,7 @@ public class upload_course extends AppCompatActivity {
                                             UploadCourseModel model = new UploadCourseModel(time,user.getUid(),"courseName",uri.toString());
                                             databaseReference.child("Courses").child(courseId).child(sequence+title).setValue(model);
                                             VideoModel video_model = new VideoModel(user.getUid(),title,"category","description","videoURL","thumbnail","ContestID","courseId","price","videoId","0","0","0","sun_category");
-                                            databaseReference.child("videos").child(time2).setValue(video_model);
+                                            databaseReference.child("VIDEOS").child(time2).setValue(video_model);
                                             Toast.makeText(getApplicationContext(),"uploaded",Toast.LENGTH_SHORT).show();
 
                                         }

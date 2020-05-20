@@ -66,6 +66,7 @@
             android:layout_height="40dp"
             android:layout_marginLeft="4dp"
             android:layout_weight="0.3"
+            android:id="@+id/send_video_chat"
             android:src="@drawable/ic_camera"></ImageView>
         <EditText
             android:layout_width="wrap_content"

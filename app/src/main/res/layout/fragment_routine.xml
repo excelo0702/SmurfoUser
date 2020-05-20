@@ -4,11 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".category_view.routine.routine"
-    android:orientation="vertical"
-    android:background="#FFFFFF">
+    android:orientation="vertical">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/search_recycle_routine_view"
+        ></androidx.recyclerview.widget.RecyclerView>
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_below="@id/search_recycle_routine_view"
         android:layout_height="wrap_content"
         android:id="@+id/llllll"
         android:orientation="horizontal">

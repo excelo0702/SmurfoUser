@@ -7,14 +7,19 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -23,8 +28,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.chhots.LoadingDialog;
 import com.example.chhots.Login;
 import com.example.chhots.R;
+import com.example.chhots.bottom_navigation_fragments.Explore.VideoModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -46,6 +53,7 @@ public class courses extends Fragment {
 
 
 
+
     ViewPager viewPager;
     List<CourseThumbnail> modelList;
     Button upload_btn;
@@ -56,6 +64,16 @@ public class courses extends Fragment {
     private HorizontalAdapter adapter;
     private Adapter Pageradapter;
 
+    TextView allCourse;
+
+
+    private List<CourseThumbnail> searchlist;
+    private com.example.chhots.category_view.Courses.SearchAdapter searchAdapter;
+    SearchView searchView;
+
+    LoadingDialog loadingDialog;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,6 +82,15 @@ public class courses extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_courses, container, false);
         upload_btn = view.findViewById(R.id.upload_course);
+
+        loadingDialog.startLoadingDialog();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadingDialog.DismissDialog();
+            }
+        },3000);
         databaseReference = FirebaseDatabase.getInstance().getReference("");
         upload_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +101,23 @@ public class courses extends Fragment {
         });
 
 
+        allCourse = view.findViewById(R.id.access_all_course);
+        allCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new AllCourse();
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.drawer_layout,fragment).addToBackStack(null).commit();
+            }
+        });
+
         viewPager = view.findViewById(R.id.courses_viewPager);
+
+        recyclerView = view.findViewById(R.id.search_recycler_courses_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+        searchlist = new ArrayList<>();
+        searchAdapter = new SearchAdapter(searchlist,getContext());
 
         recyclerView1 = view.findViewById(R.id.recycler_recently_course);
         recyclerView1.setHasFixedSize(true);
@@ -235,6 +278,55 @@ public class courses extends Fragment {
         });
 
     }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if (menu != null) {
+            final MenuItem activitySearchMenu = menu.findItem(R.id.action_search);
+            final MenuItem item = menu.findItem(R.id.action_search_fragment);
+            activitySearchMenu.setVisible(false);
+            item.setVisible(true);
+
+            searchView= (SearchView) item.getActionView();
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return true;
+                }
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    searchlist.clear();
+                    Toast.makeText(getContext(),"hhhh",Toast.LENGTH_SHORT).show();
+                    Query firebasequery = databaseReference.child("CoursesThumbnail").orderByChild("courseName").startAt(newText).endAt(newText+"\uf8ff");
+                    firebasequery.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot ds: dataSnapshot.getChildren())
+                            {
+                                CourseThumbnail model = ds.getValue(CourseThumbnail.class);
+                                searchlist.add(model);
+                            }
+                            searchAdapter.setData(searchlist);
+                            recyclerView.setAdapter(searchAdapter);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) { }
+                    });
+                    return true;
+                }
+            });
+        }
+    }
+
 
 
 }

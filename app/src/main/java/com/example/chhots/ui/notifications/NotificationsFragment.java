@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,7 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chhots.R;
 import com.example.chhots.category_view.routine.routine;
+import com.example.chhots.onBackPressed;
 import com.example.chhots.ui.Dashboard.HistoryAdapter;
+import com.example.chhots.ui.home.HomeFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class NotificationsFragment extends Fragment {
+public class NotificationsFragment extends Fragment implements onBackPressed {
 
 
 
@@ -96,6 +99,18 @@ public class NotificationsFragment extends Fragment {
             }
         });
     }
+
+    private void setFragment(Fragment fragment) {
+
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.drawer_layout,fragment).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        setFragment(new HomeFragment());
+    }
+
 }
 
 

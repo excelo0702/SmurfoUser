@@ -5,22 +5,30 @@ import android.animation.ArgbEvaluator;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.chhots.R;
+import com.example.chhots.bottom_navigation_fragments.Explore.VideoModel;
+import com.example.chhots.category_view.routine.SearchAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -49,6 +57,9 @@ public class contest extends Fragment {
 
 
 
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,6 +70,8 @@ public class contest extends Fragment {
         host_contest = view.findViewById(R.id.host_contest);
         databaseReference = FirebaseDatabase.getInstance().getReference("");
         viewPager = (ViewPager)view.findViewById(R.id.view_contest_Pager);
+
+
 
 
         showContests();
@@ -112,6 +125,9 @@ public class contest extends Fragment {
         });
 
     }
+
+
+
 
 
 }

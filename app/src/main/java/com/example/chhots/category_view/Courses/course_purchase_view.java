@@ -180,7 +180,6 @@ public class course_purchase_view extends Fragment implements PaymentListener{
         catch (Exception e)
         {
             Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
-
         }
 
     }

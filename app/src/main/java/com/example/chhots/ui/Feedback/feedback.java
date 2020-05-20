@@ -13,8 +13,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.chhots.R;
+import com.example.chhots.onBackPressed;
+import com.example.chhots.ui.home.HomeFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -23,7 +26,7 @@ import com.hsalf.smileyrating.SmileyRating;
 
 import static com.paytm.pgsdk.easypay.actions.EasypayBrowserFragment.TAG;
 
-public class feedback extends Fragment {
+public class feedback extends Fragment implements onBackPressed {
 
     public feedback() {
     }
@@ -112,6 +115,16 @@ public class feedback extends Fragment {
 
     }
 
+    private void setFragment(Fragment fragment) {
+
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.drawer_layout,fragment).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        setFragment(new HomeFragment());
+    }
     public class FeedbackModel{
         public FeedbackModel() {
         }
