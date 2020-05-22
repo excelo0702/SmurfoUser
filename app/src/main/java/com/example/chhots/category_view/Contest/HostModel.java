@@ -1,7 +1,7 @@
 package com.example.chhots.category_view.Contest;
 
 public class HostModel {
-    private String info,imageUrl,contestId;
+    private String info,imageUrl,contestId,date;
 
     public HostModel() {
     }
@@ -30,9 +30,18 @@ public class HostModel {
         this.contestId = contestId;
     }
 
-    public HostModel(String info, String imageUrl, String contestId) {
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public HostModel(String info, String imageUrl, String contestId, String date) {
         this.info = info;
         this.imageUrl = imageUrl;
         this.contestId = contestId;
+        this.date = date;
     }
 }

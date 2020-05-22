@@ -68,7 +68,7 @@ public class Signup extends AppCompatActivity {
                 }
 
                 if (Spassword.length() < 7) {
-                    emailTIL.setError("Password too short");
+                    passwordTIL.setError("Password too short");
                     Toast.makeText(getApplicationContext(), "Password too short, enter minimum 7 characters!", Toast.LENGTH_SHORT).show();
                     return;
                 }

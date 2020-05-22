@@ -13,19 +13,33 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.chhots.Notificatios.Client;
+import com.example.chhots.Notificatios.Data;
+import com.example.chhots.Notificatios.MyResponse;
+import com.example.chhots.Notificatios.Sender;
+import com.example.chhots.Notificatios.Token;
 import com.example.chhots.R;
 import com.example.chhots.UserInfoModel;
 import com.example.chhots.ui.Dashboard.ChatPeopleModel;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChatWithInstructor extends AppCompatActivity {
 
@@ -48,6 +62,11 @@ public class ChatWithInstructor extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseUser user;
 
+    APIService apiService;
+
+    boolean notify = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,14 +88,27 @@ public class ChatWithInstructor extends AppCompatActivity {
         send_video = findViewById(R.id.send_video_chat);
         adapter = new MessageAdapter(ChatWithInstructor.this,list);
 
+        apiService = Client.getClient("https:/fcm.googleapis.com/").create(APIService.class);
+
 
         fetchUserInfo();
         fetchInstructorInfo();
 
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+                    @Override
+                    public void onSuccess(InstanceIdResult instanceIdResult) {
+                        String token = instanceIdResult.getToken();
+                        updateToken(token);
+                    }
+                });
+
         showMessage();
-        send_message.setOnClickListener(new View.OnClickListener() {
+        send_message.setOnClickListener(
+                new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                notify = true;
                 sendMessage();
             }
         });
@@ -138,14 +170,61 @@ public class ChatWithInstructor extends AppCompatActivity {
             databaseReference.child("CHAT").child("Users").child(userId).child(routineId).child(time).setValue(model);
 
 
+            sendNotification(instructor_id,userName,mess);
+            notify = false;
+
         ChatPeopleModel mode1 = new ChatPeopleModel(userId,userImage,userName);
         databaseReference.child("CHAT_LIST").child(instructor_id).child(userId).setValue(mode1);
 
         ChatPeopleModel mode2 = new ChatPeopleModel(instructor_id,instructorImage,instructorName);
         databaseReference.child("CHAT_LIST").child(userId).child(instructor_id).setValue(mode1);
         message.setText("");
+
+
+
     }
 
+    private void sendNotification(String receiver, final String userName, final String message)
+    {
+        final DatabaseReference token = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = token.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    Token token1 = ds.getValue(Token.class);
+                    Data data = new Data(instructor_id,R.mipmap.ic_icon,userName+": "+message,"New Message",userId);
+
+                    Sender sender = new Sender(data,token1.getToken());
+
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<MyResponse>() {
+                                @Override
+                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                                    if(response.code()==200)
+                                    {
+                                        if(response.body().Success != 1)
+                                        {
+                                            Toast.makeText(ChatWithInstructor.this,"Failed Instructor",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<MyResponse> call, Throwable t) {
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 
     public void showMessage()
@@ -175,6 +254,12 @@ public class ChatWithInstructor extends AppCompatActivity {
     }
 
 
+    private void updateToken(String token)
+    {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1 = new Token(token);
+        reference.child(user.getUid()).setValue(token1);
+    }
 
 
 }

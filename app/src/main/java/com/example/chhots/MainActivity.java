@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.example.chhots.bottom_navigation_fragments.Calendar.calendar;
 import com.example.chhots.bottom_navigation_fragments.Explore.explore;
 import com.example.chhots.bottom_navigation_fragments.Explore.upload_video;
 import com.example.chhots.bottom_navigation_fragments.trending;
@@ -233,8 +234,8 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
                                 Toast.makeText(getApplicationContext(), "Favorites", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.action_trending:
-                                setFragment(new trending());
-                                Toast.makeText(getApplicationContext(), "Trending", Toast.LENGTH_SHORT).show();
+                                setFragment(new calendar());
+                                Toast.makeText(getApplicationContext(), "Calendar", Toast.LENGTH_SHORT).show();
                                 break;
 
                             case R.id.action_instructor:

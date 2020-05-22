@@ -132,8 +132,6 @@ public class form_contest extends Fragment implements onBackPressed, PaymentList
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
         playerView.setPadding(5,0,5,0);
 
-
-
         fullScreenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -153,7 +151,6 @@ public class form_contest extends Fragment implements onBackPressed, PaymentList
             }
         });
 
-
         register = (TextView)view.findViewById(R.id.register);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,7 +163,6 @@ public class form_contest extends Fragment implements onBackPressed, PaymentList
 
             }
         });
-
         return view;
     }
 
@@ -260,6 +256,7 @@ public class form_contest extends Fragment implements onBackPressed, PaymentList
 
                                             VideoModel mode = new VideoModel(user.getUid(),"User Name","Contest","",uri.toString(),imageUrl,contestId,"NONE","",videoId,"0","0","0","CONTEST");
                                             databaseReference.child("VIDEOS").child(videoId).setValue(mode);
+                                            databaseReference.child("contest").child(contestId).child(user.getUid()).setValue(mode);
 
 
                                             register.setEnabled(true);
@@ -302,7 +299,9 @@ public class form_contest extends Fragment implements onBackPressed, PaymentList
             getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
             if (((AppCompatActivity)getActivity()).getSupportActionBar()!=null)
                 ((AppCompatActivity)getActivity()).getSupportActionBar().show();
-            ((AppCompatActivity)getActivity()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+            //Changed to unspecified from Portrait
+            ((AppCompatActivity)getActivity()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)playerView.getLayoutParams();
             params.width = params.MATCH_PARENT;
             params.height = (int)( 330 * getContext().getResources().getDisplayMetrics().density);
@@ -318,8 +317,8 @@ public class form_contest extends Fragment implements onBackPressed, PaymentList
             if(((AppCompatActivity)getActivity()).getSupportActionBar() != null){
                 ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
             }
-
-            ((AppCompatActivity)getActivity()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            // Changed to unspecified from landscape
+            ((AppCompatActivity)getActivity()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
             playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
             ((AppCompatActivity)getActivity()).getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
                     |View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
@@ -402,7 +401,6 @@ public class form_contest extends Fragment implements onBackPressed, PaymentList
 
     @Override
     public void onBackPressed() {
-        player.setPlayWhenReady(false);
         player.release();
     }
 

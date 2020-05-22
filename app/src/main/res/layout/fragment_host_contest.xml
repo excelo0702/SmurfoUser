@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/rrr"
     tools:context=".category_view.Contest.hostContest">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
         android:id="@+id/contest_image"
         android:src="@mipmap/ic_launcher"
         ></ImageView>
@@ -17,25 +19,34 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/contest_image"
         android:id="@+id/ContestInfo"
         android:hint="Contest Info"
         ></EditText>
 
-
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create Contest"
-        android:id="@+id/contest_upload"></Button>
+        android:layout_below="@id/ContestInfo"
+        android:id="@+id/select_date"
+        android:text="Select Date"></Button>
+
 
 
     <ProgressBar
         android:id="@+id/progress_bar_creating_contest"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="match_parent"
+        android:layout_below="@id/select_date"
         android:layout_height="3dp"
         android:layout_margin="10dp"
         android:progress="0"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create Contest"
+        android:layout_below="@id/progress_bar_creating_contest"
+        android:id="@+id/contest_upload"></Button>
 
 
-</LinearLayout>
+</RelativeLayout>

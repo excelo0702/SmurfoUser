@@ -18,6 +18,21 @@
         android:layout_width="300dp"
         android:layout_height="150dp"/>
 
+    <TextView
+        android:text="Hello,"
+        android:textSize="@dimen/text30"
+        android:layout_marginStart="@dimen/margin10"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/margin10"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"/>
+    <TextView
+        android:text="We would Love to have you on SMURFO."
+        android:textSize="@dimen/text20"
+        android:layout_marginStart="@dimen/margin10"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"/>
+
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
