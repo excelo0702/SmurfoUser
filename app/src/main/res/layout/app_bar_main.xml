@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF"
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -15,9 +14,9 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:foregroundTint="@color/Smurfogreen"
             app:navigationIcon="@drawable/ic_drag_handle_black_24dp"
-            android:foregroundTint="#000000"
-            android:background="#FFFFFF">
+            app:collapseIcon="@color/Smurfogreen">
 
             <ImageView
                 android:layout_width="wrap_content"

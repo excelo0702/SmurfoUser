@@ -28,7 +28,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Video Title"
+            android:hint="Routine Title"
             android:id="@+id/routine_video_title"
             android:layout_below="@id/choose_routine_video"></EditText>
         <TextView
@@ -55,17 +55,17 @@
         <ProgressBar
             android:id="@+id/progress_bar_upload_video"
             style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_below="@id/routine_sequence_no"
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:layout_margin="10dp"
-            android:layout_above="@id/upload_routine_video"
             android:progress="0"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Upload Video"
-            android:layout_below="@id/routine_sequence_no"
+            android:layout_below="@id/progress_bar_upload_video"
             android:id="@+id/upload_routine_video"></Button>
 
         <ImageView
@@ -73,7 +73,7 @@
             android:layout_height="250dp"
             android:padding="15dp"
             android:id="@+id/choose_thumbnail"
-            android:src="@color/Smurfogreen"
+            android:src="@mipmap/ic_launcher"
             android:layout_below="@id/upload_routine_video"></ImageView>
         <EditText
             android:layout_width="match_parent"
@@ -84,213 +84,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Choose Category \n Select atleast two"
-            android:id="@+id/text2"
+            android:text="Choose Category"
+            android:textSize="20dp"
+            android:id="@+id/choose_category"
             android:layout_below="@id/routine_name"></TextView>
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Street"
-            android:textSize="18dp"
-            android:layout_margin="10dp"
-            android:onClick="SelectCategory"
-
-            android:id="@+id/routine_category_street"
-            android:layout_below="@id/text2"
-            android:button="@android:color/transparent"></RadioButton>
-
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="10dp"
-            android:background="#16000000"
-            app:cardBackgroundColor="#0A2B2727"
-            android:layout_below="@+id/text2"
-            android:layout_margin="10dp"
-            android:id="@+id/routine_category_classical1"
-            android:layout_toRightOf="@id/routine_category_street"
-            >
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Classical"
-            android:textSize="14dp"
-            android:padding="2dp"
-            android:onClick="SelectCategory"
-            android:id="@+id/routine_category_classical"
-            android:button="@android:color/transparent"></RadioButton>
-        </androidx.cardview.widget.CardView>
-
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Breaking"
-            android:textSize="18dp"
-            android:layout_margin="10dp"
-            android:onClick="SelectCategory"
-
-            android:layout_below="@id/text2"
-            android:id="@+id/routine_category_breaking"
-            android:button="@android:color/transparent"></RadioButton>
-
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Krump"
-            android:textSize="18dp"
-            android:layout_margin="10dp"
-            android:layout_below="@id/text2"
-            android:onClick="SelectCategory"
-
-            android:layout_toRightOf="@id/routine_category_breaking"
-            android:id="@+id/routine_category_krump"
-            android:button="@android:color/transparent"></RadioButton>
-
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Locking"
-            android:textSize="18dp"
-            android:layout_margin="10dp"
-            android:layout_below="@id/text2"
-            android:onClick="SelectCategory"
-            android:layout_toRightOf="@id/routine_category_krump"
-            android:id="@+id/routine_category_locking"
-            android:button="@android:color/transparent"></RadioButton>
-
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Popping"
-            android:textSize="18dp"
-            android:layout_margin="10dp"
-            android:onClick="SelectCategory"
-
-            android:layout_below="@id/routine_category_street"
-            android:id="@+id/routine_category_popping"
-            android:button="@android:color/transparent"></RadioButton>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="House"
-            android:textSize="18dp"
-            android:layout_margin="10dp"
-            android:onClick="SelectCategory"
-
-            android:layout_below="@id/routine_category_street"
-            android:id="@+id/routine_category_house"
-            android:layout_toRightOf="@id/routine_category_popping"
-            android:button="@android:color/transparent"></RadioButton>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Waacking"
-            android:textSize="18dp"
-            android:layout_margin="10dp"
-            android:onClick="SelectCategory"
-
-            android:layout_below="@id/routine_category_street"
-            android:id="@+id/routine_category_waacking"
-            android:layout_toRightOf="@id/routine_category_house"
-            android:button="@android:color/transparent"></RadioButton>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hip-Hop"
-            android:textSize="18dp"
-            android:layout_margin="10dp"
-            android:onClick="SelectCategory"
-
-            android:layout_below="@id/routine_category_street"
-            android:id="@+id/routine_category_hiphop"
-            android:layout_toRightOf="@id/routine_category_waacking"
-            android:button="@android:color/transparent"></RadioButton>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Afro"
-            android:textSize="18dp"
-            android:layout_margin="10dp"
-            android:onClick="SelectCategory"
-
-            android:layout_below="@id/routine_category_street"
-            android:id="@+id/routine_category_afro"
-            android:layout_toRightOf="@id/routine_category_hiphop"
-            android:button="@android:color/transparent"></RadioButton>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ballet"
-            android:textSize="18dp"
-            android:layout_margin="10dp"
-            android:onClick="SelectCategory"
-
-            android:layout_below="@id/routine_category_popping"
-            android:id="@+id/routine_category_ballet"
-            android:button="@android:color/transparent"></RadioButton>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Contemporary"
-            android:textSize="18dp"
-            android:layout_margin="10dp"
-            android:onClick="SelectCategory"
-
-            android:layout_below="@id/routine_category_popping"
-            android:id="@+id/routine_category_contemporary"
-            android:layout_toRightOf="@id/routine_category_ballet"
-            android:button="@android:color/transparent"></RadioButton>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Dance Hall"
-            android:textSize="18dp"
-            android:layout_margin="10dp"
-            android:onClick="SelectCategory"
-
-            android:layout_below="@id/routine_category_popping"
-            android:id="@+id/routine_category_dancehall"
-            android:layout_toRightOf="@id/routine_category_contemporary"
-            android:button="@android:color/transparent"></RadioButton>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Jazz"
-            android:textSize="18dp"
-            android:layout_margin="10dp"
-            android:onClick="SelectCategory"
-
-            android:layout_below="@id/routine_category_popping"
-            android:id="@+id/routine_category_jazz"
-            android:layout_toRightOf="@id/routine_category_dancehall"
-            android:button="@android:color/transparent"></RadioButton>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Litefeet"
-            android:textSize="18dp"
-            android:layout_margin="10dp"
-            android:onClick="SelectCategory"
-
-            android:layout_below="@id/routine_category_ballet"
-            android:id="@+id/routine_category_litefeet"
-            android:button="@android:color/transparent"></RadioButton>
 
 
 
@@ -303,10 +101,10 @@
             android:hint="Description"
             android:id="@+id/routine_dscription"
             android:inputType="textMultiLine"
-            android:layout_below="@id/routine_category_litefeet"></EditText>
+            android:layout_below="@id/choose_category"></EditText>
 
         <Spinner
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/routine_level_spinner"
             android:layout_below="@id/routine_dscription"></Spinner>
@@ -325,7 +123,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Upload Routine"
-            android:background="@drawable/buttonbackground1"
             android:id="@+id/upload_routine"
             android:layout_below="@id/routine_dscription"
             android:layout_toRightOf="@id/routine_level_spinner"></Button>

@@ -97,11 +97,11 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
         setSupportActionBar(toolbar);
         final DrawerLayout drawer = findViewById(R.id.drawer);
         t = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.Open,R.string.Close);
-        t.setDrawerIndicatorEnabled(true);
 
         drawer.addDrawerListener(t);
-        t.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        t.setDrawerIndicatorEnabled(true);
+
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {

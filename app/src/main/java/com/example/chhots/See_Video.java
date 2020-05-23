@@ -110,7 +110,6 @@ public class See_Video extends Fragment {
 
         title = view.findViewById(R.id.video_adapter_title_see);
         upvote = view.findViewById(R.id.video_likess_see);
-        chat = view.findViewById(R.id.chat_with_insttructor);
         views = view.findViewById(R.id.video_views_see);
         upvote_icon = view.findViewById(R.id.video_likes_see);
         downvote_icon = view.findViewById(R.id.video_downvote_see);
