@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".bottom_navigation_fragments.Explore.upload_video"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <com.google.android.exoplayer2.ui.PlayerView
         android:layout_width="match_parent"
@@ -30,7 +33,7 @@
         ></Button>
 
     <EditText
-        android:layout_width="200dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:layout_marginBottom="10dp"
@@ -42,54 +45,36 @@
 
 
 
+
+
+
     <EditText
-        android:layout_width="200dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:hint="Description"
         android:layout_margin="5dp"
-        android:hint="Choose Category Create Spinner here"
-        android:id="@+id/choose_category"
+        android:inputType="textMultiLine"
         android:layout_toRightOf="@id/upload_thumbnail"
+        android:id="@+id/descriptioin_upload_video"
         android:layout_below="@id/video_title"
         ></EditText>
 
 
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Description"
-        android:layout_margin="5dp"
-        android:inputType="textMultiLine"
-        android:id="@+id/descriptioin_upload_video"
-        android:layout_below="@id/upload_thumbnail"
-        ></EditText>
-
-
-
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_below="@id/chhose_btn"
         android:id="@+id/upload_thumbnail"
         android:src="@mipmap/ic_launcher_round"
         ></ImageView>
 
-    <EditText
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:inputType="numberSigned"
-        android:hint="Price"
-        android:id="@+id/video_price"
-        android:layout_below="@id/choose_category"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@id/upload_thumbnail"
-        ></EditText>
-
 
     <androidx.appcompat.widget.AppCompatSpinner
-        android:layout_width="150dp"
+        android:layout_width="170dp"
         android:layout_height="45dp"
         android:id="@+id/category_spinner"
+        android:layout_toRightOf="@id/upload_thumbnail"
         android:layout_below="@id/descriptioin_upload_video"
         ></androidx.appcompat.widget.AppCompatSpinner>
 
@@ -113,3 +98,5 @@
         ></Button>
 
 </RelativeLayout>
+
+</ScrollView>

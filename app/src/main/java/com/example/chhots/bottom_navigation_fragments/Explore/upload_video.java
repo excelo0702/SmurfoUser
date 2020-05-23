@@ -137,10 +137,8 @@ public class upload_video extends Fragment implements onBackPressed {
         choosebtn = (Button)view.findViewById(R.id.chhose_btn);
         uploadBtn = (Button)view.findViewById(R.id.upload_btn);
         video_title = view.findViewById(R.id.video_title);
-        choose_category = view.findViewById(R.id.choose_category);
         description = view.findViewById(R.id.descriptioin_upload_video);
         thumbnail = view.findViewById(R.id.upload_thumbnail);
-        price = view.findViewById(R.id.video_price);
         spinner =view.findViewById(R.id.category_spinner);
 
         progress_seekBar = view.findViewById(R.id.progress_bar);
@@ -162,17 +160,6 @@ public class upload_video extends Fragment implements onBackPressed {
 
 
 
-        //check the subCategory of video
-        if(subCategory.equals("NormalVideos"))
-        {
-            price.setEnabled(false);
-            price.setVisibility(View.GONE);
-        }
-        else if(subCategory.equals("RoutineVideos"))
-        {
-            price.setEnabled(true);
-            price.setVisibility(View.VISIBLE);
-        }
         Toast.makeText(getContext(),subCategory,Toast.LENGTH_LONG).show();
 
 

@@ -20,7 +20,7 @@ import com.example.chhots.Notificatios.Sender;
 import com.example.chhots.Notificatios.Token;
 import com.example.chhots.R;
 import com.example.chhots.UserInfoModel;
-import com.example.chhots.ui.Dashboard.ChatPeopleModel;
+import com.example.chhots.ui.Dashboard.ApproveVideo.ChatPeopleModel;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,7 +32,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.util.ArrayList;
 import java.util.List;

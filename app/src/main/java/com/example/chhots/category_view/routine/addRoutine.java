@@ -18,13 +18,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -82,12 +87,16 @@ public class addRoutine extends AppCompatActivity {
     String level;
 
     int flag=0;
+    PopupWindow mPopupWindow;
+    RelativeLayout relativeLayout;
+
 
 
     private FirebaseUser user;
     private DatabaseReference mDatabaseReference;
     private StorageReference storageReference;
     String userName,userImage;
+    private TextView choose_category;
 
 
     //exoplayer implementation
@@ -135,6 +144,12 @@ public class addRoutine extends AppCompatActivity {
         spinner.setAdapter(adapter);
 
 
+        choose_category.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ChooseCategory();
+            }
+        });
 
         thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,6 +175,83 @@ public class addRoutine extends AppCompatActivity {
 
     }
 
+    private void ChooseCategory()
+    {
+        LayoutInflater inflater = (LayoutInflater)getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View customView = inflater.inflate(R.layout.custom_category,null);
+
+
+        mPopupWindow = new PopupWindow(
+                customView,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+
+
+        if(Build.VERSION.SDK_INT>=21){
+            mPopupWindow.setElevation(5.0f);
+        }
+        Button submit = customView.findViewById(R.id.submit_category);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPopupWindow.dismiss();
+            }
+        });
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.showAtLocation(relativeLayout, Gravity.CENTER,0,0);
+        mPopupWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                    mPopupWindow.dismiss();
+                }
+                return false;
+            }
+        });
+
+        final RadioButton classical = customView.findViewById(R.id.routine_category_classical);
+        final boolean classical1=false;
+        classical.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!classical1)
+                {
+                    category.setCharAt(1,'1');
+                    classical.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    classical.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(1,'0');
+                }
+            }
+        });
+
+
+        final RadioButton breaking = customView.findViewById(R.id.routine_category_breaking);
+        final boolean breaking1=false;
+        classical.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!classical1)
+                {
+                    category.setCharAt(1,'1');
+                    breaking.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    breaking.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(1,'0');
+                }
+            }
+        });
+    }
 
 
 
@@ -294,86 +386,6 @@ public class addRoutine extends AppCompatActivity {
     }
 
 
-    public void SelectCategory(View view){
-
-        boolean checked = ((RadioButton) view).isChecked();
-        char ch;
-        switch (view.getId())
-        {
-            case R.id.routine_category_street:
-                if(checked)
-                {
-                    category.setCharAt(0,'1');
-                    findViewById(R.id.routine_category_street).setBackgroundColor(Color.parseColor("#88000000"));
-                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    findViewById(R.id.routine_category_street).setBackgroundColor(Color.parseColor("#03fe6d"));
-                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
-                    category.setCharAt(0,'0');
-
-                }
-                break;
-            case R.id.routine_category_classical:
-                if(checked)
-                {
-                    category.setCharAt(1,'1');
-                    findViewById(R.id.routine_category_classical).setBackgroundColor(Color.parseColor("#000000"));
-                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    findViewById(R.id.routine_category_classical).setBackgroundColor(Color.parseColor("#03fe6d"));
-                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
-                    category.setCharAt(1,'0');
-
-                }
-                break;
-            case R.id.routine_category_breaking:
-                if(checked)
-                {
-                    category.setCharAt(2,'1');
-                    findViewById(R.id.routine_category_breaking).setBackgroundColor(Color.parseColor("#000000"));
-                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    findViewById(R.id.routine_category_breaking).setBackgroundColor(Color.parseColor("#000000"));
-                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
-                    category.setCharAt(2,'0');
-
-                }
-                break;
-            case R.id.routine_category_krump:
-                if(checked)
-                {
-                 //   category[3]=1;
-                }
-                else{
-                 //   category[3]=0;
-                }
-                break;
-            case R.id.routine_category_locking:
-                if(checked)
-                {
-                 //   category[4]=1;
-                }
-                else{
-                //    category[4]=0;
-                }
-                break;
-            case R.id.routine_category_popping:
-                if(checked)
-                {
-                //    category[5]=1;
-                }
-                else{
-                 //   category[5]=0;
-                }
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + view.getId());
-        }
-
-    }
 
 
     @SuppressLint("WrongViewCast")
@@ -385,16 +397,16 @@ public class addRoutine extends AppCompatActivity {
         sequence_no = findViewById(R.id.routine_sequence_no);
         description = findViewById(R.id.routine_description);
         thumbnail = findViewById(R.id.choose_thumbnail);
-        street = findViewById(R.id.routine_category_street);
         classical = findViewById(R.id.routine_category_classical);
         breaking = findViewById(R.id.routine_category_breaking);
         krump = findViewById(R.id.routine_category_krump);
         locking = findViewById(R.id.routine_category_locking);
-        popping = findViewById(R.id.routine_category_popping);
         spinner = findViewById(R.id.routine_level_spinner);
         progress_seekbar1 = findViewById(R.id.progress_bar_upload_video);
         progressBar2 = findViewById(R.id.progress_bar_upload_routine);
         routine_Name = findViewById(R.id.routine_name);
+        choose_category = findViewById(R.id.choose_category);
+        relativeLayout = findViewById(R.id.routine_course);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();

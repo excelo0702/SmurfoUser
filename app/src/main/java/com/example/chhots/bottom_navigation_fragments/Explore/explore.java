@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -157,9 +159,20 @@ public class explore extends Fragment {
             }
         });
 
+        SpannableString content = new SpannableString("Normal");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        NormalVideos.setText(content);
+        NormalVideos.setTextSize(24);
+
         NormalVideos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SpannableString content = new SpannableString("Normal");
+                content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+                NormalVideos.setText(content);
+                ContestVideos.setText("Contest");
+                NormalVideos.setTextSize(24);
+                ContestVideos.setTextSize(22);
                 flag=0;
                 category="Normal";
                 showVideos(category);
@@ -169,6 +182,12 @@ public class explore extends Fragment {
         ContestVideos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SpannableString content = new SpannableString("Contest");
+                content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+                ContestVideos.setText(content);
+                ContestVideos.setTextSize(24);
+                NormalVideos.setText("Normal");
+                NormalVideos.setTextSize(22);
                 flag=1;
                 category="CONTEST";
                 showVideos(category);

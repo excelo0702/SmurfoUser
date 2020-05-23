@@ -108,8 +108,8 @@
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
                     android:textColor="@color/colorAccent"
-                    android:id="@+id/chat_with_insttructor"
-                    android:text="Chat With Instructor"></TextView>
+                    android:id="@+id/save_to_device"
+                    android:text="Save to Device"></TextView>
 
 
 
