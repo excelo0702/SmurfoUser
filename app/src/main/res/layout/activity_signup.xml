@@ -15,8 +15,23 @@
         android:layout_marginTop="50dp"
         android:layout_gravity="center"
         android:src="@drawable/smurfooo"
-        android:layout_width="300dp"
-        android:layout_height="150dp"/>
+        android:layout_width="@dimen/dp300"
+        android:layout_height="@dimen/dp150"/>
+
+    <TextView
+        android:text="Hello,"
+        android:textSize="@dimen/text30"
+        android:layout_marginStart="@dimen/margin10"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/margin10"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"/>
+    <TextView
+        android:text="We would Love to have you on SMURFO."
+        android:textSize="@dimen/text20"
+        android:layout_marginStart="@dimen/margin10"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"/>
 
     <TextView
         android:text="Hello,"
@@ -43,8 +58,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/email"
-            android:hint="Email"
-            android:layout_margin="10dp"
+            android:hint="@string/mail"
+            android:layout_margin="@dimen/margin10"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -61,8 +76,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/password"
             android:inputType="textPassword"
-            android:hint="Password"
-            android:layout_margin="10dp"
+            android:hint="@string/pass"
+            android:layout_margin="@dimen/margin10"
 
             />
     </com.google.android.material.textfield.TextInputLayout>
@@ -79,8 +94,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/cnfpassword"
             android:inputType="textPassword"
-            android:hint="Confirm Password"
-            android:layout_margin="10dp"
+            android:hint="@string/cnf_pass"
+            android:layout_margin="@dimen/margin10"
 
             />
     </com.google.android.material.textfield.TextInputLayout>
@@ -88,13 +103,13 @@
 
 
     <Button
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="@dimen/dp40"
         android:layout_gravity="center"
         android:background="@drawable/buttonbackground1"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_height="@dimen/dp40"
+        android:layout_marginLeft="@dimen/margin10"
+        android:layout_marginRight="@dimen/margin10"
         android:id="@+id/signup"
         android:textColor="@color/black"
         android:text="Register"
@@ -102,10 +117,10 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/dp30"
+        android:layout_height="@dimen/dp30"
         android:layout_gravity="center|bottom"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="@dimen/margin20"
         android:visibility="gone" />
 
 

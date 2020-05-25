@@ -9,35 +9,35 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/dp80"
         android:background="#000000"
         android:id="@+id/card"
-        ></FrameLayout>
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="70dp"
+        android:layout_height="@dimen/dp50"
+        android:layout_marginTop="@dimen/dp70"
         android:layout_below="@id/card"
         android:id="@+id/instructor_profile_layout"
         android:layout_margin="10dp"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/dp40"
+            android:layout_height="@dimen/dp40"
             android:src="@drawable/image"
             android:id="@+id/instructor_profile_image"
-            ></ImageView>
+            />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Instructor Name"
-            android:textSize="20dp"
-            android:layout_marginLeft="10dp"
+            android:textSize="@dimen/text20"
+            android:layout_marginStart="@dimen/margin10"
             android:id="@+id/instructor_profile_name"
-            ></TextView>
+            />
 
     </LinearLayout>
 
@@ -49,7 +49,7 @@
         android:id="@+id/recycler_chat_view"
         android:layout_above="@id/bottom_chat"
 
-        ></androidx.recyclerview.widget.RecyclerView>
+        />
 
 
 
@@ -58,30 +58,30 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:id="@+id/bottom_chat"
-        android:layout_margin="15dp"
+        android:layout_margin="@dimen/margin15"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="4dp"
+            android:layout_width="@dimen/dp40"
+            android:layout_height="@dimen/dp40"
+            android:layout_marginLeft="@dimen/dp4"
             android:layout_weight="0.3"
             android:id="@+id/send_video_chat"
-            android:src="@drawable/ic_camera"></ImageView>
+            android:src="@drawable/ic_camera"/>
         <EditText
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="@dimen/dp40"
             android:layout_weight="5"
             android:background="#FFFFFF"
             android:id="@+id/message"
             android:text="Type here"
-            ></EditText>
+            />
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/dp40"
+            android:layout_height="@dimen/dp40"
             android:id="@+id/send_message"
             android:layout_weight="0.3"
-            android:src="@drawable/ic_send_black_24dp"></ImageView>
+            android:src="@drawable/ic_send_black_24dp"/>
     </LinearLayout>
 
 

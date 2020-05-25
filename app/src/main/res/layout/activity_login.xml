@@ -15,18 +15,18 @@
         android:layout_marginTop="50dp"
         android:layout_gravity="center"
         android:src="@drawable/smurfooo"
-        android:layout_width="300dp"
-        android:layout_height="150dp"/>
+        android:layout_width="@dimen/dp300"
+        android:layout_height="@dimen/dp150"/>
     <TextView
-        android:text="Welcome,"
-        android:textSize="30sp"
+        android:text="@string/welcome"
+        android:textSize="@dimen/text30"
         android:layout_marginStart="@dimen/margin10"
         android:textStyle="bold"
         android:layout_marginTop="@dimen/margin10"
         android:layout_width="match_parent"
-        android:layout_height="35dp"/>
+        android:layout_height="@dimen/dp35"/>
     <TextView
-        android:text="Sign to Continue from where you left."
+        android:text="@string/welcome_text"
         android:textSize="20sp"
         android:layout_marginStart="@dimen/margin10"
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin15"
         android:layout_marginEnd="@dimen/margin15"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/margin20"
         android:background="@drawable/buttonbackground"
         android:id="@+id/email_login_TIL"
         >
@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/email_login"
-            android:hint="Email"
+            android:hint="@string/mail"
             android:textStyle="bold"
             android:layout_marginStart="@dimen/margin10"
             android:layout_marginEnd="@dimen/margin10"
@@ -62,9 +62,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginTop="@dimen/margin20"
+        android:layout_marginLeft="@dimen/margin10"
+        android:layout_marginRight="@dimen/margin10"
         android:id="@+id/password_login_TIL"
         android:background="@drawable/buttonbackground"
 
@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/password_login"
             android:inputType="textPassword"
-            android:hint="Password"
+            android:hint="@string/pass"
            android:layout_marginEnd="@dimen/margin10"
             android:layout_marginStart="@dimen/margin10"
 
@@ -88,18 +88,18 @@
 
 
     <Button
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="@dimen/dp25"
         android:textAllCaps="false"
         android:layout_gravity="center"
         android:background="@drawable/buttonbackground1"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="@dimen/dp40"
         android:layout_marginLeft="@dimen/margin10"
         android:layout_marginRight="@dimen/margin10"
         android:id="@+id/login_btn"
 
         android:textColor="@color/black"
-        android:text="Login" />
+        android:text="@string/login" />
     <LinearLayout
         android:weightSum="2"
         android:layout_width="match_parent"
@@ -108,10 +108,11 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_marginTop="10dp"
-            android:textSize="10dp"
+            android:textSize="@dimen/text10"
             android:gravity="right"
-            android:text="Forgot your Password?"
-            android:layout_height="wrap_content"/>
+            android:text="@string/pass_forgot"
+            android:layout_height="wrap_content"
+            tools:ignore="RtlHardcoded" />
         <TextView
             android:id="@+id/forgot_password_text"
             android:layout_weight="1"
@@ -120,7 +121,7 @@
             android:textSize="@dimen/text10"
             android:textStyle="bold"
             android:gravity="left"
-            android:text="Get help signing in."
+            android:text="@string/pass_text"
             android:layout_height="wrap_content"
             tools:ignore="RtlHardcoded" />
     </LinearLayout>
@@ -151,7 +152,7 @@
                 android:layout_height="0dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/margin10"
-                android:text="Facebook" />
+                />
         </LinearLayout>
     </LinearLayout>
 
@@ -167,17 +168,17 @@
         android:id="@+id/signup_text"
         android:textColor="@color/black"
         android:layout_marginTop="@dimen/margin20"
-        android:text="Create Account"
+        android:text="@string/create_account"
         />
 
 
 
     <ProgressBar
         android:id="@+id/progressBar_login"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/text30"
+        android:layout_height="@dimen/text30"
         android:layout_gravity="center|bottom"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="@dimen/margin20"
         android:visibility="gone" />
 
 </LinearLayout>

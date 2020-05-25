@@ -20,6 +20,7 @@ import com.example.chhots.ui.Dashboard.ApproveVideo.ApproveVideo;
 import com.example.chhots.ui.Dashboard.Favorite.favorite;
 import com.example.chhots.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.FirebaseDatabase;
 
 import static android.view.View.GONE;
 
@@ -74,16 +75,7 @@ public class dashboard extends Fragment implements onBackPressed {
                 switch(item.getItemId())
                 {
                     case R.id.dashboard_dashboard:
-
-                        Fragment fragment = new dashboard_bottom();
-                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.dashboard_layout,fragment);
-                        fragmentTransaction.addToBackStack(null);
-                        Bundle bundle1 = new Bundle();
-                        bundle1.putString("category",cat);
-                        fragment.setArguments(bundle1);
-                        Log.d("main222o","fragment");
-                        fragmentTransaction.commit();
+                        setFragment(new dashboard_bottom());
                         break;
 
                     case R.id.favorite_dashboard:
@@ -110,23 +102,34 @@ public class dashboard extends Fragment implements onBackPressed {
 
 
     private void setFragment(Fragment fragment) {
+
+        
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.dashboard_layout,fragment);
         fragmentTransaction.commit();
+
     }
+
+
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         View BottomnavBar = getActivity().findViewById(R.id.bottom_navigation);
         BottomnavBar.setVisibility(View.VISIBLE);
+
     }
+
     @Override
     public void onDetach() {
         super.onDetach();
+
         View BottomnavBar = getActivity().findViewById(R.id.bottom_navigation);
         BottomnavBar.setVisibility(View.VISIBLE);
+
     }
+
     @Override
     public void onBackPressed() {
         View BottomnavBar = getActivity().findViewById(R.id.bottom_navigation);

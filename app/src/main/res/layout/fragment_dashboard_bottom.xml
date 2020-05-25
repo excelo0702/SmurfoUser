@@ -15,7 +15,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginLeft="20dp"
         android:id="@+id/user_dashboard_profile"
-        ></de.hdodenhof.circleimageview.CircleImageView>
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
         android:layout_toRightOf="@id/user_dashboard_profile"
         android:id="@+id/user_dashboard_name"
         android:layout_marginTop="15dp"
-        ></TextView>
+        />
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -38,7 +38,7 @@
         android:layout_marginLeft="15dp"
 
         android:id="@+id/user_dashboard_badge"
-        ></ImageView>
+        />
 
 
     <TextView
@@ -52,7 +52,7 @@
         android:layout_below="@id/user_dashboard_name"
         android:id="@+id/user_dashboard_points"
         android:layout_marginTop="15dp"
-        ></TextView>
+        />
 
 
     <Button
@@ -62,7 +62,7 @@
         android:text="Leaderboard"
         android:layout_alignParentRight="true"
 
-        ></Button>
+        />
 
 
     <Button
@@ -71,8 +71,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/learderboard"
         android:id="@+id/history"
-        android:text="History"
-        ></Button>
+        android:text="History" />
 
 
 

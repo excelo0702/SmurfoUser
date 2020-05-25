@@ -25,6 +25,7 @@ import com.example.chhots.ChatBox.ChatWithInstructor;
 import com.example.chhots.R;
 import com.example.chhots.ui.Dashboard.HistoryPackage.HistoryModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -82,6 +83,7 @@ public class routine_view extends Fragment {
         rr2 = view.findViewById(R.id.rr3);
         rr5 = view.findViewById(R.id.rr5);
         fl = view.findViewById(R.id.video_space_routine);
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
 
         chatBtn = view.findViewById(R.id.chat_with_instructor_routine);
