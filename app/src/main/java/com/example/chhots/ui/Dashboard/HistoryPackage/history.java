@@ -1,4 +1,4 @@
-package com.example.chhots.ui.Dashboard;
+package com.example.chhots.ui.Dashboard.HistoryPackage;
 
 
 import android.os.Bundle;
@@ -13,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.chhots.R;
-import com.example.chhots.bottom_navigation_fragments.Explore.VideoModel;
-import com.example.chhots.category_view.routine.VideoAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,65 +28,66 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class favorite extends Fragment {
-    public favorite() {
+public class history extends Fragment {
+
+
+    public history() {
         // Required empty public constructor
     }
 
-    RecyclerView recyclerView;
-    VideoAdapter mAdapter;
-    RecyclerView.LayoutManager mLayoutManager;
-    private List<VideoModel> videolist;
+    private RecyclerView recyclerView;
+    private HistoryAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private List<HistoryModel> list;
+
 
     private DatabaseReference mDatabaseRef;
     private static final String TAG = "Favorite";
     private FirebaseAuth auth;
     private FirebaseUser user;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_history, container, false);
 
-        View view = inflater.inflate(R.layout.fragment_favorite, container, false);
-
-        videolist = new ArrayList<>();
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_favorite_view);
+        list = new ArrayList<>();
+        recyclerView = view.findViewById(R.id.recycler_history_view);
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        showFavorites();
+
+        showHistory();
 
         return view;
     }
 
-    private void showFavorites() {
-        videolist.clear();
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("FAVORITE").child(user.getUid());
+    private void showHistory() {
+        list.clear();
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("HISTORY").child(user.getUid());
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-//                Log.d(TAG,dataSnapshot.getValue().toString()+"");
-                for(DataSnapshot ds: dataSnapshot.getChildren())
+                for (DataSnapshot ds: dataSnapshot.getChildren())
                 {
-                    VideoModel model = ds.getValue(VideoModel.class);
-                    if(model.getSub_category()!=null && model.getSub_category().equals("Routine"))
-                        videolist.add(model);
+                    HistoryModel model = ds.getValue(HistoryModel.class);
+                    list.add(model);
                 }
-                Collections.reverse(videolist);
-                mAdapter = new VideoAdapter(videolist,getContext());
+                Collections.reverse(list);
+                mAdapter = new HistoryAdapter(list,getContext());
                 recyclerView.setLayoutManager(mLayoutManager);
                 recyclerView.setAdapter(mAdapter);
+
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
     }
-
 
 }

@@ -4,22 +4,29 @@ package com.example.chhots.category_view.Contest;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chhots.R;
+import com.example.chhots.bottom_navigation_fragments.Calendar.CalendarModel;
 import com.example.chhots.ui.notifications.NotificationModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,6 +41,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,7 +54,7 @@ public class hostContest extends Fragment {
     }
 
     EditText contest_info;
-    Button upload;
+    Button upload,select_date;
     ImageView contest_image;
     private static final int PICK_IMAGE_REQUEST = 1;
     private FirebaseAuth auth;
@@ -56,6 +64,9 @@ public class hostContest extends Fragment {
     private DatabaseReference databaseReference;
     private Uri mImageUri;
     private ProgressBar progress_seekBar;
+    private PopupWindow mPopupWindow;
+    String date_text;
+    RelativeLayout relativeLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,6 +80,47 @@ public class hostContest extends Fragment {
             @Override
             public void onClick(View view) {
                 openFileChooser();
+            }
+        });
+
+        select_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                View customView = inflater.inflate(R.layout.raw_calendar,null);
+
+                mPopupWindow = new PopupWindow(
+                        customView,
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                );
+                Toast.makeText(getContext(),"pop up",Toast.LENGTH_SHORT).show();
+                mPopupWindow.showAtLocation(relativeLayout, Gravity.CENTER,0,0);
+                if(Build.VERSION.SDK_INT>=21){
+                    mPopupWindow.setElevation(5.0f);
+                }
+                Button submit = customView.findViewById(R.id.submit_date);
+
+                final TextView date = customView.findViewById(R.id.date_view);
+                CalendarView calendarView = customView.findViewById(R.id.calender);
+
+                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                    @Override
+                    public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
+                        date_text = String.valueOf(year)+" "+String.valueOf(month)+" "+String.valueOf(day);
+                        date.setText(date_text);
+                    }
+                });
+
+                submit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        date_text = date_text;
+                        mPopupWindow.dismiss();
+                    }
+                });
+
+
             }
         });
 
@@ -122,8 +174,8 @@ public class hostContest extends Fragment {
                             filereference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
-                                    HostModel model = new HostModel(info, uri.toString(),time);
-                                    databaseReference.child("contest").child(time).setValue(model)
+                                    HostModel model = new HostModel(info, uri.toString(),time,date_text);
+                                    databaseReference.child("ContestThumbnail").child(time).setValue(model)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
@@ -134,6 +186,9 @@ public class hostContest extends Fragment {
 
                                     NotificationModel notify = new NotificationModel(time,"category",user.getUid(),"description",uri.toString());
                                     databaseReference.child("NOTIFICATION").child(time).setValue(notify);
+
+                                    CalendarModel calendar = new CalendarModel("Contest",date_text,info,info,uri.toString(),time);
+                                    databaseReference.child("CALENDAR").child(date_text).child(time).setValue(calendar);
 
                                 }
                             });
@@ -165,6 +220,8 @@ public class hostContest extends Fragment {
         databaseReference = firebaseDatabase.getReference("");
         storageReference = FirebaseStorage.getInstance().getReference();
         progress_seekBar = v.findViewById(R.id.progress_bar_creating_contest);
+        select_date = v.findViewById(R.id.select_date);
+        relativeLayout = v.findViewById(R.id.rrr);
     }
 
 }

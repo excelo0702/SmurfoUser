@@ -89,7 +89,7 @@ public class contest extends Fragment {
     }
 
     private void showContests() {
-        databaseReference.child("contest").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("ContestThumbnail").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds: dataSnapshot.getChildren())

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.chhots.R;
 import com.example.chhots.UserInfoModel;
+import com.example.chhots.ui.Dashboard.HistoryPackage.history;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -42,7 +44,7 @@ public class dashboard_bottom extends Fragment {
     BottomNavigationView bottomNavigationView;
     private ImageView userImage;
     TextView userName;
-
+    String cat="p";
     private FirebaseAuth auth;
     private DatabaseReference databaseReference;
 
@@ -51,6 +53,12 @@ public class dashboard_bottom extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard_bottom, container, false);
+
+
+        Bundle bundle = this.getArguments();
+        cat = bundle.getString("category");
+        Log.d("main22222",cat);
+
 
         history = view.findViewById(R.id.history);
         leaderboard = view.findViewById(R.id.learderboard);
@@ -83,6 +91,14 @@ public class dashboard_bottom extends Fragment {
                 fragmentTransaction.commit();
             }
         });
+
+        if(!cat.equals("MainActivity"))
+        {
+            history.setEnabled(false);
+            history.setVisibility(GONE);
+            leaderboard.setVisibility(GONE);
+            leaderboard.setEnabled(false);
+        }
 
         return view;
     }

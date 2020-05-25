@@ -83,7 +83,7 @@ public class courses extends Fragment {
         View view = inflater.inflate(R.layout.fragment_courses, container, false);
         upload_btn = view.findViewById(R.id.upload_course);
 
-        loadingDialog.startLoadingDialog();
+//        loadingDialog.startLoadingDialog();
 
         new Handler().postDelayed(new Runnable() {
             @Override

@@ -20,8 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chhots.Login;
 import com.example.chhots.R;
-import com.example.chhots.See_Video;
-import com.example.chhots.SubscriptionModel;
 import com.example.chhots.UserClass;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -114,6 +112,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
                      {
                          Fragment fragment = new routine_view();
                          Bundle bundle = new Bundle();
+                         bundle.putString("category","Routine");
                          bundle.putString("routineId",routineId);
                          fragment.setArguments(bundle);
                          FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
@@ -126,13 +125,15 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
                       //   p = checkSubscription();
                          if(p==0)
                          {
-                             p = checkPurchased();
+                         //    p = checkPurchased();
                          }
                      }
+                     p=1;
                      if(p==1)
                      {
                          Fragment fragment = new routine_view();
                          Bundle bundle = new Bundle();
+                         bundle.putString("category","Routine");
                          bundle.putString("routineId",routineId);
                          fragment.setArguments(bundle);
                          FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();

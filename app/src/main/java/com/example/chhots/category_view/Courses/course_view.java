@@ -15,16 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.chhots.CommentAdapter;
 import com.example.chhots.R;
-import com.example.chhots.category_view.Courses.ModelCourseView;
-import com.example.chhots.category_view.Courses.video_course;
-import com.example.chhots.ui.notifications.NotificationsFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

@@ -10,7 +10,7 @@
 
     <solid
         android:color="#0AB179"
-        ></solid>
+        />
 
     <padding
         android:left="10dp"

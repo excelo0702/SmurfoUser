@@ -88,12 +88,6 @@ public class trending extends Fragment {
                             case R.id.old:
                                 showTrendingOld();
                                 break;
-                            case R.id.price_low:
-                                showTrendinglowPrice();
-                                break;
-                            case R.id.price_high:
-                                showTrendingHighPrice();
-                                break;
                             default:
                                 showTrending();
                                 break;

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".See_Video"
+    tools:context=".bottom_navigation_fragments.Explore.See_Video"
     android:background="#FFFFFF">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -108,8 +108,8 @@
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
                     android:textColor="@color/colorAccent"
-                    android:id="@+id/chat_with_insttructor"
-                    android:text="Chat With Instructor"></TextView>
+                    android:id="@+id/save_to_device"
+                    android:text="Save to Device"></TextView>
 
 
 

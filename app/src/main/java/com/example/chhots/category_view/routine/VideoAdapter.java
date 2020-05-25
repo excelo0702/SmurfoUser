@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chhots.Login;
 import com.example.chhots.R;
-import com.example.chhots.See_Video;
+import com.example.chhots.bottom_navigation_fragments.Explore.See_Video;
 import com.example.chhots.SubscriptionModel;
 import com.example.chhots.UserClass;
 import com.example.chhots.bottom_navigation_fragments.Explore.VideoModel;

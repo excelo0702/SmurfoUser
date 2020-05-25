@@ -50,6 +50,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static android.view.View.GONE;
+
 public class routine extends Fragment implements onBackPressed {
 
     public routine() {
@@ -75,7 +77,7 @@ public class routine extends Fragment implements onBackPressed {
     ProgressBar progressBar;
     int fi=0,so=0;
 
-    private List<VideoModel> searchlist;
+    private List<RoutineThumbnailModel> searchlist;
     private SearchAdapter searchAdapter;
     SearchView searchView;
     private RecyclerView srecyclerView;
@@ -115,19 +117,19 @@ public class routine extends Fragment implements onBackPressed {
         srecyclerView = view.findViewById(R.id.search_recycle_routine_view);
         srecyclerView.setHasFixedSize(true);
         sLayoutManager = new LinearLayoutManager(getContext());
-        category="";
+        category="111111111111111111";
         swipeRefreshLayout = view.findViewById(R.id.swipe_routine);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(true);
                 so=0;
-                showRoutine("");
+                showRoutine(category);
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
         so=0;
-        showRoutine("");
+        showRoutine(category);
 
         addRoutine.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +145,7 @@ public class routine extends Fragment implements onBackPressed {
                 if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
                 {
                     isScrolling=true;
-                    progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(GONE);
                 }
             }
 
@@ -199,7 +201,7 @@ public class routine extends Fragment implements onBackPressed {
         });
 
 
-/*
+
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -215,30 +217,30 @@ public class routine extends Fragment implements onBackPressed {
                         {
                             case R.id.street:
 
-                                category = "Street";
-                                showRoutine(1);
+                                category = "111111110000000000";
+                                showRoutine(category);
                                 break;
 
                             case R.id.classical:
-                                category = "Classical";
-                                showRoutine(1);
+                                category = "111111110000000000";
+                                showRoutine(category);
                                 break;
 
                             case R.id.other:
-                                category = "Others";
-                                showRoutine(2);
+                                category = "111111110000000000";
+                                showRoutine(category);
                                 break;
 
                             default:
-                                category="";
-                                showRoutine(3);
+                                category="111111110000000000";
+                                showRoutine(category);
                                 break;
                         }
                         return true;
                     }
                 });
             }
-        });*/
+        });
 
         return view;
     }
@@ -248,7 +250,7 @@ public class routine extends Fragment implements onBackPressed {
             @Override
             public void run() {
                 if (mLastKey == null) {
-                    progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(GONE);
                     return;
                 }
                 final int k = videolist.size();
@@ -290,7 +292,7 @@ public class routine extends Fragment implements onBackPressed {
             @Override
             public void run() {
                 if (mLastKey == null) {
-                    progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(GONE);
                     return;
                 }
                 final int k = videolist.size();
@@ -325,155 +327,6 @@ public class routine extends Fragment implements onBackPressed {
         },2000);
     }
 
-/*
-    private void datafetchlowPrice(final String category) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mLastKey == null) {
-                    progressBar.setVisibility(View.GONE);
-                    return;
-                }
-                final int k = videolist.size();
-                recyclerView.smoothScrollToPosition(videolist.size() - 1);
-
-                Query query = mDatabaseRef.child("VIDEOS").orderByChild("price").startAt(mLastKey).limitToFirst(10);
-                if (category.equals(""))
-                {
-                    query.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                VideoModel model = ds.getValue(VideoModel.class);
-                                Log.d(TAG, model.getVideoId() + " p p p ");
-
-                                if (model.getSub_category() != null && model.getSub_category().equals("ROUTINE")) {
-                                    videolist.add(model);
-                                }
-                                if (videolist.size() == 6 + k) {
-                                    mLastKey = videolist.get(k).getVideoId();
-                                    break;
-                                }
-                            }
-                            if (videolist.size() < 6 + k) {
-                                mLastKey = null;
-                            }
-                            mAdapter.setData(videolist);
-                            recyclerView.setLayoutManager(mLayoutManager);
-                            recyclerView.setAdapter(mAdapter);
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) { }
-                    });
-                }
-                else
-                {
-                    query.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                VideoModel model = ds.getValue(VideoModel.class);
-                                Log.d(TAG, model.getVideoId() + " p p p ");
-
-                                if (model.getSub_category() != null && model.getSub_category().equals("ROUTINE") && model.getCategory().equals(category)) {
-                                    videolist.add(model);
-                                }
-                                if (videolist.size() == 6 + k) {
-                                    mLastKey = videolist.get(k).getVideoId();
-                                    break;
-                                }
-                            }
-                            if (videolist.size() < 6 + k) {
-                                mLastKey = null;
-                            }
-                            mAdapter.setData(videolist);
-                            recyclerView.setLayoutManager(mLayoutManager);
-                            recyclerView.setAdapter(mAdapter);
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) { }
-                    });
-                }
-            }
-        },2000);
-    }
-
-
-
-    //TODO: high low filter issue
-    private void datafetchHighPrice(final String category) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mLastKey == null) {
-                    progressBar.setVisibility(View.GONE);
-                    return;
-                }
-                final int k = videolist.size();
-                recyclerView.smoothScrollToPosition(videolist.size() - 1);
-
-                Query query = mDatabaseRef.child("VIDEOS").orderByChild("price").limitToLast(10);
-                if (category.equals(""))
-                {
-                    query.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                VideoModel model = ds.getValue(VideoModel.class);
-                                Log.d(TAG, model.getVideoId() + " p p p ");
-
-                                if (model.getSub_category() != null && model.getSub_category().equals("ROUTINE")) {
-                                    videolist.add(0,model);
-                                }
-                                if (videolist.size() == 6 + k) {
-                                    mLastKey = videolist.get(k).getVideoId();
-                                    break;
-                                }
-                            }
-                            if (videolist.size() < 6 + k) {
-                                mLastKey = null;
-                            }
-                            mAdapter.setData(videolist);
-                            recyclerView.setLayoutManager(mLayoutManager);
-                            recyclerView.setAdapter(mAdapter);
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) { }
-                    });
-                }
-                else
-                {
-                    query.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                VideoModel model = ds.getValue(VideoModel.class);
-                                Log.d(TAG, model.getVideoId() + " p p p ");
-
-                                if (model.getSub_category() != null && model.getSub_category().equals("ROUTINE") && model.getCategory().equals(category)) {
-                                    videolist.add(0,model);
-                                }
-                                if (videolist.size() == 6 + k) {
-                                    mLastKey = videolist.get(k).getVideoId();
-                                    break;
-                                }
-                            }
-                            if (videolist.size() < 6 + k) {
-                                mLastKey = null;
-                            }
-                            mAdapter.setData(videolist);
-                            recyclerView.setLayoutManager(mLayoutManager);
-                            recyclerView.setAdapter(mAdapter);
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) { }
-                    });
-                }
-            }
-        },2000);
-    }
-
-*/
     private void addVideos() {
 
         if(user==null)
@@ -500,8 +353,8 @@ public class routine extends Fragment implements onBackPressed {
 
                         Log.d(TAG,ds.getValue()+"");
                         RoutineThumbnailModel model = ds.getValue(RoutineThumbnailModel.class);
-                        if(model.category.equals(category))
-                        videolist.add(0, model);
+                        if(category.compareTo(model.category)>0)
+                            videolist.add(0, model);
 
                         if(p==0) {
                             tempkey = model.getRoutineId();
@@ -576,127 +429,6 @@ public class routine extends Fragment implements onBackPressed {
 
     }
 
-/*
-    private void showRoutinelowPrice(final String category) {
-        videolist.clear();
-
-        Query query = mDatabaseRef.child("VIDEOS").orderByChild("price").limitToFirst(10);
-        if(category.equals("")) {
-
-            query.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        VideoModel model = ds.getValue(VideoModel.class);
-                        if (model.getSub_category() != null && model.getSub_category().equals("ROUTINE")) {
-                            videolist.add( model);
-                        }
-                    }
-                    if(videolist.size()==0)
-                    {
-                        mLastKey=null;
-                    }
-                    else
-                    {
-                        mLastKey = videolist.get(videolist.size() - 1).getVideoId();
-                    }
-                    mAdapter.setData(videolist);
-                    recyclerView.setLayoutManager(mLayoutManager);
-                    recyclerView.setAdapter(mAdapter);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {}
-            });
-        }
-        else
-        {
-            query.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        VideoModel model = ds.getValue(VideoModel.class);
-                        if (model.getSub_category() != null && model.getSub_category().equals("ROUTINE") && model.getCategory().equals(category)) {
-                            videolist.add(model);
-                        }
-                    }
-                    if(videolist.size()==0)
-                    {
-                        mLastKey=null;
-                    }
-                    else
-                    {
-                        mLastKey = videolist.get(videolist.size() - 1).getVideoId();
-                    }
-                    mAdapter.setData(videolist);
-                    recyclerView.setLayoutManager(mLayoutManager);
-                    recyclerView.setAdapter(mAdapter);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) { }
-            });
-        }
-    }
-
-
-    private void showRoutineHighPrice(final String category) {
-        videolist.clear();
-
-        Query query = mDatabaseRef.child("VIDEOS").orderByChild("price").limitToLast(10);
-        if(category.equals("")) {
-            query.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        VideoModel model = ds.getValue(VideoModel.class);
-                        if (model.getSub_category() != null && model.getSub_category().equals("ROUTINE")) {
-                            videolist.add( model);
-                        }
-                    }
-                    if(videolist.size()==0)
-                    {
-                        mLastKey=null;
-                    }
-                    else
-                    {
-                        mLastKey = videolist.get(videolist.size() - 1).getVideoId();
-                    }
-                    mAdapter.setData(videolist);
-                    recyclerView.setLayoutManager(mLayoutManager);
-                    recyclerView.setAdapter(mAdapter);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {}
-            });
-        }
-        else
-        {
-            query.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        VideoModel model = ds.getValue(VideoModel.class);
-                        if (model.getSub_category() != null && model.getSub_category().equals("ROUTINE") && model.getCategory().equals(category)) {
-                            videolist.add(model);
-                        }
-                    }
-                    if(videolist.size()==0)
-                    {
-                        mLastKey=null;
-                    }
-                    else
-                    {
-                        mLastKey = videolist.get(videolist.size() - 1).getVideoId();
-                    }
-                    mAdapter.setData(videolist);
-                    recyclerView.setLayoutManager(mLayoutManager);
-                    recyclerView.setAdapter(mAdapter);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) { }
-            });
-        }
-    }
-*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -723,18 +455,16 @@ public class routine extends Fragment implements onBackPressed {
                 public boolean onQueryTextChange(String newText) {
                     searchlist.clear();
                     Toast.makeText(getContext(),"hhhh",Toast.LENGTH_SHORT).show();
-                    Query firebasequery = mDatabaseRef.child("VIDEOS").orderByChild("description").startAt(newText).endAt(newText+"\uf8ff");
+                    Query firebasequery = mDatabaseRef.child("ROUTINE_THUMBNAIL").orderByChild("title").startAt(newText).endAt(newText+"\uf8ff");
                     firebasequery.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             for (DataSnapshot ds: dataSnapshot.getChildren())
                             {
-                                VideoModel model = ds.getValue(VideoModel.class);
-                                if(model.getSub_category().equals("ROUTINE"))
-                                {
-                                    searchlist.add(model);
-                                    Log.d(TAG+"  gggg ::",model.getDescription()+"   ppp ");
-                                }
+                                RoutineThumbnailModel model = ds.getValue(RoutineThumbnailModel.class);
+                                searchlist.add(model);
+                                Log.d(TAG+"  gggg ::",model.getTitle()+"   ppp ");
+
                             }
                             searchAdapter.setData(searchlist);
                             //    Collections.reverse(videolist);
@@ -742,9 +472,6 @@ public class routine extends Fragment implements onBackPressed {
                             Log.d(TAG, mLastKey + " ooo ");
                             srecyclerView.setLayoutManager(sLayoutManager);
                             srecyclerView.setAdapter(searchAdapter);
-
-
-
                         }
 
                         @Override
@@ -754,31 +481,21 @@ public class routine extends Fragment implements onBackPressed {
                 }
             });
 
-            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
-                public boolean onClose() {
+                public void onFocusChange(View view, boolean b) {
+
                     searchlist.clear();
-                    searchAdapter.setData(searchlist);
-                    searchAdapter.notify();
-                    recyclerView.setLayoutManager(mLayoutManager);
-                    recyclerView.setAdapter(mAdapter);
-                    return true;
+                    Log.e(TAG,searchlist.size()+" q ");
                 }
             });
 
-
-
-
+        }
     }
-    }
-
 
     @Override
     public void onBackPressed() {
-        if (!searchView.isIconified()) {
-            searchView.setIconified(true);
-            searchView.onActionViewCollapsed();
-        }
+
     }
 
 

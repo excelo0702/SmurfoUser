@@ -36,5 +36,14 @@
         android:id="@+id/history_video_title"
         ></TextView>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="Date"
+        android:padding="5dp"
+        android:id="@+id/history_date"
+        android:layout_below="@id/history_video_title"></TextView>
+
 
 </RelativeLayout>

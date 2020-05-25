@@ -18,13 +18,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -72,22 +77,27 @@ public class addRoutine extends AppCompatActivity {
     private EditText video_title,sequence_no,description,routine_Name;
     private TextView seqNo;
     private ImageView thumbnail;
-    private RadioButton street,classical,breaking,krump,locking,popping;
     private Spinner spinner;
     private Uri videouri,mImageUri;
     private ProgressBar progress_seekbar1,progressBar2;
     private static final String TAG = "Upload_Routine";
     final String time = System.currentTimeMillis()+"";
-    public StringBuffer category=new StringBuffer("00000000");
+    public StringBuffer category=new StringBuffer("000000000000000000");
     String level;
 
     int flag=0;
+    PopupWindow mPopupWindow;
+    RelativeLayout relativeLayout;
+
+    private boolean classical1=false,breaking1 = false,locking1=false,krump1=false,popping1=false,house1=false,waacking1=false;
+    private boolean hiphop1=false,bharatnatyam1=false,kathak1=false,kuchipudi1=false,manipuri1=false,afro1=false,ballet1=false,contemporary1=false,dance_hall1=false,jazz1=false,litefeet1=false;
 
 
     private FirebaseUser user;
     private DatabaseReference mDatabaseReference;
     private StorageReference storageReference;
     String userName,userImage;
+    private TextView choose_category;
 
 
     //exoplayer implementation
@@ -135,6 +145,12 @@ public class addRoutine extends AppCompatActivity {
         spinner.setAdapter(adapter);
 
 
+        choose_category.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ChooseCategory();
+            }
+        });
 
         thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,6 +176,634 @@ public class addRoutine extends AppCompatActivity {
 
     }
 
+    private void ChooseCategory()
+    {
+        LayoutInflater inflater = (LayoutInflater)getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View customView = inflater.inflate(R.layout.custom_category,null);
+
+
+        mPopupWindow = new PopupWindow(
+                customView,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+
+
+        if(Build.VERSION.SDK_INT>=21){
+            mPopupWindow.setElevation(5.0f);
+        }
+        Button submit = customView.findViewById(R.id.submit_category);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPopupWindow.dismiss();
+            }
+        });
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.showAtLocation(relativeLayout, Gravity.CENTER,0,0);
+        mPopupWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                    Toast.makeText(getApplicationContext(),category,Toast.LENGTH_SHORT).show();
+
+                    mPopupWindow.dismiss();
+                }
+                return false;
+            }
+        });
+
+
+
+        final RadioButton classical = customView.findViewById(R.id.routine_category_classical);
+        if(classical1)
+        {
+            classical.setBackgroundColor(Color.parseColor("#88111111"));
+            Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+            category.setCharAt(0,'0');
+        }
+        classical.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!classical1)
+                {
+                    classical1=true;
+                    category.setCharAt(0,'1');
+                    classical.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    classical1=false;
+                    classical.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(0,'0');
+                }
+            }
+        });
+
+
+        final RadioButton breaking = customView.findViewById(R.id.routine_category_breaking);
+        if(breaking1)
+        {
+            breaking.setBackgroundColor(Color.parseColor("#88111111"));
+            Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            breaking.setBackgroundColor(Color.parseColor("#0D111111"));
+            Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+        }
+        breaking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!breaking1)
+                {
+                    breaking1=true;
+                    category.setCharAt(1,'1');
+                    breaking.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    breaking1=false;
+                    breaking.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(1,'0');
+                }
+            }
+        });
+
+
+        final RadioButton krump = customView.findViewById(R.id.routine_category_krump);
+        if(krump1)
+        {
+            krump.setBackgroundColor(Color.parseColor("#88111111"));
+            Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            krump.setBackgroundColor(Color.parseColor("#0D111111"));
+            Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+
+        }
+        krump.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!krump1)
+                {
+                    krump1=true;
+                    category.setCharAt(2,'1');
+                    krump.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    krump1=false;
+                    krump.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(2,'0');
+                }
+            }
+        });
+
+        final RadioButton locking = customView.findViewById(R.id.routine_category_locking);
+        if(locking1)
+        {
+            locking.setBackgroundColor(Color.parseColor("#88111111"));
+            Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            locking.setBackgroundColor(Color.parseColor("#0D111111"));
+            Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+        }
+        locking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!locking1)
+                {
+                    locking1=true;
+                    category.setCharAt(3,'1');
+                    locking.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    locking1=false;
+                    locking.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(3,'0');
+                }
+            }
+        });
+
+        final RadioButton popping = customView.findViewById(R.id.routine_category_popping);
+        if(popping1)
+        {
+            popping.setBackgroundColor(Color.parseColor("#88111111"));
+            Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            popping.setBackgroundColor(Color.parseColor("#0D111111"));
+            Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+        }
+        popping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!popping1)
+                {
+                    popping1=true;
+                    category.setCharAt(4,'1');
+                    popping.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    popping1=false;
+                    popping.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(4,'0');
+                }
+            }
+        });
+
+        final RadioButton house = customView.findViewById(R.id.routine_category_house);
+        if(house1)
+        {
+            house.setBackgroundColor(Color.parseColor("#88111111"));
+            Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            house.setBackgroundColor(Color.parseColor("#0D111111"));
+            Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+        }
+        house.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!house1)
+                {
+                    house1=true;
+                    category.setCharAt(5,'1');
+                    house.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    house1=false;
+                    house.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(5,'0');
+                }
+            }
+        });
+
+        final RadioButton waacking = customView.findViewById(R.id.routine_category_waacking);
+        if(waacking1)
+        {
+            waacking.setBackgroundColor(Color.parseColor("#88111111"));
+            Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            waacking.setBackgroundColor(Color.parseColor("#0D111111"));
+            Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+        }
+        waacking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!waacking1)
+                {
+                    waacking1=true;
+                    category.setCharAt(6,'1');
+                    waacking.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    waacking1=false;
+                    waacking.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(6,'0');
+                }
+            }
+        });
+
+
+        final RadioButton hiphop = customView.findViewById(R.id.routine_category_hip_hop);
+        if(hiphop1)
+        {
+            hiphop.setBackgroundColor(Color.parseColor("#88111111"));
+            Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            hiphop.setBackgroundColor(Color.parseColor("#0D111111"));
+            Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+        }
+        hiphop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!hiphop1)
+                {
+                    hiphop1=true;
+                    category.setCharAt(7,'1');
+                    hiphop.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    hiphop1=false;
+                    hiphop.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(7,'0');
+                }
+            }
+        });
+
+        final RadioButton bharatnatyam = customView.findViewById(R.id.routine_category_bharatnatyam);
+        if(bharatnatyam1)
+        {
+            bharatnatyam.setBackgroundColor(Color.parseColor("#88111111"));
+            Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            bharatnatyam.setBackgroundColor(Color.parseColor("#0D111111"));
+            Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+        }
+        bharatnatyam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!bharatnatyam1)
+                {
+                    bharatnatyam1=true;
+                    category.setCharAt(8,'1');
+                    bharatnatyam.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    bharatnatyam1=false;
+                    bharatnatyam.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(8,'0');
+                }
+            }
+        });
+
+
+        final RadioButton kathak = customView.findViewById(R.id.routine_category_kathak);
+        if(bharatnatyam1)
+        {
+            bharatnatyam.setBackgroundColor(Color.parseColor("#88111111"));
+            Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            bharatnatyam.setBackgroundColor(Color.parseColor("#0D111111"));
+            Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+        }
+        bharatnatyam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!bharatnatyam1)
+                {
+                    bharatnatyam1=true;
+                    category.setCharAt(9,'1');
+                    bharatnatyam.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    bharatnatyam1=false;
+                    bharatnatyam.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(9,'0');
+                }
+            }
+        });
+
+        final RadioButton kuchipudi = customView.findViewById(R.id.routine_category_kuchipudi);
+        if(kuchipudi1)
+        {
+            kuchipudi.setBackgroundColor(Color.parseColor("#88111111"));
+            Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            kuchipudi.setBackgroundColor(Color.parseColor("#0D111111"));
+            Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+        }
+        kuchipudi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!kuchipudi1)
+                {
+                    kuchipudi1=true;
+                    category.setCharAt(10,'1');
+                    kuchipudi.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    kuchipudi1=false;
+                    kuchipudi.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(10,'0');
+                }
+            }
+        });
+
+        final RadioButton manipuri = customView.findViewById(R.id.routine_category_manipuri);
+        if(manipuri1)
+        {
+            manipuri.setBackgroundColor(Color.parseColor("#88111111"));
+            Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            manipuri.setBackgroundColor(Color.parseColor("#0D111111"));
+            Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+        }
+        manipuri.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!manipuri1)
+                {
+                    manipuri1=true;
+                    category.setCharAt(11,'1');
+                    manipuri.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    manipuri1=false;
+                    manipuri.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(11,'0');
+                }
+            }
+        });
+
+
+        final RadioButton afro = customView.findViewById(R.id.routine_category_afro);
+        if(afro1)
+        {
+            afro.setBackgroundColor(Color.parseColor("#88111111"));
+            Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            afro.setBackgroundColor(Color.parseColor("#0D111111"));
+            Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+        }
+        afro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!afro1)
+                {
+                    afro1=true;
+                    category.setCharAt(12,'1');
+                    afro.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    afro1=false;
+                    afro.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(12,'0');
+                }
+            }
+        });
+
+
+        final RadioButton ballet = customView.findViewById(R.id.routine_category_ballet);
+
+        if(ballet1)
+        {
+            ballet.setBackgroundColor(Color.parseColor("#88111111"));
+            Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            ballet.setBackgroundColor(Color.parseColor("#0D111111"));
+            Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+        }
+        ballet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!ballet1)
+                {
+                    ballet1=true;
+                    category.setCharAt(13,'1');
+                    ballet.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    ballet1=false;
+                    ballet.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(13,'0');
+                }
+            }
+        });
+
+
+        final RadioButton contemporary = customView.findViewById(R.id.routine_category_contemporary);
+        if(contemporary1)
+        {
+            contemporary.setBackgroundColor(Color.parseColor("#88111111"));
+            Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            contemporary.setBackgroundColor(Color.parseColor("#0D111111"));
+            Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+        }
+        contemporary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!contemporary1)
+                {
+                    contemporary1=true;
+                    category.setCharAt(14,'1');
+                    contemporary.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    contemporary1=false;
+                    contemporary.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(14,'0');
+                }
+            }
+        });
+
+
+        final RadioButton dance_hall = customView.findViewById(R.id.routine_category_dance_hall);
+        if(dance_hall1)
+        {
+            dance_hall.setBackgroundColor(Color.parseColor("#88111111"));
+            Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            dance_hall.setBackgroundColor(Color.parseColor("#0D111111"));
+            Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+        }
+        dance_hall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!dance_hall1)
+                {
+                    dance_hall1=true;
+                    category.setCharAt(15,'1');
+                    dance_hall.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    dance_hall1=false;
+                    dance_hall.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(15,'0');
+                }
+            }
+        });
+
+
+        final RadioButton jazz = customView.findViewById(R.id.routine_category_jazz);
+        if(jazz1)
+        {
+            jazz.setBackgroundColor(Color.parseColor("#88111111"));
+            Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            jazz.setBackgroundColor(Color.parseColor("#0D111111"));
+            Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+        }
+        jazz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!jazz1)
+                {
+                    jazz1=true;
+                    category.setCharAt(16,'1');
+                    jazz.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    jazz1=false;
+                    jazz.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(16,'0');
+                }
+            }
+        });
+
+
+
+        final RadioButton litefeet = customView.findViewById(R.id.routine_category_litefeet);
+        if(litefeet1)
+        {
+            litefeet.setBackgroundColor(Color.parseColor("#88111111"));
+            Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            litefeet.setBackgroundColor(Color.parseColor("#0D111111"));
+            Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+        }
+        litefeet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!litefeet1)
+                {
+                    litefeet1=true;
+                    category.setCharAt(17,'1');
+                    litefeet.setBackgroundColor(Color.parseColor("#88111111"));
+                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    litefeet1=false;
+                    litefeet.setBackgroundColor(Color.parseColor("#0D111111"));
+                    Toast.makeText(getApplicationContext(),"Unchecked",Toast.LENGTH_SHORT).show();
+                    category.setCharAt(17,'0');
+                }
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
 
 
 
@@ -294,86 +938,6 @@ public class addRoutine extends AppCompatActivity {
     }
 
 
-    public void SelectCategory(View view){
-
-        boolean checked = ((RadioButton) view).isChecked();
-        char ch;
-        switch (view.getId())
-        {
-            case R.id.routine_category_street:
-                if(checked)
-                {
-                    category.setCharAt(0,'1');
-                    findViewById(R.id.routine_category_street).setBackgroundColor(Color.parseColor("#88000000"));
-                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    findViewById(R.id.routine_category_street).setBackgroundColor(Color.parseColor("#03fe6d"));
-                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
-                    category.setCharAt(0,'0');
-
-                }
-                break;
-            case R.id.routine_category_classical:
-                if(checked)
-                {
-                    category.setCharAt(1,'1');
-                    findViewById(R.id.routine_category_classical).setBackgroundColor(Color.parseColor("#000000"));
-                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    findViewById(R.id.routine_category_classical).setBackgroundColor(Color.parseColor("#03fe6d"));
-                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
-                    category.setCharAt(1,'0');
-
-                }
-                break;
-            case R.id.routine_category_breaking:
-                if(checked)
-                {
-                    category.setCharAt(2,'1');
-                    findViewById(R.id.routine_category_breaking).setBackgroundColor(Color.parseColor("#000000"));
-                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    findViewById(R.id.routine_category_breaking).setBackgroundColor(Color.parseColor("#000000"));
-                    Toast.makeText(getApplicationContext(),"checkde",Toast.LENGTH_SHORT).show();
-                    category.setCharAt(2,'0');
-
-                }
-                break;
-            case R.id.routine_category_krump:
-                if(checked)
-                {
-                 //   category[3]=1;
-                }
-                else{
-                 //   category[3]=0;
-                }
-                break;
-            case R.id.routine_category_locking:
-                if(checked)
-                {
-                 //   category[4]=1;
-                }
-                else{
-                //    category[4]=0;
-                }
-                break;
-            case R.id.routine_category_popping:
-                if(checked)
-                {
-                //    category[5]=1;
-                }
-                else{
-                 //   category[5]=0;
-                }
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + view.getId());
-        }
-
-    }
 
 
     @SuppressLint("WrongViewCast")
@@ -385,16 +949,12 @@ public class addRoutine extends AppCompatActivity {
         sequence_no = findViewById(R.id.routine_sequence_no);
         description = findViewById(R.id.routine_description);
         thumbnail = findViewById(R.id.choose_thumbnail);
-        street = findViewById(R.id.routine_category_street);
-        classical = findViewById(R.id.routine_category_classical);
-        breaking = findViewById(R.id.routine_category_breaking);
-        krump = findViewById(R.id.routine_category_krump);
-        locking = findViewById(R.id.routine_category_locking);
-        popping = findViewById(R.id.routine_category_popping);
         spinner = findViewById(R.id.routine_level_spinner);
         progress_seekbar1 = findViewById(R.id.progress_bar_upload_video);
         progressBar2 = findViewById(R.id.progress_bar_upload_routine);
         routine_Name = findViewById(R.id.routine_name);
+        choose_category = findViewById(R.id.choose_category);
+        relativeLayout = findViewById(R.id.routine_course);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();

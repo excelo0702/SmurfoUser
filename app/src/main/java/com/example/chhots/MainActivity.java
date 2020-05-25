@@ -6,12 +6,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.example.chhots.bottom_navigation_fragments.Calendar.calendar;
 import com.example.chhots.bottom_navigation_fragments.Explore.explore;
 import com.example.chhots.bottom_navigation_fragments.Explore.upload_video;
 import com.example.chhots.bottom_navigation_fragments.trending;
 import com.example.chhots.category_view.Contest.form_contest;
 import com.example.chhots.category_view.Courses.course_purchase_view;
 import com.example.chhots.category_view.Courses.video_course;
+import com.example.chhots.category_view.routine.routine;
 import com.example.chhots.category_view.routine.routine_purchase;
 import com.example.chhots.ui.About_Deprrita.about;
 import com.example.chhots.ui.Category.category;
@@ -96,11 +98,11 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
         setSupportActionBar(toolbar);
         final DrawerLayout drawer = findViewById(R.id.drawer);
         t = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.Open,R.string.Close);
-        t.setDrawerIndicatorEnabled(true);
 
         drawer.addDrawerListener(t);
-        t.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        t.setDrawerIndicatorEnabled(true);
+
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -115,7 +117,19 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
                             Intent intent = new Intent(MainActivity.this,Login.class);
                             startActivity(intent);
                         }
-                        setFragment(new dashboard());
+                        else
+                        {
+
+                            Fragment fragment = new dashboard();
+                            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.drawer_layout,fragment);
+                            fragmentTransaction.addToBackStack(null);
+                                  Bundle bundle = new Bundle();
+                                bundle.putString("category","MainActivity");
+                              fragment.setArguments(bundle);
+                            Log.d("main222","fragment");
+                            fragmentTransaction.commit();
+                        }
                         drawer.closeDrawers();
                         break;
                     case R.id.nav_notification:
@@ -233,8 +247,8 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
                                 Toast.makeText(getApplicationContext(), "Favorites", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.action_trending:
-                                setFragment(new trending());
-                                Toast.makeText(getApplicationContext(), "Trending", Toast.LENGTH_SHORT).show();
+                                setFragment(new calendar());
+                                Toast.makeText(getApplicationContext(), "Calendar", Toast.LENGTH_SHORT).show();
                                 break;
 
                             case R.id.action_instructor:
@@ -272,6 +286,7 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
         getMenuInflater().inflate(R.menu.main, menu);
         MenuItem item = menu.findItem(R.id.action_search);
         MenuItem item2 = menu.findItem(R.id.action_search_fragment);
+        item.setVisible(false);
         item2.setVisible(false);
         SearchView searchView = (SearchView) item.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -307,10 +322,7 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
     {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.drawer_layout,fragment);
-        if(fragment.equals(new dashboard()))
-        {
-            fragmentTransaction.addToBackStack(null);
-        }
+
 
         fragmentTransaction.commit();
     }
@@ -395,6 +407,11 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
             }
             if(f != null && (f instanceof feedback)) {
                 ((feedback) f).onBackPressed();
+                return 1;
+            }
+
+            if(f != null && (f instanceof routine)) {
+                ((routine) f).onBackPressed();
                 return 1;
             }
         }

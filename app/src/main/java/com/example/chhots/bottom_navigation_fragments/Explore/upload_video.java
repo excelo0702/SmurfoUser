@@ -137,17 +137,17 @@ public class upload_video extends Fragment implements onBackPressed {
         choosebtn = (Button)view.findViewById(R.id.chhose_btn);
         uploadBtn = (Button)view.findViewById(R.id.upload_btn);
         video_title = view.findViewById(R.id.video_title);
-        choose_category = view.findViewById(R.id.choose_category);
         description = view.findViewById(R.id.descriptioin_upload_video);
         thumbnail = view.findViewById(R.id.upload_thumbnail);
-        price = view.findViewById(R.id.video_price);
         spinner =view.findViewById(R.id.category_spinner);
 
         progress_seekBar = view.findViewById(R.id.progress_bar);
         playerView = view.findViewById(R.id.video_view);
         fullScreenButton = playerView.findViewById(R.id.exo_fullscreen_icon);
-        playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+        playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
         playerView.setPadding(0,0,0,0);
+        playerView.setBackgroundColor(Color.parseColor("#000000"));
+
 
         auth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -162,17 +162,6 @@ public class upload_video extends Fragment implements onBackPressed {
 
 
 
-        //check the subCategory of video
-        if(subCategory.equals("NormalVideos"))
-        {
-            price.setEnabled(false);
-            price.setVisibility(View.GONE);
-        }
-        else if(subCategory.equals("RoutineVideos"))
-        {
-            price.setEnabled(true);
-            price.setVisibility(View.VISIBLE);
-        }
         Toast.makeText(getContext(),subCategory,Toast.LENGTH_LONG).show();
 
 
@@ -243,7 +232,27 @@ public class upload_video extends Fragment implements onBackPressed {
             getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
             if (((AppCompatActivity)getActivity()).getSupportActionBar()!=null)
                 ((AppCompatActivity)getActivity()).getSupportActionBar().show();
-            ((AppCompatActivity)getActivity()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+
+            View BottomnavBar = getActivity().findViewById(R.id.bottom_navigation);
+            BottomnavBar.setVisibility(View.VISIBLE);
+
+            Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+            toolbar.setVisibility(View.VISIBLE);
+            playerView.setBackgroundColor(Color.parseColor("#000000"));
+
+            tt = getActivity().findViewById(R.id.tt);
+            tt.setVisibility(View.VISIBLE);
+
+            View NavBar = getActivity().findViewById(R.id.nav_view);
+            NavBar.setVisibility(View.VISIBLE);
+
+            choosebtn.setVisibility(View.VISIBLE);
+            video_title.setVisibility(View.VISIBLE);
+            thumbnail.setVisibility(View.VISIBLE);
+            description.setVisibility(View.VISIBLE);
+            spinner.setVisibility(View.VISIBLE);
+            uploadBtn.setVisibility(View.VISIBLE);
 
             fullScreen = false;
         }
@@ -283,6 +292,12 @@ public class upload_video extends Fragment implements onBackPressed {
 
             View NavBar = getActivity().findViewById(R.id.nav_view);
             NavBar.setVisibility(GONE);
+            choosebtn.setVisibility(GONE);
+            video_title.setVisibility(GONE);
+            thumbnail.setVisibility(GONE);
+            description.setVisibility(GONE);
+            spinner.setVisibility(GONE);
+            uploadBtn.setVisibility(GONE);
 
             fullScreen = true;
         }

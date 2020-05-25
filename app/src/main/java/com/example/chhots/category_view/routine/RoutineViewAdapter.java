@@ -1,10 +1,12 @@
 package com.example.chhots.category_view.routine;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,8 @@ import com.example.chhots.R;
 import com.example.chhots.category_view.Courses.video_course;
 
 import java.util.List;
+
+import static android.view.View.GONE;
 
 public class RoutineViewAdapter extends RecyclerView.Adapter<RoutineViewAdapter.RoutineViewHolder>{
 
@@ -43,8 +47,9 @@ public class RoutineViewAdapter extends RecyclerView.Adapter<RoutineViewAdapter.
     public void onBindViewHolder(@NonNull RoutineViewHolder holder, int position) {
         holder.section.setText(list.get(position).getSequenceNo()+". "+list.get(position).getTitle());
         holder.videoURL = list.get(position).getVideoUrl();
-
+        holder.routineId = list.get(position).getRoutineId();
     }
+
 
     public void setData(List<RoutineModel> list)
     {
@@ -57,20 +62,26 @@ public class RoutineViewAdapter extends RecyclerView.Adapter<RoutineViewAdapter.
 
     public class RoutineViewHolder extends RecyclerView.ViewHolder{
         TextView section;
-        String videoURL;
+        String videoURL,routineId;
+        ImageView img1,img2;
         public RoutineViewHolder(@NonNull View itemView) {
             super(itemView);
             section = itemView.findViewById(R.id.routine_sectionNo);
+            img1 = itemView.findViewById(R.id.play_section);
+            img2 = itemView.findViewById(R.id.pause_section);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    section.setTextColor(Color.RED);
+                    img2.setVisibility(View.VISIBLE);
+                    img1.setVisibility(GONE);
                     Fragment fragment = new video_course();
                     Bundle bundle = new Bundle();
                     bundle.putString("videoURL",videoURL);
+                    bundle.putString("routineId",routineId);
                     fragment.setArguments(bundle);
                     FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.video_space_routine, fragment);
-                    fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                 }
             });

@@ -21,9 +21,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.chhots.R;
-import com.example.chhots.bottom_navigation_fragments.Explore.VideoModel;
-import com.example.chhots.ui.Dashboard.HistoryAdapter;
-import com.example.chhots.ui.Dashboard.HistoryModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;

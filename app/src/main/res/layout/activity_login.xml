@@ -17,13 +17,28 @@
         android:src="@drawable/smurfooo"
         android:layout_width="300dp"
         android:layout_height="150dp"/>
+    <TextView
+        android:text="Welcome,"
+        android:textSize="30sp"
+        android:layout_marginStart="@dimen/margin10"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/margin10"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"/>
+    <TextView
+        android:text="Sign to Continue from where you left."
+        android:textSize="20sp"
+        android:layout_marginStart="@dimen/margin10"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"/>
+
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginStart="@dimen/margin15"
+        android:layout_marginEnd="@dimen/margin15"
         android:layout_marginTop="20dp"
         android:background="@drawable/buttonbackground"
         android:id="@+id/email_login_TIL"
@@ -35,8 +50,10 @@
             android:id="@+id/email_login"
             android:hint="Email"
             android:textStyle="bold"
+            android:layout_marginStart="@dimen/margin10"
+            android:layout_marginEnd="@dimen/margin10"
             android:textColorHint="@color/black"
-            android:layout_margin="10dp"
+
             />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -62,7 +79,8 @@
             android:id="@+id/password_login"
             android:inputType="textPassword"
             android:hint="Password"
-            android:layout_margin="10dp"
+           android:layout_marginEnd="@dimen/margin10"
+            android:layout_marginStart="@dimen/margin10"
 
             />
     </com.google.android.material.textfield.TextInputLayout>
@@ -70,33 +88,72 @@
 
 
     <Button
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="25dp"
+        android:textAllCaps="false"
         android:layout_gravity="center"
         android:background="@drawable/buttonbackground1"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="@dimen/margin10"
+        android:layout_marginRight="@dimen/margin10"
         android:id="@+id/login_btn"
-        android:layout_marginBottom="10dp"
+
         android:textColor="@color/black"
         android:text="Login" />
+    <LinearLayout
+        android:weightSum="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_marginTop="10dp"
+            android:textSize="10dp"
+            android:gravity="right"
+            android:text="Forgot your Password?"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/forgot_password_text"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/margin10"
+            android:textSize="@dimen/text10"
+            android:textStyle="bold"
+            android:gravity="left"
+            android:text="Get help signing in."
+            android:layout_height="wrap_content"
+            tools:ignore="RtlHardcoded" />
+    </LinearLayout>
 
-    <com.google.android.gms.common.SignInButton
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/google_signin"
-        ></com.google.android.gms.common.SignInButton>
+        android:layout_marginTop="@dimen/margin10"
+        android:orientation="horizontal">
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_signin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin20"
+            android:layout_marginEnd="@dimen/margin15" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin20"
+            android:layout_marginTop="@dimen/margin15">
 
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Facebook"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp" />
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin10"
+                android:text="Facebook" />
+        </LinearLayout>
+    </LinearLayout>
 
 
     <Button
@@ -109,19 +166,10 @@
         android:layout_marginRight="10dp"
         android:id="@+id/signup_text"
         android:textColor="@color/black"
+        android:layout_marginTop="@dimen/margin20"
         android:text="Create Account"
         />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:id="@+id/forgot_password_text"
-        android:layout_marginRight="10dp"
-        android:textSize="14dp"
-        android:layout_gravity="right"
-        android:text="Forgot Password?"
-        android:textColor="#000000"
-        />
+
 
 
     <ProgressBar

@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chhots.R;
+import com.example.chhots.category_view.routine.RoutineThumbnailModel;
 import com.example.chhots.category_view.routine.SearchAdapter;
 import com.example.chhots.category_view.routine.VideoAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,10 +42,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static android.view.View.GONE;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class explore extends Fragment {
+public class explore extends Fragment{
 
 
     public explore() {
@@ -70,7 +75,7 @@ public class explore extends Fragment {
     boolean isScrolling=false;
 
 
-    private List<VideoModel> searchlist;
+    private List<RoutineThumbnailModel> searchlist;
     private SearchAdapter searchAdapter;
     private SearchView searchView;
     private RecyclerView srecyclerView;
@@ -157,9 +162,20 @@ public class explore extends Fragment {
             }
         });
 
+        SpannableString content = new SpannableString("Normal");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        NormalVideos.setText(content);
+        NormalVideos.setTextSize(24);
+
         NormalVideos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SpannableString content = new SpannableString("Normal");
+                content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+                NormalVideos.setText(content);
+                ContestVideos.setText("Contest");
+                NormalVideos.setTextSize(24);
+                ContestVideos.setTextSize(22);
                 flag=0;
                 category="Normal";
                 showVideos(category);
@@ -169,6 +185,12 @@ public class explore extends Fragment {
         ContestVideos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SpannableString content = new SpannableString("Contest");
+                content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+                ContestVideos.setText(content);
+                ContestVideos.setTextSize(24);
+                NormalVideos.setText("Normal");
+                NormalVideos.setTextSize(22);
                 flag=1;
                 category="CONTEST";
                 showVideos(category);
@@ -330,12 +352,11 @@ public class explore extends Fragment {
 
                             for (DataSnapshot ds: dataSnapshot.getChildren())
                             {
-                                VideoModel model = ds.getValue(VideoModel.class);
-                                if(model.getSub_category().equals("NORMAL") || model.getSub_category().equals("Contest"))
-                                {
+                                RoutineThumbnailModel model = ds.getValue(RoutineThumbnailModel.class);
+
                                     searchlist.add(model);
                                 //    Log.d(TAG+"  gggg ::",model.getDescription()+"   ppp ");
-                                }
+                                
                             }
                             searchAdapter.setData(searchlist);
                             //    Collections.reverse(videolist);
@@ -354,21 +375,14 @@ public class explore extends Fragment {
                 }
             });
 
-            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
-                public boolean onClose() {
+                public void onFocusChange(View view, boolean b) {
+
                     searchlist.clear();
-                    searchAdapter.setData(searchlist);
-                    searchAdapter.notify();
-                    recyclerView.setLayoutManager(mLayoutManager);
-                    recyclerView.setAdapter(mAdapter);
-                    return true;
+                    Log.e(TAG,searchlist.size()+" q ");
                 }
             });
-
-
-
-
         }
     }
 

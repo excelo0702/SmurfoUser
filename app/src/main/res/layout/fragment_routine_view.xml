@@ -3,37 +3,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rr5"
     tools:context=".category_view.routine.routine_view"
-    android:background="#FFFFFF"
+    android:background="#9C27B0"
     >
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="260dp"
         android:id="@+id/video_space_routine"
-        ></FrameLayout>
+        android:background="#AD1515"
+        ></RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/rr3"
+        android:layout_below="@id/video_space_routine">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Routine Sections"
+        android:textSize="@dimen/text20"
+        android:textColor="@color/black"
+        android:padding="10dp"
         android:id="@+id/lala_land"
-        android:layout_below="@id/video_space_routine">
+        >
     </TextView>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/lala_land"
+        android:background="@color/black"
+        android:id="@+id/lala_land1"
+        android:orientation="vertical"
+        ></FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
+        android:scrollbars="vertical"
         android:id="@+id/routines_recycler_view_section"
-        android:layout_below="@id/lala_land">
+        android:layout_below="@id/lala_land1">
     </androidx.recyclerview.widget.RecyclerView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:layout_width="@dimen/text30"
+        android:layout_height="@dimen/text30"
         android:src="@color/Smurfogreen"
         android:id="@+id/chat_with_instructor_routine"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="60dp">
-    </com.google.android.material.floatingactionbutton.FloatingActionButton>
+        android:visibility="visible"
+        android:layout_marginBottom="30dp">
+    </ImageView>
+</RelativeLayout>
+
 </RelativeLayout>

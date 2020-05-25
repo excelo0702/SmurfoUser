@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,9 +16,10 @@ import android.widget.Button;
 
 import com.example.chhots.R;
 import com.example.chhots.onBackPressed;
+import com.example.chhots.ui.Dashboard.ApproveVideo.ApproveVideo;
+import com.example.chhots.ui.Dashboard.Favorite.favorite;
 import com.example.chhots.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.FirebaseDatabase;
 
 import static android.view.View.GONE;
 
@@ -33,6 +35,7 @@ public class dashboard extends Fragment implements onBackPressed {
     
     private Button history,leaderboard;
     BottomNavigationView bottomNavigationView;
+    String cat="p";
 
 
     @Override
@@ -41,16 +44,46 @@ public class dashboard extends Fragment implements onBackPressed {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-        setFragment(new dashboard_bottom());
+
+
+        Bundle bundle = getArguments();
+        cat = bundle.getString("category");
+        Log.d("main222p",cat);
+
+
+
+        Fragment fragment = new dashboard_bottom();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.dashboard_layout,fragment);
+        fragmentTransaction.addToBackStack(null);
+        Bundle bundle1 = new Bundle();
+        bundle1.putString("category",cat);
+        fragment.setArguments(bundle1);
+        Log.d("main222o","fragment");
+        fragmentTransaction.commit();
 
         bottomNavigationView = view.findViewById(R.id.bottom_navigation_dashboard);
+        if(!cat.equals("MainActivity"))
+        {
+            bottomNavigationView.setEnabled(false);
+            bottomNavigationView.setVisibility(GONE);
+        }
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId())
                 {
                     case R.id.dashboard_dashboard:
-                        setFragment(new dashboard_bottom());
+
+                        Fragment fragment = new dashboard_bottom();
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.dashboard_layout,fragment);
+                        fragmentTransaction.addToBackStack(null);
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putString("category",cat);
+                        fragment.setArguments(bundle1);
+                        Log.d("main222o","fragment");
+                        fragmentTransaction.commit();
                         break;
 
                     case R.id.favorite_dashboard:
@@ -77,34 +110,23 @@ public class dashboard extends Fragment implements onBackPressed {
 
 
     private void setFragment(Fragment fragment) {
-
-        
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.dashboard_layout,fragment);
         fragmentTransaction.commit();
-
     }
-
-
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         View BottomnavBar = getActivity().findViewById(R.id.bottom_navigation);
         BottomnavBar.setVisibility(View.VISIBLE);
-
     }
-
     @Override
     public void onDetach() {
         super.onDetach();
-
         View BottomnavBar = getActivity().findViewById(R.id.bottom_navigation);
         BottomnavBar.setVisibility(View.VISIBLE);
-
     }
-
     @Override
     public void onBackPressed() {
         View BottomnavBar = getActivity().findViewById(R.id.bottom_navigation);

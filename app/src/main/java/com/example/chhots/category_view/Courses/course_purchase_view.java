@@ -2,7 +2,6 @@ package com.example.chhots.category_view.Courses;
 
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,14 +18,12 @@ import android.widget.Toast;
 
 import com.example.chhots.PaymentListener;
 import com.example.chhots.R;
-import com.example.chhots.See_Video;
 import com.example.chhots.UserClass;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.razorpay.Checkout;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 

@@ -9,12 +9,4 @@
         android:title="DateFollowed:Earliest"
         ></item>
 
-    <item android:id="@+id/price_low"
-        android:title="Sort:Low Price"
-        ></item>
-
-    <item android:id="@+id/price_high"
-        android:title="Sort:High Price"
-        ></item>
-
 </menu>

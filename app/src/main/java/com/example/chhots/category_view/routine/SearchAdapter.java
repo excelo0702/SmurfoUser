@@ -18,10 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chhots.Login;
 import com.example.chhots.R;
-import com.example.chhots.See_Video;
-import com.example.chhots.SubscriptionModel;
 import com.example.chhots.UserClass;
-import com.example.chhots.bottom_navigation_fragments.Explore.VideoModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,10 +32,10 @@ import java.util.List;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder>{
 
     private static final String TAG = "NotificationViewAdapter";
-    private List<VideoModel> list;
+    private List<RoutineThumbnailModel> list;
     private Context context;
 
-    public SearchAdapter(List<VideoModel> list, Context context) {
+    public SearchAdapter(List<RoutineThumbnailModel> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -52,10 +49,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
-        holder.search_text.setText(list.get(position).getDescription());
-        holder.videoId = list.get(position).getVideoId();
-        holder.sub_category = list.get(position).getSub_category();
-        holder.thumbnail = list.get(position).getThumbnail();
+        holder.search_text.setText(list.get(position).getTitle());
+        holder.routineId = list.get(position).getRoutineId();
+        holder.thumbnail = list.get(position).getRoutineThumbnail();
+        holder.instructorId = list.get(position).getInstructorId();
     }
 
     @Override
@@ -64,7 +61,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
     }
 
-    public void setData(List<VideoModel> list)
+    public void setData(List<RoutineThumbnailModel> list)
     {
         this.list =list;
     }
@@ -72,7 +69,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     public class SearchViewHolder extends RecyclerView.ViewHolder{
 
         TextView search_text;
-        String videoId,sub_category,thumbnail,userId;
+        String routineId,sub_category,thumbnail,userId,instructorId;
         FirebaseUser user;
         DatabaseReference mDatabaseReference;
 
@@ -85,58 +82,67 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (user == null) {
-                        Toast.makeText(context, "Login First", Toast.LENGTH_SHORT).show();
+                    int p=0;
+                    //TODO: add handler
+                    if(user==null)
+                    {
+                        Toast.makeText(context,"Login First",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, Login.class);
                         context.startActivity(intent);
-
-                    } else {
-
-                        int p = 1;
-                        if (sub_category.equals("ROUTINE")) {
-                            // TODO: check subscription of user
-                            p = checkSubscription();
-                            Log.d(TAG, p + " p ");
-                            if (p == 0) {
-                                p = checkPurchased();
-                                Log.d(TAG, p + " q ");
-                            }
-                        }
-                        if (p == 1) {
-                            Fragment fragment = new See_Video();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("videoId", videoId);
-                            fragment.setArguments(bundle);
-                            FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.drawer_layout, fragment);
-                            fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.commit();
-
-                        } else {
-                            //Create Pop up to Buy this Video
-                            //Redirect to routine_purchase
-                            Fragment fragment = new routine_purchase();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("videoId", videoId);
-                            bundle.putString("thumbnail", thumbnail);
-                            bundle.putString("instructorId", userId);
-                            fragment.setArguments(bundle);
-                            FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.drawer_layout, fragment);
-                            fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.commit();
-
+                    }
+                    else if(userId==instructorId)
+                    {
+                        Fragment fragment = new routine_view();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("routineId",routineId);
+                        fragment.setArguments(bundle);
+                        FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.drawer_layout, fragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                    }
+                    else
+                    {
+                        //   p = checkSubscription();
+                        if(p==0)
+                        {
+                            p = checkPurchased();
                         }
                     }
+                    if(p==1)
+                    {
+                        Fragment fragment = new routine_view();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("routineId",routineId);
+                        fragment.setArguments(bundle);
+                        FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.drawer_layout, fragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                    }
+                    else
+                    {
+                        Fragment fragment = new routine_purchase();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("routineId", routineId);
+                        bundle.putString("thumbnail", thumbnail);
+                        bundle.putString("userId", userId);
+                        fragment.setArguments(bundle);
+                        FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.drawer_layout, fragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                    }
+
                 }
-
-
             });
 
 
 
 
         }
+
+        /*
         public int checkSubscription()
         {
             Log.d(TAG," pqq ");
@@ -150,7 +156,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                                 Log.d(TAG,ds.getValue()+"");
 
                                 SubscriptionModel model = ds.getValue(SubscriptionModel.class);
-                                if(model.getVideoId().equals(videoId))
+                                if(model.getVideoId().equals(routineIdId))
                                 {
                                     Log.d(TAG," pqq ");
                                     flag[0] =1;
@@ -184,11 +190,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
             return 0;
         }
 
+         */
         public int checkPurchased()
         {
             Log.d(TAG," pqq ");
             final int[] flag = new int[1];
-            mDatabaseReference.child("USERS").child(user.getUid()).child("videos")
+            mDatabaseReference.child("USERS").child(user.getUid()).child("routines")
                     .addValueEventListener(new ValueEventListener() {
 
                         @Override
@@ -200,7 +207,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                                 Log.d(TAG,ds.getValue()+"");
 
                                 UserClass model = ds.getValue(UserClass.class);
-                                if(model.getVideoId().equals(videoId))
+                                if(model.getVideoId().equals(routineId))
                                 {
                                     Log.d(TAG," peee ");
                                     flag[0] =1;
@@ -208,9 +215,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                                 }
                             }
                             if(flag[0]==1) {
-                                Fragment fragment = new See_Video();
+                                Fragment fragment = new routine_view();
                                 Bundle bundle = new Bundle();
-                                bundle.putString("videoId", videoId);
+                                bundle.putString("routineId", routineId);
                                 fragment.setArguments(bundle);
                                 FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                                 fragmentTransaction.replace(R.id.drawer_layout, fragment);
@@ -230,6 +237,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
             return 0;
         }
+
 
     }
 }
