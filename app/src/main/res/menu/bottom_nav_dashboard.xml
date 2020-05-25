@@ -15,9 +15,9 @@
         android:title="Favorite"
         app:showAsAction="always"></item>
     <item
-        android:id="@+id/community_dashboard"
+        android:id="@+id/my_routines_dashboard"
         android:enabled="true"
-        android:title="Community"
+        android:title="My Routines"
         app:showAsAction="always"></item>
     <item
         android:id="@+id/certificates_dashboard"
@@ -25,9 +25,9 @@
         android:title="Certificates"
         app:showAsAction="always"></item>
     <item
-        android:id="@+id/approve_videos_dashboard"
+        android:id="@+id/my_videos_dashboard"
         android:enabled="true"
-        android:title="Approve videos"
+        android:title="My videos"
         app:showAsAction="always"></item>
 
 </menu>

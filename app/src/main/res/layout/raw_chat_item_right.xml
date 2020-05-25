@@ -19,9 +19,11 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="100dp"
         android:layout_marginRight="10dp"
+        android:textColor="@color/black"
+        android:textSize="16dp"
         android:id="@+id/show_message"
         android:text="Yo"
-        android:background="@drawable/background_right"
+        android:background="@drawable/background_left"
         android:padding="8dp"
         ></TextView>
 

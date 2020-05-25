@@ -150,7 +150,7 @@ public class SignUpNextScreen extends AppCompatActivity {
                                                             .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                                                 @Override
                                                                 public void onSuccess(Uri uri) {
-                                                                    UserInfoModel model = new UserInfoModel(auth.getCurrentUser().getUid(), Semail, profession, level, uri.toString(),name, R1, R2, R3, R4, R5, R6);
+                                                                    UserInfoModel model = new UserInfoModel(auth.getCurrentUser().getUid(), Semail, profession, level, uri.toString(),name,"","Beginner", R1, R2, R3, R4, R5, R6);
                                                                     mDatabaseReference.child("UserInfo").child(auth.getCurrentUser().getUid()).setValue(model);
                                                                     startActivity(new Intent(SignUpNextScreen.this, MainActivity.class));
                                                                 }

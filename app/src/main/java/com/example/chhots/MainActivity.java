@@ -190,7 +190,8 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
             query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    UserInfoModel model = dataSnapshot.getValue(UserInfoModel.class);
+                 Log.d(TAG,dataSnapshot.getValue()+"");
+                       UserInfoModel model = dataSnapshot.getValue(UserInfoModel.class);
                    // login.setText(model.getUserName());
                     //Picasso.get().load(Uri.parse(model.getUserImageurl())).placeholder(R.mipmap.ic_logo).into(user_profile_header);
                 }

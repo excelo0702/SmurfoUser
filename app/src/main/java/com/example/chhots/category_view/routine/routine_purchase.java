@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -20,10 +21,14 @@ import android.widget.Toast;
 import com.example.chhots.PaymentListener;
 import com.example.chhots.R;
 import com.example.chhots.UserClass;
+import com.example.chhots.bottom_navigation_fragments.Explore.VideoModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.razorpay.Checkout;
 import com.squareup.picasso.Picasso;
 
@@ -49,6 +54,7 @@ public class routine_purchase extends Fragment implements PaymentListener {
     private FirebaseUser user;
     private DatabaseReference mDatabaseReference;
 
+    RoutineThumbnailModel mode;
     private PaymentListener listener;
 
 
@@ -70,7 +76,7 @@ public class routine_purchase extends Fragment implements PaymentListener {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-
+        fetchRoutine();
         buy_now = view.findViewById(R.id.routine_buy_now);
         buy_now.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +87,20 @@ public class routine_purchase extends Fragment implements PaymentListener {
 
 
         return view;
+    }
+
+    private void fetchRoutine() {
+        mDatabaseReference.child("ROUTINE_THUMBNAILS").child(routineId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mode = dataSnapshot.getValue(RoutineThumbnailModel.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void startPayment(String merchant,String desc,String order,String imageUrl,String amoun) {
@@ -151,8 +171,7 @@ public class routine_purchase extends Fragment implements PaymentListener {
         try{
             String time = System.currentTimeMillis()+"";
             UserClass model = new UserClass(routineId,time);
-            mDatabaseReference.child("USERS").child(user.getUid()).child("routines").child(routineId).setValue(model);
-
+            mDatabaseReference.child("USER_PURCHASED_ROUTINES").child(user.getUid()).child(routineId).setValue(mode);
             Fragment fragment = new routine_view();
             Bundle bundle = new Bundle();
             bundle.putString("routineId", routineId);

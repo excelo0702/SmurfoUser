@@ -61,7 +61,7 @@ public class routine extends Fragment implements onBackPressed {
     RecyclerView recyclerView;
     RoutineAdapter mAdapter;
     LinearLayoutManager mLayoutManager,sLayoutManager;
-    private TextView filter,sort,addRoutine;
+    private TextView filter,sort;
     private ProgressBar mProgressCircle;
     private DatabaseReference mDatabaseRef;
     private List<RoutineThumbnailModel> videolist;
@@ -106,7 +106,6 @@ public class routine extends Fragment implements onBackPressed {
         sort = view.findViewById(R.id.sort_routine);
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
-        addRoutine = view.findViewById(R.id.add_routine_video);
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         mDatabaseRef =FirebaseDatabase.getInstance().getReference();
@@ -131,12 +130,6 @@ public class routine extends Fragment implements onBackPressed {
         so=0;
         showRoutine(category);
 
-        addRoutine.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addVideos();
-            }
-        });
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -325,18 +318,6 @@ public class routine extends Fragment implements onBackPressed {
 
             }
         },2000);
-    }
-
-    private void addVideos() {
-
-        if(user==null)
-        {
-            Toast.makeText(getContext(),"You have to Sign in First",Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Intent intent = new Intent(getContext(),addRoutine.class);
-            getContext().startActivity(intent);
-        }
     }
 
 

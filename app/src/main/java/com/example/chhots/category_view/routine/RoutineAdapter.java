@@ -108,7 +108,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
                          Intent intent = new Intent(context, Login.class);
                          context.startActivity(intent);
                      }
-                     else if(userId==instructorId)
+               /*      else if(userId==instructorId)
                      {
                          Fragment fragment = new routine_view();
                          Bundle bundle = new Bundle();
@@ -119,13 +119,13 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
                          fragmentTransaction.replace(R.id.drawer_layout, fragment);
                          fragmentTransaction.addToBackStack(null);
                          fragmentTransaction.commit();
-                     }
+                     }*/
                      else
                      {
                       //   p = checkSubscription();
                          if(p==0)
                          {
-                         //    p = checkPurchased();
+                             p = checkPurchased();
                          }
                      }
                      p=1;

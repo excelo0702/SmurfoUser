@@ -18,6 +18,8 @@ import com.example.chhots.R;
 import com.example.chhots.onBackPressed;
 import com.example.chhots.ui.Dashboard.ApproveVideo.ApproveVideo;
 import com.example.chhots.ui.Dashboard.Favorite.favorite;
+import com.example.chhots.ui.Dashboard.MyRoutinePackage.MyRoutines;
+import com.example.chhots.ui.Dashboard.MyVideo.MyVideoFragment;
 import com.example.chhots.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.FirebaseDatabase;
@@ -75,23 +77,33 @@ public class dashboard extends Fragment implements onBackPressed {
                 switch(item.getItemId())
                 {
                     case R.id.dashboard_dashboard:
-                        setFragment(new dashboard_bottom());
+                        Fragment fragment = new dashboard_bottom();
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.dashboard_layout,fragment);
+                        fragmentTransaction.addToBackStack(null);
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putString("category",cat);
+                        fragment.setArguments(bundle1);
+                        Log.d("main222o","fragment");
+                        fragmentTransaction.commit();
+
+                        // setFragment(new dashboard_bottom());
                         break;
 
                     case R.id.favorite_dashboard:
                         setFragment(new favorite());
                         break;
 
-                    case R.id.community_dashboard:
-                        setFragment(new favorite());
+                    case R.id.my_routines_dashboard:
+                        setFragment(new MyRoutines());
                         break;
 
                     case R.id.certificates_dashboard:
                         setFragment(new favorite());
                         break;
 
-                    case R.id.approve_videos_dashboard:
-                        setFragment(new ApproveVideo());
+                    case R.id.my_videos_dashboard:
+                        setFragment(new MyVideoFragment());
                         break;
                 }
                 return true;

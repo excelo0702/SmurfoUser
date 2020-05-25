@@ -145,7 +145,7 @@ public class ContestAdapter extends PagerAdapter {
                         for(DataSnapshot ds: dataSnapshot.getChildren())
                         {
                             VideoModel mode = ds.getValue(VideoModel.class);
-                            LeaderboardModel model = new LeaderboardModel(mode.getUser(),mode.getLike());
+                            LeaderboardModel model = new LeaderboardModel("UserName",mode.getLike(),mode.getUser());
                             list.add(0,model);
                         }
                         mAdapter.setData(list);
@@ -158,9 +158,6 @@ public class ContestAdapter extends PagerAdapter {
 
                     }
                 });
-
-
-
             }
         });
 

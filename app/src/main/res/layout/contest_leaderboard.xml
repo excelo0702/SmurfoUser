@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_margin="60dp"
     android:background="#FFFFFF"
     android:layout_height="500dp">
 
@@ -16,6 +17,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name"
+        android:textSize="18dp"
+        android:textColor="@color/black"
+        android:padding="10dp"
         android:layout_below="@id/close_leaderboard"
         android:layout_alignParentLeft="true"
         android:id="@+id/uuuu"
@@ -26,13 +30,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Points"
+        android:textSize="18dp"
+        android:textColor="@color/black"
         android:layout_below="@id/close_leaderboard"
+        android:padding="10dp"
         android:layout_alignParentRight="true"
         ></TextView>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/uuuu"
+        android:background="@color/black"></FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
     android:layout_width="match_parent"
+        android:padding="10dp"
     android:layout_height="wrap_content"
     android:id="@+id/contest_leaderboard"
         android:layout_below="@id/uuuu"

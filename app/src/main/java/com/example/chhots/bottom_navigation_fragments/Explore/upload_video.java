@@ -89,10 +89,8 @@ public class upload_video extends Fragment implements onBackPressed {
 
     private Button choosebtn;
     private Button uploadBtn;
-    private ImageView thumb_nail;
-    private Button DemotwoBtn;
     private EditText video_title;
-    private EditText choose_category,description,price;
+    private EditText description;
     private ImageView thumbnail;
     private Uri videouri,mImageUri;
     private DatabaseReference databaseReference;
@@ -415,7 +413,7 @@ public class upload_video extends Fragment implements onBackPressed {
             //   Toast.makeText(getApplicationContext(),"upl88",Toast.LENGTH_SHORT).show();
 
             final String title = video_title.getText().toString();
-            final String category = choose_category.getText().toString();
+//            final String category = choose_category.getText().toString();
             final String sub_category;
 
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -432,10 +430,7 @@ public class upload_video extends Fragment implements onBackPressed {
 
             if(subCategory.equals("NormalVideos"))
             {
-                price.setText("-1");
                 sub_category = "Normal";
-
-
             }
             else if(subCategory.equals("RoutineVideos"))
             {
@@ -446,15 +441,9 @@ public class upload_video extends Fragment implements onBackPressed {
                 sub_category="ROUTINE";
 
             }
-            final String Price = price.getText().toString();
             if(title.equals(""))
             {
                 Toast.makeText(getContext(),"Title cant be null",Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if(category.equals(""))
-            {
-                Toast.makeText(getContext(),"Category cant be null",Toast.LENGTH_SHORT).show();
                 return;
             }
             Log.d("222222","2222222");
@@ -494,8 +483,9 @@ public class upload_video extends Fragment implements onBackPressed {
                                                                         }
                                                                     },100);
 
-                                                                    VideoModel model = new VideoModel(user.getUid(),title,category,descriptio,videouri.toString(),imageuri.toString(),"NONE","NONE",Price,upload,"0","0","0",sub_category);
+                                                                    VideoModel model = new VideoModel(user.getUid(),title,"Normal",descriptio,videouri.toString(),imageuri.toString(),"NONE","NONE","-1",upload,"0","0","0",sub_category);
                                                                     databaseReference.child("VIDEOS").child(upload).setValue(model);
+                                                                    databaseReference.child("USER_VIDEOS").child(user.getUid()).child(upload).setValue(model);
                                                                 }
                                                             });
                                                 }

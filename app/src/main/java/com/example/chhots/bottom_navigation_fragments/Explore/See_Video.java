@@ -334,10 +334,9 @@ public class See_Video extends Fragment {
 
         player = ExoPlayerFactory.newSimpleInstance(getContext());
         playerView.setPlayer(player);
-
         MediaSource mediaSource = buildMediaSource(videouri);
-
         player.setPlayWhenReady(playWhenReady);
+        player.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT);
         //  player.seekTo(currentWindow, playbackPosition);
         player.prepare(mediaSource, false, false);
     }

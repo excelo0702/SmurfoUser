@@ -56,7 +56,6 @@ public class courses extends Fragment {
 
     ViewPager viewPager;
     List<CourseThumbnail> modelList;
-    Button upload_btn;
     private DatabaseReference databaseReference;
     private final String TAG = "Courses123";
     private String history,trending,mostly,for_you;
@@ -81,8 +80,6 @@ public class courses extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_courses, container, false);
-        upload_btn = view.findViewById(R.id.upload_course);
-
 //        loadingDialog.startLoadingDialog();
 
         new Handler().postDelayed(new Runnable() {
@@ -92,13 +89,7 @@ public class courses extends Fragment {
             }
         },3000);
         databaseReference = FirebaseDatabase.getInstance().getReference("");
-        upload_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),upload_course.class);
-                startActivity(intent);
-            }
-        });
+
 
 
         allCourse = view.findViewById(R.id.access_all_course);
