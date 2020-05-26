@@ -1,43 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".category_view.Contest.form_contest"
     android:background="#FFFFFF"
     android:orientation="vertical">
 
-<LinearLayout
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Contest Name"
         android:id="@+id/contest_name"
         android:textSize="25dp"
+        android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal"
         ></TextView>
 
 
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/contest_name"
         android:text="Contest Name"
         android:id="@+id/contest_quote"
         android:textSize="16dp"
-        android:layout_gravity="center_horizontal"
-        ></TextView>
+        android:gravity="center_horizontal"
+            ></TextView>
 
     <com.google.android.exoplayer2.ui.PlayerView
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="@dimen/dp300"
+        android:background="@color/black"
+        android:layout_below="@id/contest_quote"
         android:id="@+id/form_contest_videoView"
+        app:resize_mode="fit"
         ></com.google.android.exoplayer2.ui.PlayerView>
 
 
@@ -45,6 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Choose Video"
+        android:layout_below="@id/form_contest_videoView"
         android:id="@+id/choose_video_form"
         ></Button>
 
@@ -54,6 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:layout_below="@id/choose_video_form"
         android:id="@+id/userName"
         android:hint="Name"
         ></EditText>
@@ -63,6 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:layout_below="@id/userName"
         android:id="@+id/userEmail"
         android:hint="Email"
         ></EditText>
@@ -73,8 +81,10 @@
         android:layout_marginTop="30dp"
         app:cardCornerRadius="30dp"
         android:layout_marginBottom="50dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_below="@id/userEmail"
+       android:layout_centerHorizontal="true"
         app:cardBackgroundColor="#000000"
+        android:id="@+id/lll"
         android:padding="20dp">
 
         <TextView
@@ -99,6 +109,7 @@
         android:id="@+id/progress_bar_upload_contest_video"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="match_parent"
+        android:layout_below="@id/lll"
         android:layout_height="3dp"
         android:layout_margin="10dp"
         android:progress="0"/>
@@ -109,6 +120,7 @@
         android:layout_height="wrap_content"
         android:text="Description"
         android:id="@+id/contest_description"
+        android:layout_below="@id/progress_bar_upload_contest_video"
         android:textSize="16dp"
         android:layout_gravity="center_horizontal"
         ></TextView>
@@ -117,6 +129,7 @@
         android:layout_width="wrap_content"
         android:layout_height="200dp"
         android:layout_margin="20dp"
+        android:layout_below="@id/contest_description"
         android:id="@+id/image_1_contest"
 
         ></ImageView>
@@ -124,8 +137,9 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="200dp"
+        android:layout_below="@id/image_1_contest"
         android:id="@+id/image_2_contest"
         ></ImageView>
 
-</LinearLayout>
-</ScrollView>
+</RelativeLayout>
+</RelativeLayout>

@@ -23,7 +23,7 @@
         android:layout_margin="10dp"
         android:orientation="horizontal">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="@dimen/dp40"
             android:layout_height="@dimen/dp40"
             android:src="@drawable/image"

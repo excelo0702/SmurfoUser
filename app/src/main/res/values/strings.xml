@@ -20,6 +20,9 @@
     <string name="Open">chhots</string>
     <string name="Close">chhots</string>
 
+    <string name="UserPurchasedRoutines">USER_PURCHASED_ROUTINES</string>
+    <string name="RoutineThumbnail">ROUTINE_THUMBNAIL</string>
+
     <string-array name="category_list">
         <item>Street</item>
         <item>Classical</item>

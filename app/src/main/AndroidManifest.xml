@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
-    package="com.example.chhots">
+    package="com.example.SmurfoUser">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -22,7 +22,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".SplashScreen_Activity" android:theme="@style/Theme.AppCompat.NoActionBar">
+        <activity android:name="com.example.SmurfoUser.SplashScreen_Activity" android:theme="@style/Theme.AppCompat.NoActionBar">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,28 +30,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".category_view.routine.addRoutine" />
-        <activity android:name=".SignUpNextScreen" />
-        <activity android:name=".category_view.Courses.upload_course" />
+        <activity android:name="com.example.SmurfoUser.category_view.routine.addRoutine" />
+        <activity android:name="com.example.SmurfoUser.SignUpNextScreen" />
+        <activity android:name="com.example.SmurfoUser.category_view.Courses.upload_course" />
         <activity
-            android:name=".ChatBox.ChatWithInstructor"
+            android:name="com.example.SmurfoUser.ChatBox.ChatWithInstructor"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Login"
+            android:name="com.example.SmurfoUser.Login"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop" />
         <activity
-            android:name=".Demo.demo2"
+            android:name="com.example.SmurfoUser.Demo.demo2"
             android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity
-            android:name=".Demo.demo"
+            android:name="com.example.SmurfoUser.Demo.demo"
             android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity
-            android:name=".Signup"
+            android:name="com.example.SmurfoUser.Signup"
             android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.SmurfoUser.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:icon="@mipmap/ic_icon"
             android:label="Smurfo"
@@ -92,7 +92,7 @@
             android:name="com.razorpay.ApiKey"
             android:value="rzp_test_lGVIuQHCWOB1Ss" />
 
-        <service android:name=".Services.FloatingWidgetService" />
+        <service android:name="com.example.SmurfoUser.Services.FloatingWidgetService" />
     </application>
 
 </manifest>
