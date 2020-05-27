@@ -30,6 +30,7 @@ import android.widget.VideoView;
 
 import com.example.SmurfoUser.R;
 import com.example.SmurfoUser.bottom_navigation_fragments.Explore.VideoModel;
+import com.example.SmurfoUser.category_view.routine.RoutineModel;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -263,10 +264,10 @@ public class upload_course extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(Uri uri) {
                                             String courseId = time;
-                                            UploadCourseModel model = new UploadCourseModel(time,user.getUid(),"courseName",uri.toString());
+                                            RoutineModel model = new RoutineModel("CourseTitle","1",user.getUid(),time,uri.toString());
                                             databaseReference.child("Courses").child(courseId).child(sequence+title).setValue(model);
-                                            VideoModel video_model = new VideoModel(user.getUid(),title,"category","description","videoURL","thumbnail","ContestID","courseId","price","videoId","0","0","0","sun_category");
-                                            databaseReference.child("VIDEOS").child(time2).setValue(video_model);
+                                          //  VideoModel video_model = new VideoModel(user.getUid(),title,"category","description","videoURL","thumbnail","ContestID","courseId","price","videoId","0","0","0","sun_category");
+                                        //    databaseReference.child("VIDEOS").child(time2).setValue(video_model);
                                             Toast.makeText(getApplicationContext(),"uploaded",Toast.LENGTH_SHORT).show();
 
                                         }

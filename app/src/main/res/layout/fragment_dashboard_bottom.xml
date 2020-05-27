@@ -75,26 +75,32 @@
         android:text="History" />
 
 
-
-    <ProgressBar
+    <com.mikhaellopez.circularprogressbar.CircularProgressBar
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        app:cpb_background_progressbar_color="#FFCDD2"
+        app:cpb_background_progressbar_width="2dp"
+        android:layout_below="@id/user_dashboard_profile"
+        app:cpb_progressbar_color="#F44336"
         android:id="@+id/progress_bar_chart"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:padding="10dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="35dp"
+        app:cpb_progressbar_width="5dp" />
+
+    <com.mikhaellopez.circularprogressbar.CircularProgressBar
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        app:cpb_background_progressbar_color="#FFCDD2"
+        app:cpb_background_progressbar_width="2dp"
         android:layout_below="@id/user_dashboard_profile"
-        android:layout_marginTop="70dp"
-        android:layout_marginLeft="30dp"
-        />
-
-
-    <ProgressBar
+        app:cpb_progressbar_color="#F44336"
         android:id="@+id/progress_bar_chart2"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_below="@id/user_dashboard_profile"
         android:layout_toRightOf="@id/progress_bar_chart"
-        android:layout_marginTop="70dp"
-        android:layout_marginLeft="30dp"
-        />
+        android:padding="10dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="35dp"
+        app:cpb_progressbar_width="5dp" />
 
 
 

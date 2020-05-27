@@ -1,4 +1,4 @@
-package com.example.SmurfoUser.Notificatios;
+package com.example.SmurfoUser.Notifications;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

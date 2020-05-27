@@ -1,7 +1,7 @@
-package com.example.SmurfoUser.ChatBox;
+package com.example.SmurfoUser.Notifications;
 
-import com.example.SmurfoUser.Notificatios.MyResponse;
-import com.example.SmurfoUser.Notificatios.Sender;
+import com.example.SmurfoUser.Notifications.MyResponse;
+import com.example.SmurfoUser.Notifications.Sender;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

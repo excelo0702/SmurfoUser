@@ -3,17 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rr5"
     tools:context=".category_view.routine.routine_view"
-    android:background="#9C27B0"
-    >
+    android:background="#FFFFFF">
 
-    <RelativeLayout
+    <com.google.android.exoplayer2.ui.PlayerView
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="300dp"
         android:id="@+id/video_space_routine"
-        android:background="#AD1515"
-        ></RelativeLayout>
+        android:padding="0dp"
+        app:controller_layout_id="@layout/exo_playback_control_view"
+        app:use_controller="true"
+        android:keepScreenOn="true"
+        android:focusable="true"
+        android:background="@color/black"
+        app:resize_mode="fit"
+        ></com.google.android.exoplayer2.ui.PlayerView>
 
     <RelativeLayout
         android:layout_width="match_parent"

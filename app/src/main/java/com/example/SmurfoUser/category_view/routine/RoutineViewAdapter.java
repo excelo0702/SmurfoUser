@@ -3,6 +3,7 @@ package com.example.SmurfoUser.category_view.routine;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.SmurfoUser.ChatBox.MessageAdapter;
+import com.example.SmurfoUser.ChatBox.OnItemClickListener;
 import com.example.SmurfoUser.R;
 import com.example.SmurfoUser.category_view.Courses.video_course;
 
@@ -29,11 +32,16 @@ public class RoutineViewAdapter extends RecyclerView.Adapter<RoutineViewAdapter.
 
     private List<RoutineModel> list;
     private Context context;
+    private OnItemClickListener listener;
+    int selected=-1;
+
+
     private final String Tag = "RoutineViewAdapter1";
 
-    public RoutineViewAdapter(List<RoutineModel> list, Context context) {
+    public RoutineViewAdapter(List<RoutineModel> list, Context context, OnItemClickListener listener) {
         this.list = list;
         this.context = context;
+        this.listener = listener;
     }
 
     @NonNull
@@ -45,6 +53,21 @@ public class RoutineViewAdapter extends RecyclerView.Adapter<RoutineViewAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull RoutineViewHolder holder, int position) {
+        if(selected==position)
+        {
+            holder.img1.setVisibility(GONE);
+            holder.img2.setVisibility(View.VISIBLE);
+            holder.section.setTextColor(Color.RED);
+        }
+        else
+        {
+            holder.img2.setVisibility(GONE);
+            holder.img1.setVisibility(View.VISIBLE);
+            holder.section.setTextColor(Color.BLACK);
+        }
+
+        holder.bind(list.get(position),listener);
+
         holder.section.setText(list.get(position).getSequenceNo()+". "+list.get(position).getTitle());
         holder.videoURL = list.get(position).getVideoUrl();
         holder.routineId = list.get(position).getRoutineId();
@@ -69,22 +92,23 @@ public class RoutineViewAdapter extends RecyclerView.Adapter<RoutineViewAdapter.
             section = itemView.findViewById(R.id.routine_sectionNo);
             img1 = itemView.findViewById(R.id.play_section);
             img2 = itemView.findViewById(R.id.pause_section);
+
+        }
+        public void bind(final RoutineModel model, final OnItemClickListener listener)
+        {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    section.setTextColor(Color.RED);
-                    img2.setVisibility(View.VISIBLE);
-                    img1.setVisibility(GONE);
-                    Fragment fragment = new video_course();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("videoURL",videoURL);
-                    bundle.putString("routineId",routineId);
-                    fragment.setArguments(bundle);
-                    FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.video_space_routine, fragment);
-                    fragmentTransaction.commit();
+
+                    selected = getAdapterPosition();
+                    Log.d(Tag,selected+"");
+                    listener.onItemClick(model);
+                    notifyDataSetChanged();
+
                 }
             });
         }
     }
+
+
 }

@@ -246,7 +246,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
                                 Fragment fragment = new routine_view();
                                 Bundle bundle = new Bundle();
                                 bundle.putString("routineId", routineId);
-                                bundle.putString("category","NoVideoView");
+                                bundle.putString("category","Routine");
                                 fragment.setArguments(bundle);
                                 FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                                 fragmentTransaction.replace(R.id.drawer_layout, fragment);

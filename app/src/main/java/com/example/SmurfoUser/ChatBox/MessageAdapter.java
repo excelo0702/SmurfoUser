@@ -22,11 +22,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
     private Context context;
     private List<MessageModel> list;
     private String TAG = "MessageAdapter";
+    private OnItemClickListener listener;
     FirebaseUser user;
 
-    public MessageAdapter(Context context, List<MessageModel> list) {
+    public MessageAdapter(Context context, List<MessageModel> list, OnItemClickListener listener) {
         this.context = context;
         this.list = list;
+        this.listener = listener;
     }
 
     @NonNull
@@ -54,6 +56,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+        holder.bind(list.get(position),listener);
         MessageModel model = list.get(position);
         Log.d(TAG,"vbn");
         if(model.getFlag()==0)
@@ -93,6 +96,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
             playerView = itemView.findViewById(R.id.video_view_chat);
 
         }
+
+        public void bind(final MessageModel model,final OnItemClickListener listener)
+        {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(model);
+                }
+            });
+        }
+
     }
 
     @Override
@@ -109,4 +123,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
         }
 
     }
+
+    public interface OnItemClickListener{
+        void onItemClick(MessageModel model);
+    }
+
+
+
 }

@@ -13,11 +13,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.SmurfoUser.Notificatios.Client;
-import com.example.SmurfoUser.Notificatios.Data;
-import com.example.SmurfoUser.Notificatios.MyResponse;
-import com.example.SmurfoUser.Notificatios.Sender;
-import com.example.SmurfoUser.Notificatios.Token;
+import com.example.SmurfoUser.Notifications.APIService;
+import com.example.SmurfoUser.Notifications.Client;
+import com.example.SmurfoUser.Notifications.Data;
+import com.example.SmurfoUser.Notifications.MyResponse;
+import com.example.SmurfoUser.Notifications.Sender;
+import com.example.SmurfoUser.Notifications.Token;
 import com.example.SmurfoUser.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -85,7 +86,7 @@ public class ChatWithUser extends AppCompatActivity {
         user = auth.getCurrentUser();
         userId = user.getUid();
         send_video = findViewById(R.id.send_video_chat1);
-        adapter = new MessageAdapter(ChatWithUser.this,list);
+      //  adapter = new MessageAdapter(ChatWithUser.this,list);
 
         apiService = Client.getClient("https:/fcm.googleapis.com/").create(APIService.class);
 
@@ -158,55 +159,12 @@ public class ChatWithUser extends AppCompatActivity {
             model.setFlag(1);
             databaseReference.child("CHAT").child("Users").child(people_id).child(routineId).child(time).setValue(model);
 
-        sendNotification(people_id,userName,mess);
+   //     sendNotification(people_id,userName,mess);
 
 
         message.setText("");
     }
 
-
-
-    private void sendNotification(String receiver, final String userName, final String message)
-    {
-        final DatabaseReference token = FirebaseDatabase.getInstance().getReference("Tokens");
-        Query query = token.orderByKey().equalTo(receiver);
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds: dataSnapshot.getChildren())
-                {
-                    Token token1 = ds.getValue(Token.class);
-                    Data data = new Data(people_id,R.mipmap.ic_icon,userName+": "+message,"New Message",userId);
-
-                    Sender sender = new Sender(data,token1.getToken());
-
-                    apiService.sendNotification(sender)
-                            .enqueue(new Callback<MyResponse>() {
-                                @Override
-                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                                    if(response.code()==200)
-                                    {
-                                        if(response.body().Success != 1)
-                                        {
-                                            Toast.makeText(ChatWithUser.this,"Failed User",Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<MyResponse> call, Throwable t) {
-
-                                }
-                            });
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 
 
 

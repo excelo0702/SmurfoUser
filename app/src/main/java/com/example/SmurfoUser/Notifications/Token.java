@@ -1,4 +1,4 @@
-package com.example.SmurfoUser.Notificatios;
+package com.example.SmurfoUser.Notifications;
 
 public class Token {
     private String token;

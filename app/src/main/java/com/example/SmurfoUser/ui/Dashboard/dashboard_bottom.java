@@ -1,11 +1,13 @@
 package com.example.SmurfoUser.ui.Dashboard;
 
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,6 +39,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -65,6 +68,8 @@ public class dashboard_bottom extends Fragment {
 
     PopupWindow mPopupWindow;
     RelativeLayout relativeLayout;
+    CircularProgressBar circularProgressBar,circularProgressBar2;
+
 
 
     @Override
@@ -72,6 +77,16 @@ public class dashboard_bottom extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard_bottom, container, false);
+        circularProgressBar = (CircularProgressBar)view.findViewById(R.id.progress_bar_chart);
+        circularProgressBar.setColor(ContextCompat.getColor(getContext(), R.color.Smurfogreen));
+        circularProgressBar.setBackgroundColor(Color.GRAY);
+        int animationDuration = 2500; // 2500ms = 2,5s
+        circularProgressBar.setProgressWithAnimation(75, animationDuration);
+
+        circularProgressBar2 = (CircularProgressBar)view.findViewById(R.id.progress_bar_chart2);
+        circularProgressBar2.setColor(ContextCompat.getColor(getContext(), R.color.Smurfogreen));
+        circularProgressBar2.setBackgroundColor(Color.GRAY);
+        circularProgressBar2.setProgressWithAnimation(45, animationDuration);
 
 
         Bundle bundle = this.getArguments();

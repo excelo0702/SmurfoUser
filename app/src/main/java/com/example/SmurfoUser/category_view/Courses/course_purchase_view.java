@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.SmurfoUser.PaymentListener;
 import com.example.SmurfoUser.R;
 import com.example.SmurfoUser.UserClass;
+import com.example.SmurfoUser.category_view.routine.routine_view;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -79,7 +80,6 @@ public class course_purchase_view extends Fragment implements PaymentListener{
 
 
         //fetch all the info of instructor
-
 
         buy_now.setOnClickListener(new View.OnClickListener() {
             @Override

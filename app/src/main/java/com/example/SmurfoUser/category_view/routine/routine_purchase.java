@@ -181,7 +181,7 @@ public class routine_purchase extends Fragment implements PaymentListener {
             Fragment fragment = new routine_view();
             Bundle bundle = new Bundle();
             bundle.putString("routineId", routineId);
-            bundle.putString("category","NoVideoView");
+            bundle.putString("category","Routine");
             fragment.setArguments(bundle);
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.drawer_layout, fragment);

@@ -69,12 +69,12 @@ public class courses extends Fragment {
         View view = inflater.inflate(R.layout.fragment_courses, container, false);
 //        loadingDialog.startLoadingDialog();
 
-        new Handler().postDelayed(new Runnable() {
+   /*     new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 loadingDialog.DismissDialog();
             }
-        },3000);
+        },3000);*/
         databaseReference = FirebaseDatabase.getInstance().getReference("");
 
 
