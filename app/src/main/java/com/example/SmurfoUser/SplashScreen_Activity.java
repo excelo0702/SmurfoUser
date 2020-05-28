@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.example.SmurfoUser.ChatBox.ChatWithInstructor;
 import com.sarnava.textwriter.TextWriter;
 
 public class SplashScreen_Activity extends AppCompatActivity {
@@ -18,6 +19,14 @@ public class SplashScreen_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+
+        if(getIntent().hasCategory("category"))
+        {
+            Intent intent = new Intent(SplashScreen_Activity.this, ChatWithInstructor.class);
+            startActivity(intent);
+        }
+
 
         text=findViewById(R.id.textwriter);
         text .setWidth(12)

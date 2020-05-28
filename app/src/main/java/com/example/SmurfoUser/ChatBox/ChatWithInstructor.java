@@ -15,12 +15,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.SmurfoUser.Notifications.APIService;
-import com.example.SmurfoUser.Notifications.Client;
-import com.example.SmurfoUser.Notifications.Data;
-import com.example.SmurfoUser.Notifications.MyResponse;
-import com.example.SmurfoUser.Notifications.Sender;
-import com.example.SmurfoUser.Notifications.Token;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.SmurfoUser.R;
 import com.example.SmurfoUser.UserInfoModel;
 import com.example.SmurfoUser.ui.Dashboard.ApproveVideo.ChatPeopleModel;
@@ -35,19 +36,24 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ChatWithInstructor extends AppCompatActivity {
 
@@ -70,9 +76,11 @@ public class ChatWithInstructor extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseUser user;
 
-    APIService apiService;
 
-    boolean notify = false;
+    //Notification
+
+    private RequestQueue mRequestQueue;
+    private String URL="https://fcm.googleapis.com/fcm/send";
 
 
     @Override
@@ -105,7 +113,6 @@ public class ChatWithInstructor extends AppCompatActivity {
 
 
 
-        apiService = Client.getClient("https:/fcm.googleapis.com/").create(APIService.class);
 
 
             instructor_id = intent.getStringExtra("instructorId");
@@ -114,22 +121,15 @@ public class ChatWithInstructor extends AppCompatActivity {
             fetchInstructorInfo();
 
 
+        mRequestQueue = Volley.newRequestQueue(this);
+        FirebaseMessaging.getInstance().subscribeToTopic(userId);
 
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
-                    @Override
-                    public void onSuccess(InstanceIdResult instanceIdResult) {
-                        String token = instanceIdResult.getToken();
-                        updateToken(token);
-                    }
-                });
 
         showMessage();
         send_message.setOnClickListener(
                 new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                notify = true;
                 sendMessage();
             }
         });
@@ -140,6 +140,65 @@ public class ChatWithInstructor extends AppCompatActivity {
             }
         });
     }
+
+
+    private void sendNotification() {
+  /*      //json object
+        {
+            "to": "topics/topic name"
+                notification:   {
+                    title: "some titlle"
+                     body:  "some body"
+                }
+        }*/
+
+        JSONObject mainObj = new JSONObject();
+        try {
+            mainObj.put("to","/topics/"+instructor_id);
+            JSONObject notificationObj = new JSONObject();
+            notificationObj.put("title",userName);
+            notificationObj.put("body",message);
+
+            JSONObject extraData = new JSONObject();
+            extraData.put("category","Chat");
+            extraData.put("peopleId",userId);
+
+
+            mainObj.put("notification",notificationObj);
+            mainObj.put("data",extraData);
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
+                    mainObj, new com.android.volley.Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Toast.makeText(getApplicationContext(),"sent",Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String,String> header = new HashMap<>();
+                    header.put("content-type","application/json");
+                    header.put("authorization","key=AAAAk4aOdMQ:APA91bGIGSc4-YEFm1lkWu5fiP9Cg8NRT0hC4Jwkg4yhn2GkGQH4uD-FNoDMkDW8Hl_pULwRfj7EFMLW--qnTIH6WUNG7_ZkH9_6Z-Mo6ATU30SErTZJNYe7K69AsljvTxhVavn1XW56");
+                    return header;
+                }
+            };
+
+            mRequestQueue.add(request);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+
 
     private void fetchInstructorInfo() {
 
@@ -200,8 +259,7 @@ public class ChatWithInstructor extends AppCompatActivity {
             databaseReference.child("CHAT").child("Users").child(userId).child(routineId).child(time).setValue(model);
 
 
-            //sendNotification(instructor_id, userName, mess);
-            notify = false;
+
 
             ChatPeopleModel mode1 = new ChatPeopleModel(userId, userImage, userName);
             databaseReference.child("CHAT_LIST").child(instructor_id).child(userId).setValue(mode1);
@@ -210,6 +268,7 @@ public class ChatWithInstructor extends AppCompatActivity {
             databaseReference.child("CHAT_LIST").child(userId).child(instructor_id).setValue(mode1);
             message.setText("");
 
+            sendNotification();
 
 
 
@@ -239,14 +298,6 @@ public class ChatWithInstructor extends AppCompatActivity {
                         }
                     });
 
-    }
-
-
-    private void updateToken(String token)
-    {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
-        Token token1 = new Token(token);
-        reference.child(user.getUid()).setValue(token1);
     }
 
 
