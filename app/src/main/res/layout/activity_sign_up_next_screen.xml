@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".SignUpNextScreen">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="@dimen/dp150"
         android:layout_height="@dimen/dp150"
-        android:src="@mipmap/ic_logo"
+        android:src="@drawable/ic_person_24"
         android:layout_marginTop="@dimen/dp100"
         android:layout_marginStart="@dimen/dp130"
         android:id="@+id/userImage_signup"
@@ -31,6 +36,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/user_name_signup"
         android:layout_margin="@dimen/margin10"
+        android:id="@+id/user_phone"
+        android:inputType="phone"
+        android:padding="10dp"
+        android:hint="Phone No"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_phone"
+        android:layout_margin="@dimen/margin10"
         android:id="@+id/user_profession_signup"
         android:padding="10dp"
         android:hint="@string/profession"
@@ -51,8 +67,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/radio_button_grp1"
         android:layout_below="@id/user_dancer_level"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
     <RadioButton
         android:layout_width="@dimen/dp100"
@@ -61,7 +76,7 @@
         android:padding="@dimen/margin10"
         android:layout_weight="1"
         android:id="@+id/r1"
-        android:background="@mipmap/ic_logo"
+        android:background="@drawable/br1"
         android:onClick="onRadioButtonClicked"/>
 
     <RadioButton
@@ -71,7 +86,7 @@
         android:padding="@dimen/margin10"
         android:layout_weight="1"
         android:id="@+id/r2"
-        android:background="@mipmap/ic_logo"
+        android:background="@drawable/cl1"
         android:onClick="onRadioButtonClicked"/>
 
     <RadioButton
@@ -81,7 +96,7 @@
         android:padding="@dimen/margin10"
         android:layout_weight="1"
         android:id="@+id/r3"
-        android:background="@mipmap/ic_logo"
+        android:background="@drawable/hip1"
         android:onClick="onRadioButtonClicked"/>
     </LinearLayout>
 
@@ -98,7 +113,7 @@
         android:layout_margin="@dimen/margin10"
         android:padding="@dimen/margin10"
         android:id="@+id/r4"
-        android:background="@mipmap/ic_logo"
+        android:background="@drawable/kr1"
         android:layout_weight="1"
         android:onClick="onRadioButtonClicked"/>
 
@@ -108,7 +123,7 @@
         android:layout_margin="@dimen/margin10"
         android:padding="@dimen/margin10"
         android:id="@+id/r5"
-        android:background="@mipmap/ic_logo"
+        android:background="@drawable/wa1"
         android:layout_weight="1"
         android:onClick="onRadioButtonClicked"/>
 
@@ -118,7 +133,7 @@
         android:layout_margin="@dimen/margin10"
         android:padding="@dimen/margin10"
         android:id="@+id/r6"
-        android:background="@mipmap/ic_logo"
+        android:background="@drawable/bhr1"
         android:layout_weight="1"
         android:onClick="onRadioButtonClicked"/>
     </LinearLayout>
@@ -129,6 +144,7 @@
         android:layout_marginRight="@dimen/margin20"
         android:layout_height="wrap_content"
         android:text="@string/app_submit"
+        android:textColor="@color/black"
         android:id="@+id/signup_next_submit"
         android:layout_below="@id/radio_button_grp2"/>
     <ProgressBar
@@ -138,6 +154,6 @@
         android:layout_gravity="center|bottom"
         android:layout_marginBottom="@dimen/margin20"
         android:visibility="gone" />
+    </RelativeLayout>
 
-
-</RelativeLayout>
+</ScrollView>

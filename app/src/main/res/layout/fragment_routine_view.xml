@@ -17,6 +17,7 @@
         app:use_controller="true"
         android:keepScreenOn="true"
         android:focusable="true"
+        app:surface_type="texture_view"
         android:background="@color/black"
         app:resize_mode="fit"
         ></com.google.android.exoplayer2.ui.PlayerView>
@@ -29,7 +30,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Routine Sections"
+        android:text="Routine"
         android:textSize="@dimen/text20"
         android:textColor="@color/black"
         android:padding="10dp"
@@ -57,13 +58,22 @@
     <ImageView
         android:layout_width="@dimen/text30"
         android:layout_height="@dimen/text30"
-        android:src="@color/Smurfogreen"
+        android:src="@drawable/ic_baseline_chat_24"
+        android:layout_marginTop="10dp"
         android:id="@+id/chat_with_instructor_routine"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
+        android:layout_marginRight="20dp"
         android:visibility="visible"
         android:layout_marginBottom="30dp">
     </ImageView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chat with Instructor "
+            android:layout_marginTop="12dp"
+            android:layout_toLeftOf="@id/chat_with_instructor_routine"
+            android:textColor="@color/black"
+            android:textSize="15dp"></TextView>
 </RelativeLayout>
 
 </RelativeLayout>

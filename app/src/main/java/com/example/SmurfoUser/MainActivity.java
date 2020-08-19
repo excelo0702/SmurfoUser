@@ -6,23 +6,23 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.example.SmurfoUser.LetsGetStarted.lets_get_started;
+import com.example.SmurfoUser.User_Profile.edit_profile;
 import com.example.SmurfoUser.bottom_navigation_fragments.Calendar.calendar;
+import com.example.SmurfoUser.bottom_navigation_fragments.Explore.See_Video;
 import com.example.SmurfoUser.bottom_navigation_fragments.Explore.explore;
 import com.example.SmurfoUser.bottom_navigation_fragments.Explore.upload_video;
+import com.example.SmurfoUser.bottom_navigation_fragments.InstructorPackage.instructor;
 import com.example.SmurfoUser.category_view.Contest.form_contest;
-import com.example.SmurfoUser.category_view.Courses.course_purchase_view;
-import com.example.SmurfoUser.category_view.Courses.video_course;
-import com.example.SmurfoUser.category_view.routine.routine;
 import com.example.SmurfoUser.category_view.routine.routine_purchase;
+import com.example.SmurfoUser.category_view.routine.routine_view;
 import com.example.SmurfoUser.ui.About_Deprrita.about;
 import com.example.SmurfoUser.ui.Category.category;
 import com.example.SmurfoUser.ui.Dashboard.dashboard;
 import com.example.SmurfoUser.ui.Feedback.feedback;
-import com.example.SmurfoUser.ui.Setting.setting;
 import com.example.SmurfoUser.ui.Subscription.subscription;
 import com.example.SmurfoUser.ui.SupportUs.support;
 import com.example.SmurfoUser.ui.home.HomeFragment;
-import com.example.SmurfoUser.User_Profile.userprofile;
 import com.example.SmurfoUser.ui.notifications.NotificationsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -49,6 +49,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -102,6 +103,9 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
 
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -141,11 +145,6 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
                         setFragment(new category());
                         drawer.closeDrawers();
                         break;
-                    case R.id.nav_setting:
-                        setFragment(new setting());
-                        drawer.closeDrawers();
-                        break;
-
                     case R.id.nav_feedback:
                         setFragment(new feedback());
                         drawer.closeDrawers();
@@ -176,41 +175,55 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
 
 
         if (auth.getCurrentUser() != null) {
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-            firebaseDatabase = FirebaseDatabase.getInstance();
-            databaseReference = firebaseDatabase.getReference("");
-            login.setText(user.getEmail());
-            login.setPaintFlags(login.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
-
-            Query query = databaseReference.child("UserInfo").child(auth.getCurrentUser().getUid());
-            query.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                 Log.d(TAG,dataSnapshot.getValue()+"");
-                       UserInfoModel model = dataSnapshot.getValue(UserInfoModel.class);
-                   // login.setText(model.getUserName());
-                    //Picasso.get().load(Uri.parse(model.getUserImageurl())).placeholder(R.mipmap.ic_logo).into(user_profile_header);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
 
 
-            login.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            if(user.isEmailVerified())
+            {
+                Toast.makeText(getApplicationContext(),"Email Verified",Toast.LENGTH_SHORT).show();
 
-                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction().replace(R.id.drawer_layout,new userprofile(),"1");
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                    drawer.closeDrawers();
 
-                }
-            });
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                firebaseDatabase = FirebaseDatabase.getInstance();
+                databaseReference = firebaseDatabase.getReference("");
+                login.setText(user.getEmail());
+                login.setPaintFlags(login.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
+
+                Query query = databaseReference.child("UserInfo").child(auth.getCurrentUser().getUid());
+                query.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Log.d(TAG,dataSnapshot.getValue()+"");
+                        UserInfoModel model = dataSnapshot.getValue(UserInfoModel.class);
+                        login.setText(model.getUserName());
+                        Picasso.get().load(Uri.parse(model.getUserImageurl())).placeholder(R.mipmap.ic_launcher).into(user_profile_header);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                });
+
+
+                login.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction().replace(R.id.drawer_layout,new edit_profile(),"1");
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                        drawer.closeDrawers();
+
+                    }
+                });
+            }
+            else
+            {
+
+                startActivity(new Intent(MainActivity.this, Verification_page.class));
+            }
+
+
+
 
         }
         else
@@ -238,26 +251,25 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
                             case R.id.action_dashboard:
                                 setFragment(new HomeFragment());
 
-                                Toast.makeText(getApplicationContext(), "Dashboard", Toast.LENGTH_SHORT).show();
+
                                 break;
                             case R.id.action_favorites:
                                 setFragment(new explore());
-                                Toast.makeText(getApplicationContext(), "Favorites", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.action_trending:
                                 setFragment(new calendar());
-                                Toast.makeText(getApplicationContext(), "Calendar", Toast.LENGTH_SHORT).show();
+
                                 break;
 
                             case R.id.action_instructor:
                                 setFragment(new instructor());
-                                Toast.makeText(getApplicationContext(), "Instructor", Toast.LENGTH_SHORT).show();
+
                                 break;
 
 
                             default:
                                 setFragment(new HomeFragment());
-                                Toast.makeText(getApplicationContext(), "Dashboard", Toast.LENGTH_SHORT).show();
+
 
                         }
                         return true;
@@ -297,7 +309,7 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Toast.makeText(getApplicationContext(),newText,Toast.LENGTH_SHORT).show();
+
                 return false;
             }
         });
@@ -320,6 +332,7 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
     {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.drawer_layout,fragment);
+        fragmentTransaction.addToBackStack(null);
 
 
         fragmentTransaction.commit();
@@ -334,12 +347,10 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
 
             List<Fragment> fragments = getSupportFragmentManager().getFragments();
             for(Fragment f : fragments) {
-                if (f != null && f instanceof routine_purchase)
-                    ((routine_purchase) f).onPaymentSuccess(s);
-                if (f != null && f instanceof course_purchase_view)
-                    ((course_purchase_view) f).onPaymentSuccess(s);
                 if (f != null && f instanceof form_contest)
                     ((form_contest) f).onPaymentSuccess(s);
+                if (f != null && f instanceof subscription)
+                    ((subscription) f).onPaymentSuccess(s);
             }
         }
         catch (Exception e)
@@ -379,14 +390,22 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
             if(f != null && (f instanceof upload_video)) {
                 ((upload_video) f).onBackPressed();
             }
+            if(f != null && (f instanceof routine_purchase)) {
+                ((routine_purchase) f).onBackPressed();
+            }
+
+            if(f != null && (f instanceof routine_view)) {
+                ((routine_view) f).onBackPressed();
+            }
+
+            if(f != null && (f instanceof See_Video)) {
+                ((See_Video) f).onBackPressed();
+            }
 
             if(f != null && (f instanceof form_contest)) {
                 ((form_contest) f).onBackPressed();
             }
 
-            if(f != null && (f instanceof video_course)) {
-                ((video_course) f).onBackPressed();
-            }
             if(f != null && (f instanceof dashboard)) {
                 ((dashboard) f).onBackPressed();
                 return 1;
@@ -399,23 +418,34 @@ public class MainActivity extends AppCompatActivity implements  PaymentListener{
                 ((category) f).onBackPressed();
                 return 1;
             }
-            if(f != null && (f instanceof setting)) {
-                ((setting) f).onBackPressed();
-                return 1;
-            }
             if(f != null && (f instanceof feedback)) {
                 ((feedback) f).onBackPressed();
                 return 1;
             }
 
-            if(f != null && (f instanceof routine)) {
-                ((routine) f).onBackPressed();
-                return 1;
-            }
+
         }
         return 0;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(user!=null)
+        {
+
+        }
+    }
+
+
+    /*
+    public void onRadioButtonClick(View view)
+    {
+        Fragment fragment = new edit_profile();
+        ((edit_profile) fragment).onRadioButtonClick(view);
+    }
+
+*/
 
 
 }

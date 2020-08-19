@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.SmurfoUser.R;
 import com.example.SmurfoUser.bottom_navigation_fragments.Explore.VideoModel;
-import com.example.SmurfoUser.category_view.routine.VideoAdapter;
+import com.example.SmurfoUser.bottom_navigation_fragments.Explore.VideoAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -77,7 +77,7 @@ public class favorite extends Fragment {
                         videolist.add(model);
                 }
                 Collections.reverse(videolist);
-                mAdapter = new VideoAdapter(videolist,getContext());
+                mAdapter = new VideoAdapter(videolist,getContext(),"Favorite");
                 recyclerView.setLayoutManager(mLayoutManager);
                 recyclerView.setAdapter(mAdapter);
             }

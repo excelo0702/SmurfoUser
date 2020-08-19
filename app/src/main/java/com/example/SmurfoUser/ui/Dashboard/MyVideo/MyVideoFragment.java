@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
 
 import com.example.SmurfoUser.R;
 import com.example.SmurfoUser.bottom_navigation_fragments.Explore.VideoModel;
-import com.example.SmurfoUser.category_view.routine.VideoAdapter;
+import com.example.SmurfoUser.bottom_navigation_fragments.Explore.VideoAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +37,7 @@ public class MyVideoFragment extends Fragment {
     public MyVideoFragment() {
         // Required empty public constructor
     }
+
     RecyclerView recyclerView;
     VideoAdapter mAdapter;
     LinearLayoutManager mLayoutManager;
@@ -47,7 +48,6 @@ public class MyVideoFragment extends Fragment {
 
     private FirebaseUser user;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,18 +56,16 @@ public class MyVideoFragment extends Fragment {
 
         videolist = new ArrayList<>();
         recyclerView = view.findViewById(R.id.my_video_dashboard);
-        mAdapter = new VideoAdapter(videolist,getContext());
+        mAdapter = new VideoAdapter(videolist,getContext(),"MyExplore");
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
         user = FirebaseAuth.getInstance().getCurrentUser();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
 
         showVideos();
-
-
-
         return view;
     }
+
 
     private void showVideos() {
         videolist.clear();
@@ -82,7 +80,6 @@ public class MyVideoFragment extends Fragment {
                             VideoModel model = ds.getValue(VideoModel.class);
                             videolist.add(0, model);
                         }
-
                         mAdapter.setData(videolist);
                         recyclerView.setLayoutManager(mLayoutManager);
                         recyclerView.setAdapter(mAdapter);

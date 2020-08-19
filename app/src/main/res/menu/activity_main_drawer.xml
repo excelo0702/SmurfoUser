@@ -23,10 +23,6 @@
             android:icon="@drawable/ic_category"
             android:title="Category" />
 
-        <item
-                android:id="@+id/nav_setting"
-                android:icon="@drawable/ic_settings"
-                android:title="Setting" />
 
 
         <item

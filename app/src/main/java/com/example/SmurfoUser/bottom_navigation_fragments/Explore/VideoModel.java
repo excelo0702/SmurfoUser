@@ -11,7 +11,7 @@ public class VideoModel {
     private String courseId,price;
     private String videoId;
     private String like,share,view;
-    private String sub_category;
+    private String sub_category,userName;
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;

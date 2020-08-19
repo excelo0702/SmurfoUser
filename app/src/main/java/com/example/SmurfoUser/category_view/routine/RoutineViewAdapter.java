@@ -2,7 +2,6 @@ package com.example.SmurfoUser.category_view.routine;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.SmurfoUser.ChatBox.MessageAdapter;
 import com.example.SmurfoUser.ChatBox.OnItemClickListener;
 import com.example.SmurfoUser.R;
-import com.example.SmurfoUser.category_view.Courses.video_course;
 
 import java.util.List;
 
@@ -55,20 +49,17 @@ public class RoutineViewAdapter extends RecyclerView.Adapter<RoutineViewAdapter.
     public void onBindViewHolder(@NonNull RoutineViewHolder holder, int position) {
         if(selected==position)
         {
-            holder.img1.setVisibility(GONE);
-            holder.img2.setVisibility(View.VISIBLE);
             holder.section.setTextColor(Color.RED);
         }
         else
         {
-            holder.img2.setVisibility(GONE);
-            holder.img1.setVisibility(View.VISIBLE);
             holder.section.setTextColor(Color.BLACK);
         }
 
         holder.bind(list.get(position),listener);
 
         holder.section.setText(list.get(position).getSequenceNo()+". "+list.get(position).getTitle());
+        holder.description.setText(list.get(position).getDescription());
         holder.videoURL = list.get(position).getVideoUrl();
         holder.routineId = list.get(position).getRoutineId();
     }
@@ -84,12 +75,13 @@ public class RoutineViewAdapter extends RecyclerView.Adapter<RoutineViewAdapter.
     }
 
     public class RoutineViewHolder extends RecyclerView.ViewHolder{
-        TextView section;
+        TextView section,description;
         String videoURL,routineId;
         ImageView img1,img2;
         public RoutineViewHolder(@NonNull View itemView) {
             super(itemView);
             section = itemView.findViewById(R.id.routine_sectionNo);
+            description = itemView.findViewById(R.id.routine_description);
             img1 = itemView.findViewById(R.id.play_section);
             img2 = itemView.findViewById(R.id.pause_section);
 
@@ -102,13 +94,12 @@ public class RoutineViewAdapter extends RecyclerView.Adapter<RoutineViewAdapter.
 
                     selected = getAdapterPosition();
                     Log.d(Tag,selected+"");
-                    listener.onItemClick(model);
+                    listener.onItemClick(model,selected);
                     notifyDataSetChanged();
 
                 }
             });
         }
     }
-
 
 }

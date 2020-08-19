@@ -15,8 +15,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.example.SmurfoUser.R;
+import com.example.SmurfoUser.UserInfoModel;
 import com.example.SmurfoUser.category_view.routine.RoutineAdapter;
 import com.example.SmurfoUser.category_view.routine.RoutineThumbnailModel;
+import com.example.SmurfoUser.ui.Dashboard.ApproveVideo.ApproveVideoAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,14 +42,15 @@ public class MyRoutines extends Fragment {
 
 
     RecyclerView recyclerView;
-    RoutineAdapter mAdapter;
+    MyRoutineAdapter mAdapter;
     LinearLayoutManager mLayoutManager;
-    private ProgressBar mProgressCircle;
-    private DatabaseReference mDatabaseRef;
-    private List<RoutineThumbnailModel> routinelist;
-    private static final String TAG = "VideoFragment";
+
+    private DatabaseReference mDatabaseReference;
+    private List<MyRoutineModel> list;
 
     private FirebaseUser user;
+    private UserInfoModel User_model;
+    private String TAG="ApproveVideo";
 
 
     @Override
@@ -55,39 +58,63 @@ public class MyRoutines extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_my_routines, container, false);
-
-
-        routinelist = new ArrayList<>();
         recyclerView = view.findViewById(R.id.my_routine_dashboard);
-        mAdapter = new RoutineAdapter(routinelist,getContext());
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
+        list = new ArrayList<>();
+        mAdapter = new MyRoutineAdapter(list,getContext());
         user = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
 
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+
+        DatabaseReference presenceRef = FirebaseDatabase.getInstance().getReference("disconnectmessage");
+        presenceRef.onDisconnect().setValue("I disconnected!");
+        presenceRef.onDisconnect().removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError error, @NonNull DatabaseReference reference) {
+                if (error != null) {
+                    Log.d(TAG, "could not establish onDisconnect event:" + error.getMessage());
+                }
+            }
+        });
+
+        DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+        connectedRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean connected = snapshot.getValue(Boolean.class);
+                if (connected) {
+                    Log.d(TAG, "connected");
+                } else {
+                    Log.d(TAG, "not connected");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "Listener was cancelled");
+            }
+        });
         showVideos();
-
         return view;
     }
 
     private void showVideos() {
-        mDatabaseRef.child(getString(R.string.UserPurchasedRoutines)).child(user.getUid()).limitToLast(25)
-                .addValueEventListener(new ValueEventListener() {
+        mDatabaseReference.child("MyRoutines").child(user.getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for(DataSnapshot ds: dataSnapshot.getChildren())
                         {
-                            RoutineThumbnailModel model = ds.getValue(RoutineThumbnailModel.class);
-                            routinelist.add(model);
+                            RoutineThumbnailModel mode = ds.getValue(RoutineThumbnailModel.class);
+                            Log.d("pop pop ",mode.getRoutineThumbnail()+" pop  ");
+                            MyRoutineModel model = new MyRoutineModel(mode.getTitle(),mode.getRoutineId(),mode.getRoutineThumbnail(),mode.getInstructorId());
+                            list.add(0,model);
                         }
-
-                        mAdapter.setData(routinelist);
-                        Log.d(TAG, routinelist.size() + "  mmm  ");
+                        mAdapter.setData(list);
+                        Log.d(TAG, list.size() + "  mmm  ");
                         recyclerView.setLayoutManager(mLayoutManager);
                         recyclerView.setAdapter(mAdapter);
-
-
-
                     }
 
                     @Override

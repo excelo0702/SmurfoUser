@@ -7,29 +7,22 @@
     android:background="#FFFFFF"
     android:layout_height="wrap_content">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:src="@drawable/smurfoo_dp"
-        android:id="@+id/history_image"
-        ></de.hdodenhof.circleimageview.CircleImageView>
 
     <TextView
+        android:id="@+id/history_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_toRightOf="@id/history_image"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:text="UserName"
         android:textColor="#000000"
-        android:textSize="20dp"
-        android:id="@+id/history_username"
-        ></TextView>
+        android:textSize="20dp"></TextView>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Video Title"
-        android:layout_toRightOf="@id/history_image"
         android:layout_below="@id/history_username"
         android:textSize="14dp"
         android:layout_margin="5dp"
@@ -44,6 +37,15 @@
         android:padding="5dp"
         android:id="@+id/history_date"
         android:layout_below="@id/history_video_title"></TextView>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/three_dot"
+        android:layout_margin="10dp"
+        android:id="@+id/three_dot_history"
+        android:layout_alignParentRight="true"
+        ></ImageView>
 
 
 </RelativeLayout>

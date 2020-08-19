@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:633617675460:android:04676af0213d2201c58591",
         "android_client_info": {
-          "package_name": "com.example.chhots"
+          "package_name": "com.example.SmurfoUser"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "633617675460-3qj7lauu2sa0qb2vp9lntqa2qskl5ro5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.chhots",
+            "package_name": "com.example.SmurfoUser",
             "certificate_hash": "82e72eac5f48dde5bd3ce1c7e46fa7a00f6dfd3e"
           }
         },

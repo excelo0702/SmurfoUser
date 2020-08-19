@@ -8,14 +8,27 @@
         android:layout_height="wrap_content"
         android:text="Name"
         android:padding="10dp"
-        android:textSize="16dp"
+        android:textSize="17dp"
         android:textColor="@color/black"
         android:id="@+id/routine_sectionNo"></TextView>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:layout_below="@id/routine_sectionNo"
+        android:padding="10dp"
+        android:textSize="14dp"
+        android:textColor="@color/black"
+        android:id="@+id/routine_description"></TextView>
+
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_play_black"
+        android:visibility="gone"
         android:layout_alignParentRight="true"
         android:padding="10dp"
         android:id="@+id/play_section"></ImageView>

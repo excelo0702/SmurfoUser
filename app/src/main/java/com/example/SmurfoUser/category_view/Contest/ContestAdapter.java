@@ -29,6 +29,7 @@ import com.example.SmurfoUser.LeaderboardModel;
 import com.example.SmurfoUser.Login;
 import com.example.SmurfoUser.R;
 import com.example.SmurfoUser.bottom_navigation_fragments.Explore.VideoModel;
+import com.example.SmurfoUser.bottom_navigation_fragments.Explore.explore;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -83,6 +84,7 @@ public class ContestAdapter extends PagerAdapter {
         ImageView img1 = (ImageView)view.findViewById(R.id.contest_view);
         TextView txt1 = (TextView)view.findViewById(R.id.participate);
         TextView txt2 = view.findViewById(R.id.contest_leaderboard);
+        TextView contest_videos = view.findViewById(R.id.contest_see_videos);
         relativeLayout = view.findViewById(R.id.rr1);
 
 
@@ -90,6 +92,25 @@ public class ContestAdapter extends PagerAdapter {
         final String info = models.get(position).getInfo();
         final String contestId = models.get(position).getContestId();
         System.out.println(img1+" pppp");
+
+
+        contest_videos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Bundle bundle = new Bundle();
+                bundle.putString("category","CONTEST");
+                bundle.putString("contestId",models.get(position).getContestId());
+                Fragment fragment = new explore();
+                fragment.setArguments(bundle);
+                FragmentTransaction fragmentTransaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.drawer_layout,fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+            }
+        });
+
 
 
         txt2.setOnClickListener(new View.OnClickListener() {

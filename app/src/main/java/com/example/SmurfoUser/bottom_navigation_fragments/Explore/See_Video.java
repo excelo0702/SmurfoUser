@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,12 +27,17 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.SmurfoUser.LoadingDialog;
 import com.example.SmurfoUser.R;
 import com.example.SmurfoUser.UserInfoModel;
+import com.example.SmurfoUser.bottom_navigation_fragments.InstructorPackage.InstructorInfoModel;
+import com.example.SmurfoUser.onBackPressed;
 import com.example.SmurfoUser.ui.Dashboard.HistoryPackage.HistoryModel;
+import com.example.SmurfoUser.ui.Dashboard.PointModel;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -52,9 +58,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -63,16 +72,16 @@ import static android.view.View.VISIBLE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class See_Video extends Fragment {
+public class See_Video extends Fragment implements onBackPressed {
 
-
-    public TextView title,upvote,downvote,comments,share,views,chat;
-    public ImageView favorite_icon,share_icon;
-    public ImageButton upvote_icon,downvote_icon;
+    public TextView title,upvote,downvote,comments,share,views,chat,addToBookmark;
+    public ImageView favorite_icon,share_icon,user_photo;
+    public ImageView bookmark ;
+    public ImageView upvote_icon,downvote_icon;
     private ImageView send_comment,camera_comment;
     private MediaController mediaController;
     FirebaseAuth auth;
-    private DatabaseReference mDatabaseRef;
+    private DatabaseReference mDatabaseRef,databaseReference;
     private static final String TAG = "See_Video";
     private FloatingActionButton chatBtn;
     private String instructorId;
@@ -88,8 +97,9 @@ public class See_Video extends Fragment {
     List<CommentModel> list;
     String htitle,hvideoName,hthumbnail;
     UserInfoModel usermodel;
-    int k=0;
+    int k=0,points=0;
     String s="";
+
 
 
     //exoplayer implementation
@@ -101,6 +111,12 @@ public class See_Video extends Fragment {
     private long playbackPosition = 0;
     ImageView fullScreenButton;
     boolean fullScreen = false;
+    Switch sw1;
+
+    PointModel modelWeekly,modelOverAll;
+    String userVideoId="";
+    LoadingDialog loadingDialog;
+
 
     public See_Video() {
         // Required empty public constructor
@@ -112,48 +128,18 @@ public class See_Video extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_see__video, container, false);
 
-        title = view.findViewById(R.id.video_adapter_title_see);
-        upvote = view.findViewById(R.id.video_likess_see);
-        views = view.findViewById(R.id.video_views_see);
-        upvote_icon = view.findViewById(R.id.video_likes_see);
-        downvote_icon = view.findViewById(R.id.video_downvote_see);
-        share_icon = view.findViewById(R.id.video_share_see);
-        favorite_icon = view.findViewById(R.id.favorite_comment_see);
-        auth = FirebaseAuth.getInstance();
-
-        send_comment = view.findViewById(R.id.send_comment);
-        camera_comment = view.findViewById(R.id.select_image_content);
-        comment_message = view.findViewById(R.id.comment_message);
-
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        list = new ArrayList<>();
-        recyclerView = view.findViewById(R.id.comments);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-
-
-
-        playerView = view.findViewById(R.id.video_view_item_see);
-        fullScreenButton = playerView.findViewById(R.id.exo_fullscreen_icon);
-        playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
-        playerView.setPadding(5,0,5,0);
-
 
         fullScreenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 FullScreen();
-                //      Intent intent = new Intent(getContext(), FloatingWidgetService.class);
-                //    intent.putExtra("videoUri",videouri.toString());
-                //  getActivity().startService(intent);
 
             }
         });
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("");
+        databaseReference = FirebaseDatabase.getInstance().getReference("");
         mDatabaseRef.child("UserInfo").child(user.getUid())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
@@ -171,12 +157,17 @@ public class See_Video extends Fragment {
                 Bundle bundle = this.getArguments();
         videoId = bundle.getString("videoId");
 
+        upvote_icon.setEnabled(false);
+        downvote_icon.setEnabled(false);
 
         upvote_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mDatabaseRef.child("VIDEOS").child(videoId).child("like").setValue(String.valueOf(Integer.parseInt(upvote.getText().toString())+1));
                 current.setLike(String.valueOf(Integer.parseInt(current.getLike())+1));
+
+                increasePoints(5);
+
                 //enable downvote and disable upvote
                 upvote.setText(String.valueOf(Integer.parseInt(upvote.getText().toString())+1));
                 upvote_icon.setEnabled(false);
@@ -186,19 +177,15 @@ public class See_Video extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                         mDatabaseRef.child("FAVORITE").child(auth.getCurrentUser().getUid()).child(videoId).setValue(current);
-                        upvote_icon.setEnabled(false);
-                        downvote_icon.setEnabled(true);
-                        Toast.makeText(getContext(),"Added to Liked Videos",Toast.LENGTH_SHORT).show();
+
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
                 });
-
             }
         });
-
 
         downvote_icon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,12 +194,21 @@ public class See_Video extends Fragment {
                 mDatabaseRef.child("VIDEOS").child(videoId).child("like").setValue(String.valueOf(Integer.parseInt(upvote.getText().toString())-1));
                 current.setLike(String.valueOf(Integer.parseInt(current.getLike())-1));
                 //enable downvote and disable upvote
+
+                increasePoints(-5);
                 upvote_icon.setEnabled(true);
                 downvote_icon.setEnabled(false);
                 upvote.setText(String.valueOf(Integer.parseInt(upvote.getText().toString())-1));
 
                 mDatabaseRef.child("FAVORITE").child(user.getUid()).child(videoId).removeValue();
                 Toast.makeText(getContext(),"Remove From Liked Videos",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        addToBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddBookmark();
             }
         });
 
@@ -223,17 +219,128 @@ public class See_Video extends Fragment {
             }
         });
         showVideo();
-        showComments();
         return view;
+    }
+
+    private void init(View view) {
+
+        loadingDialog = new LoadingDialog(getActivity());
+        loadingDialog.startLoadingDialog();
+        title = view.findViewById(R.id.video_adapter_title_see);
+        upvote = view.findViewById(R.id.video_likess_see);
+        views = view.findViewById(R.id.video_views_see);
+        upvote_icon = view.findViewById(R.id.video_likes_see);
+        downvote_icon = view.findViewById(R.id.video_downvote_see);
+        share_icon = view.findViewById(R.id.video_share_see);
+        bookmark = view.findViewById(R.id.bookmark_icon);
+        auth = FirebaseAuth.getInstance();
+        addToBookmark = view.findViewById(R.id.AddtoBookmars);
+        user_photo = view.findViewById(R.id.instructor_see_video_photo);
+        send_comment = view.findViewById(R.id.send_comment);
+        camera_comment = view.findViewById(R.id.select_image_content);
+        comment_message = view.findViewById(R.id.comment_message);
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        list = new ArrayList<>();
+        recyclerView = view.findViewById(R.id.comments);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+
+
+
+        playerView = view.findViewById(R.id.video_view_item_see);
+        fullScreenButton = playerView.findViewById(R.id.exo_fullscreen_icon);
+        playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+        playerView.setPadding(5,0,5,0);
+        sw1 = playerView.findViewById(R.id.mirror);
+        sw1.setVisibility(GONE);
+
+
+
+    }
+
+
+    private void AddBookmark() {
+        mDatabaseRef.child("Bookmarks").child(user.getUid()).child(videoId).setValue(current);
+        Toast.makeText(getContext(),"Added to My Bookmarks",Toast.LENGTH_SHORT).show();
+    }
+
+    private void increasePoints(int n)
+    {
+        if(modelOverAll!=null) {
+            modelWeekly.setPoints(modelWeekly.getPoints() + n);
+            modelOverAll.setPoints(modelOverAll.getPoints() + n);
+            databaseReference.child("UsersPoint").child("weekly").child(userVideoId).setValue(modelWeekly);
+            databaseReference.child("UsersPoint").child("OverAll").child(userVideoId).setValue(modelOverAll);
+        }
+    }
+
+    private void checkVideoHistory()
+    {
+        mDatabaseRef.child("VideoHistory").child(user.getUid()).child(videoId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getChildrenCount()==0)
+                        {
+                            PointModel popo = new PointModel(userVideoId,"",1);
+                            mDatabaseRef.child("VideoHistory").child(user.getUid()).child(videoId).setValue(popo);
+                            increasePoints(10);
+                            downvote_icon.setEnabled(false);
+                            upvote_icon.setEnabled(true);
+                            current.setView(String.valueOf(Integer.parseInt(current.getView())+1));
+                            mDatabaseRef.child("VIDEOS").child(videoId).child("view").setValue(current.getView());
+                        }
+                        else{
+                            upvote_icon.setEnabled(false);
+                            downvote_icon.setEnabled(true);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError){ }
+                });
+    }
+
+    private void fetchUserPoints() {
+        if(userVideoId!=null) {
+            databaseReference.child("UsersPoint").child("weekly").child(userVideoId).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            modelWeekly = dataSnapshot.getValue(PointModel.class);
+                            if (modelWeekly != null) {
+                                points = modelWeekly.getPoints();
+                            }
+                            databaseReference.child("UsersPoint").child("OverAll").child(userVideoId).addListenerForSingleValueEvent(
+                                    new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            modelOverAll = dataSnapshot.getValue(PointModel.class);
+                                            if (modelOverAll != null) {
+                                                points = modelOverAll.getPoints();
+                                            }
+                                            checkVideoHistory();
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) { }
+                                    });
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) { }
+                    });
+        }
     }
 
     private void pushHistory() {
         String time = System.currentTimeMillis()+"";
         Log.d(TAG,htitle+hvideoName);
-        HistoryModel model = new HistoryModel(htitle,hvideoName,hthumbnail,"date","Normal",videoId);
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        HistoryModel model = new HistoryModel(htitle,hvideoName,hthumbnail,date,"Explore",videoId);
         mDatabaseRef.child("HISTORY").child(user.getUid()).child(time).setValue(model);
     }
-
 
     private void FullScreen() {
         if(fullScreen)
@@ -362,15 +469,28 @@ public class See_Video extends Fragment {
     public void onPause() {
         super.onPause();
         if (Util.SDK_INT <= 23) {
-            releasePlayer();
+            if(player!=null){
+                player.setPlayWhenReady(false);
+            }        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Util.SDK_INT <= 23) {
+            if(player!=null){
+                player.setPlayWhenReady(false);
+            }
+            //   releasePlayer();
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (Util.SDK_INT > 23) {
-            releasePlayer();
+        if (Util.SDK_INT <= 23) {
+
+               releasePlayer();
         }
     }
 
@@ -384,8 +504,6 @@ public class See_Video extends Fragment {
         }
     }
 
-
-
     private void showVideo() {
         mDatabaseRef.child("VIDEOS").child(videoId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -393,22 +511,26 @@ public class See_Video extends Fragment {
 
                 if(dataSnapshot.getChildrenCount()==0)
                     return;
+                else {
 
-                current = dataSnapshot.getValue(VideoModel.class);
-                instructorId = current.getUser();
-                htitle = current.getTitle();
-                hvideoName = current.getTitle();
-                title.setText(current.getTitle());
-                upvote.setText(String.valueOf(current.getLike()));
-                views.setText(String.valueOf(current.getView()));
-                videouri=(Uri.parse(current.getUrl()));
-                hthumbnail = current.getThumbnail();
-                current.setView(String.valueOf(Integer.parseInt(current.getView())+1));
-                views.setText(current.getView());
-                mDatabaseRef.child("VIDEOS").child(videoId).child("view").setValue(current.getView());
 
-                pushHistory();
-                initializePlayer();
+                    current = dataSnapshot.getValue(VideoModel.class);
+                    instructorId = current.getUser();
+                    htitle = current.getTitle();
+                    hvideoName = current.getTitle();
+                    userVideoId = current.getUser();
+                    title.setText(current.getTitle());
+                    upvote.setText(String.valueOf(current.getLike()));
+                    views.setText(String.valueOf(current.getView()));
+                    videouri = (Uri.parse(current.getUrl()));
+                    hthumbnail = current.getThumbnail();
+                    views.setText(current.getView());
+                    Log.d("pop pop id ", userVideoId);
+                    pushHistory();
+                    initializePlayer();
+                    fetchUserPoints();
+                    showComments();
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -430,7 +552,7 @@ public class See_Video extends Fragment {
                     list.add(model);
                 }
                 Collections.reverse(list);
-                adapter = new CommentAdapter(getContext(),list);
+                adapter = new CommentAdapter(getContext(),list,userVideoId,videoId);
                 recyclerView.setAdapter(adapter);
 
             }
@@ -443,14 +565,13 @@ public class See_Video extends Fragment {
     }
 
     private void sendComment()
-    {
+    {        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
         String time = System.currentTimeMillis()+"";
-        CommentModel model = new CommentModel(comment_message.getText().toString(),time,user.getUid(),usermodel.getUserImageurl(),usermodel.getUserName());
+        CommentModel model = new CommentModel(comment_message.getText().toString(),date,user.getUid(),usermodel.getUserImageurl(),usermodel.getUserName(),time);
         mDatabaseRef.child("COMMENTS").child(videoId).child(time).setValue(model);
         comment_message.setText("");
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -468,5 +589,37 @@ public class See_Video extends Fragment {
     }
 
 
+    @Override
+    public void onBackPressed() {
+
+        if(fullScreen)
+        {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            if (((AppCompatActivity)getActivity()).getSupportActionBar()!=null)
+                ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+
+
+            View BottomnavBar = getActivity().findViewById(R.id.bottom_navigation);
+            BottomnavBar.setVisibility(VISIBLE);
+
+            Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+            toolbar.setVisibility(VISIBLE);
+            playerView.setBackgroundColor(Color.parseColor("#000000"));
+
+            tt = getActivity().findViewById(R.id.tt);
+            tt.setVisibility(VISIBLE);
+
+            View NavBar = getActivity().findViewById(R.id.nav_view);
+            NavBar.setVisibility(VISIBLE);
+            fullScreen = false;
+
+        }
+        else
+        {
+            releasePlayer();
+        }
+    }
 
 }

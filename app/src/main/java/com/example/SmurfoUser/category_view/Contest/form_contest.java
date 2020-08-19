@@ -457,7 +457,8 @@ public class form_contest extends Fragment implements onBackPressed, PaymentList
 
     @Override
     public void onBackPressed() {
-        player.release();
+
+        releasePlayer();
     }
 
 

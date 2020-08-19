@@ -33,22 +33,42 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
 
 public class Adapter extends PagerAdapter {
 
     private List<CourseThumbnail> models;
     private LayoutInflater layoutInflater;
     private Context context;
-
-    String instructorId;
+    String instructorId,courseId;
     LoadingDialog loadingDialog;
     DatabaseReference mDatabaseReference;
     FirebaseUser user;
+    int flag=0;
+    String thumbnail;
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    CourseThumbnail model;
+    int a1=0,a2=0,a3=0;
+
+    private String TAG = "ppq";
+    int points=0;
+
+    final String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+
 
     public Adapter(List<CourseThumbnail> models, Context context) {
         this.models = models;
         this.context = context;
+    }
+
+    public void setData(List<CourseThumbnail> models)
+    {
+        this.models = models;
     }
 
     @Override
@@ -71,7 +91,8 @@ public class Adapter extends PagerAdapter {
 
         TextView course_name,des;
         ImageView img;
-
+        thumbnail = models.get(position).getCourseImage();
+        courseId = models.get(position).getCourseId();
 
         course_name = (TextView)view.findViewById(R.id.raw_course_viewpager_name);
         des = (TextView)view.findViewById(R.id.raw_course_viewpager_description);
@@ -79,17 +100,16 @@ public class Adapter extends PagerAdapter {
         user = FirebaseAuth.getInstance().getCurrentUser();
         instructorId = models.get(position).getInstructorId();
 
+
         course_name.setText(models.get(position).getCourseName());
         des.setText(models.get(position).getCourseName());
-        Picasso.get().load(Uri.parse(models.get(position).getCourseImage())).resize(400,300).into(img);
+        Picasso.get().load(Uri.parse(models.get(position).getCourseImage())).into(img);
         loadingDialog = new LoadingDialog(((AppCompatActivity) context));
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int p=0;
-                String courseId = models.get(position).getCourseId();
                 if(user==null)
                 {
                     Toast.makeText(context,"Login First",Toast.LENGTH_SHORT).show();
@@ -97,92 +117,38 @@ public class Adapter extends PagerAdapter {
                     context.startActivity(intent);
                 }
                 else
-                {
-                    loadingDialog.startLoadingDialog();
-                    //   p = checkSubscription();
-                    if(p==0)
-                    {
-                        //        p = checkPurchased(courseId);
-                    }
-                }
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadingDialog.DismissDialog();
-                    }
-                },3000);
-                p=1;
-                if(p==1)
-                {
-                    Fragment fragment = new routine_view();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("category","Course");
-                    bundle.putString("routineId",courseId);
-                    fragment.setArguments(bundle);
-                    FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.drawer_layout, fragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                }
-                else
-                {
-                    Fragment fragment = new course_purchase_view();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("routineId", courseId);
-                    //      bundle.putString("thumbnail", thumbnail);
-                    //    bundle.putString("userId", userId);
-                    fragment.setArguments(bundle);
-                    FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.drawer_layout, fragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                }
+                    coursePurchase();
+
+
+
             }
         });
-
         container.addView(view);
         return view;
     }
 
-    public int checkPurchased(final String courseId)
+    public void coursePurchase()
     {
-        final int[] flag = new int[1];
-        mDatabaseReference.child("USER_PURCHASED_ROUTINES").child(user.getUid())
-                .addValueEventListener(new ValueEventListener() {
-
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                        for(DataSnapshot ds: dataSnapshot.getChildren())
-                        {
-                            UserClass model = ds.getValue(UserClass.class);
-                            if(model.getVideoId().equals(courseId))
-                            {
-                                flag[0] =1;
-                            }
-                        }
-                        if(flag[0]==1) {
-                            Fragment fragment = new routine_view();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("routineId", courseId);
-                            bundle.putString("category","Routine");
-                            fragment.setArguments(bundle);
-                            FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.drawer_layout, fragment);
-                            fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.commit();
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) { }
-                });
-        //TODO: handler for wait
-        return 0;
+        Log.d("popop","popop111");
+        Fragment fragment = new course_purchase_view();
+        Bundle bundle = new Bundle();
+        bundle.putString("instructorId", instructorId);
+        bundle.putString("courseId", courseId);
+        bundle.putString("thumbnail", thumbnail);
+        fragment.setArguments(bundle);
+        FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.drawer_layout, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
+
+
 
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View)object);
     }
+
+
 }

@@ -1,52 +1,20 @@
 package com.example.SmurfoUser;
 
 public class UserInfoModel {
-    private String userId,userEmail,userProfession,userLevel,userImageurl,userName,points,badge;
-    private int r1,r2,r3,r4,r5,r6;
 
-    public String getPoints() {
-        return points;
-    }
-
-    public void setPoints(String points) {
-        this.points = points;
-    }
-
-    public String getBadge() {
-        return badge;
-    }
-
-    public void setBadge(String badge) {
-        this.badge = badge;
-    }
-
-    public UserInfoModel(String userId, String userEmail, String userProfession, String userLevel, String userImageurl, String userName, String points, String badge, int r1, int r2, int r3, int r4, int r5, int r6) {
-        this.userId = userId;
-        this.userEmail = userEmail;
-        this.userProfession = userProfession;
-        this.userLevel = userLevel;
-        this.userImageurl = userImageurl;
-        this.userName = userName;
-        this.points = points;
-        this.badge = badge;
-        this.r1 = r1;
-        this.r2 = r2;
-        this.r3 = r3;
-        this.r4 = r4;
-        this.r5 = r5;
-        this.r6 = r6;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+    private String userId,userEmail,userProfession,userLevel,userImageurl,phone,userName,points,badge;
+    private String interest,earn;
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public void setUserId(String userId) {
@@ -85,52 +53,58 @@ public class UserInfoModel {
         this.userImageurl = userImageurl;
     }
 
-    public int getR1() {
-        return r1;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setR1(int r1) {
-        this.r1 = r1;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public int getR2() {
-        return r2;
+    public String getPoints() {
+        return points;
     }
 
-    public void setR2(int r2) {
-        this.r2 = r2;
+    public void setPoints(String points) {
+        this.points = points;
     }
 
-    public int getR3() {
-        return r3;
+    public String getBadge() {
+        return badge;
     }
 
-    public void setR3(int r3) {
-        this.r3 = r3;
+    public void setBadge(String badge) {
+        this.badge = badge;
     }
 
-    public int getR4() {
-        return r4;
+    public String getInterest() {
+        return interest;
     }
 
-    public void setR4(int r4) {
-        this.r4 = r4;
+    public void setInterest(String interest) {
+        this.interest = interest;
     }
 
-    public int getR5() {
-        return r5;
+    public String getEarn() {
+        return earn;
     }
 
-    public void setR5(int r5) {
-        this.r5 = r5;
+    public void setEarn(String earn) {
+        this.earn = earn;
     }
 
-    public int getR6() {
-        return r6;
-    }
-
-    public void setR6(int r6) {
-        this.r6 = r6;
+    public UserInfoModel(String userId, String userEmail, String userProfession, String userLevel, String userImageurl, String phone, String userName, String points, String badge, String interest, String earn) {
+        this.userId = userId;
+        this.userEmail = userEmail;
+        this.userProfession = userProfession;
+        this.userLevel = userLevel;
+        this.userImageurl = userImageurl;
+        this.phone = phone;
+        this.userName = userName;
+        this.points = points;
+        this.badge = badge;
+        this.interest = interest;
+        this.earn = earn;
     }
 
     public UserInfoModel() {

@@ -6,13 +6,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.SmurfoUser.R;
 import com.example.SmurfoUser.onBackPressed;
 import com.example.SmurfoUser.ui.home.HomeFragment;
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class category extends Fragment implements onBackPressed {
 
@@ -21,170 +31,58 @@ public class category extends Fragment implements onBackPressed {
     private TextView kathak,khatakali,kuchipudi,manipuri,mohiniyattam,odissi,sattriya;
     private TextView afro,ballet,contemporary,dance_hall,jazz,litfeet;
 
+    private List<CategoryModel> list,list2,list3;
+    private RecyclerView recyclerView,recyclerView2,recyclerView3;
+    private LinearLayoutManager mLayoutManager,mLayoutManager2,mLayoutManager3;
+    private CategoryAdapter adapter,adapter2,adapter3;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_category, container, false);
-        Breaking = root.findViewById(R.id.breaking);
-        Krump = root.findViewById(R.id.krump);
-        locking = root.findViewById(R.id.locking);
-        popping = root.findViewById(R.id.popping);
 
-        house= root.findViewById(R.id.house);
-        waacking = root.findViewById(R.id.waacking);
-        hip_hop= root.findViewById(R.id.hip_hop);
-        bharatnatyam = root.findViewById(R.id.bharatnatyam);
-        kathak = root.findViewById(R.id.kathak);
-        khatakali = root.findViewById(R.id.khatkali);
-        kuchipudi = root.findViewById(R.id.kuchipudi);
-        manipuri = root.findViewById(R.id.manipuri);
-        mohiniyattam = root.findViewById(R.id.mohiniyattam);
-        odissi = root.findViewById(R.id.odissi);
-        sattriya = root.findViewById(R.id.sattriya);
-        afro = root.findViewById(R.id.afro);
 
-        ballet= root.findViewById(R.id.ballet);
-        contemporary = root.findViewById(R.id.contemporary);
-        dance_hall = root.findViewById(R.id.dance_hall);
-        jazz = root.findViewById(R.id.jazz);
-        litfeet = root.findViewById(R.id.litfeet);
+        list = new ArrayList<>();
+        recyclerView = root.findViewById(R.id.category_recycler_view1);
+        recyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        list.add(new CategoryModel("Breaking",R.drawable.br1,0,1));
+        list.add(new CategoryModel("Krump",R.drawable.kr2,1,2));
+        list.add(new CategoryModel("Locking",R.drawable.lo1,2,3));
+        list.add(new CategoryModel("Popping",R.drawable.br2,3,4));
+        list.add(new CategoryModel("Waacking",R.drawable.wa1,4,5));
+        list.add(new CategoryModel("Hip Hop",R.drawable.hip1,5,6));
+        adapter = new CategoryAdapter(list,getContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(adapter);
 
-        Breaking.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"breaking");
-            }
-        });
 
-        Krump.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"krump");
-            }
-        });
+        list3 = new ArrayList<>();
+        recyclerView3 = root.findViewById(R.id.category_recycler_view3);
+        recyclerView.setHasFixedSize(true);
+        mLayoutManager3 = new LinearLayoutManager(getContext());
+        list3.add(new CategoryModel("Ballet",R.drawable.bhr1,12,13));
+        list3.add(new CategoryModel("Afro",R.drawable.bhr1,13,14));
+        list3.add(new CategoryModel("Dance Hall",R.drawable.bhr1,14,15));
+        list3.add(new CategoryModel("Jazz",R.drawable.bhr1,15,16));
+        list3.add(new CategoryModel("Litefeet",R.drawable.bhr1,16,17));
+        adapter3 = new CategoryAdapter(list3,getContext());
+        recyclerView3.setLayoutManager(mLayoutManager3);
+        recyclerView3.setAdapter(adapter3);
 
-        locking.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"locking");
-            }
-        });
 
-        popping.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"popping");
-            }
-        });
-
-        house.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"house");
-            }
-        });
-
-        waacking.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"waacking");
-            }
-        });
-        hip_hop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"hip_hop");
-            }
-        });
-        bharatnatyam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"bharatnatyam");
-            }
-        });
-
-        kathak.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"kathak");
-            }
-        });
-
-        khatakali.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"khatakali");
-            }
-        });
-
-        kuchipudi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"kuchipudi");
-            }
-        });
-
-        manipuri.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"manipuri");
-            }
-        });
-
-        mohiniyattam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"mohiniyattam");
-            }
-        });
-        odissi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"odissi");
-            }
-        });
-        sattriya.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"sattriya");
-            }
-        });
-        afro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"afro");
-            }
-        });
-        ballet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"ballet");
-            }
-        });
-        contemporary.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"contemporary");
-            }
-        });
-        dance_hall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"dance_hall");
-            }
-        });
-        jazz.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"jazz");
-            }
-        });
-        litfeet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new category_view(),"litfeet");
-            }
-        });
+        list2 = new ArrayList<>();
+        recyclerView2 = root.findViewById(R.id.category_recycler_view2);
+        recyclerView2.setHasFixedSize(true);
+        mLayoutManager2 = new LinearLayoutManager(getContext());
+        list2.add(new CategoryModel("Bharatnatyam",R.drawable.bhr1,7,8));
+        list2.add(new CategoryModel("Kathak",R.drawable.bhr2,8,9));
+        list2.add(new CategoryModel("Kuchupudi",R.drawable.bhr1,9,10));
+        list2.add(new CategoryModel("Manipuri",R.drawable.bhr1,10,11));
+        list2.add(new CategoryModel("Contemporary",R.drawable.bhr2,11,12));
+        adapter2 = new CategoryAdapter(list2,getContext());
+        recyclerView2.setLayoutManager(mLayoutManager2);
+        recyclerView2.setAdapter(adapter2);
 
         return root;
     }

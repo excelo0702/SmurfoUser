@@ -68,7 +68,7 @@ public class history extends Fragment {
     private void showHistory() {
         list.clear();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("HISTORY").child(user.getUid());
-        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds: dataSnapshot.getChildren())
@@ -80,7 +80,6 @@ public class history extends Fragment {
                 mAdapter = new HistoryAdapter(list,getContext());
                 recyclerView.setLayoutManager(mLayoutManager);
                 recyclerView.setAdapter(mAdapter);
-
             }
 
             @Override

@@ -5,9 +5,21 @@
     android:layout_height="match_parent"
     tools:context=".ui.Dashboard.MyVideo.MyVideoFragment">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="My Videos"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:id="@+id/video"></TextView>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/video"
         android:id="@+id/my_video_dashboard"></androidx.recyclerview.widget.RecyclerView>
 
 

@@ -17,9 +17,12 @@ import android.widget.Button;
 import com.example.SmurfoUser.R;
 import com.example.SmurfoUser.onBackPressed;
 import com.example.SmurfoUser.ui.Dashboard.Favorite.favorite;
+import com.example.SmurfoUser.ui.Dashboard.MyBookmarkPackage.MyBookmarks;
+import com.example.SmurfoUser.ui.Dashboard.MyCoursePackage.MyCourses;
 import com.example.SmurfoUser.ui.Dashboard.MyRoutinePackage.MyRoutines;
 import com.example.SmurfoUser.ui.Dashboard.MyVideo.MyVideoFragment;
 import com.example.SmurfoUser.ui.home.HomeFragment;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import static android.view.View.GONE;
@@ -89,7 +92,7 @@ public class dashboard extends Fragment implements onBackPressed {
                         break;
 
                     case R.id.favorite_dashboard:
-                        setFragment(new favorite());
+                        setFragment(new MyBookmarks());
                         break;
 
                     case R.id.my_routines_dashboard:
@@ -97,7 +100,7 @@ public class dashboard extends Fragment implements onBackPressed {
                         break;
 
                     case R.id.certificates_dashboard:
-                        setFragment(new favorite());
+                        setFragment(new MyCourses());
                         break;
 
                     case R.id.my_videos_dashboard:

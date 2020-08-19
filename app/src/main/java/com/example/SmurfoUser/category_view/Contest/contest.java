@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.SmurfoUser.R;
 import com.google.firebase.database.DataSnapshot;
@@ -42,7 +43,6 @@ public class contest extends Fragment {
     List<HostModel> list;
     ArgbEvaluator argbEvaluator = new ArgbEvaluator();
     TextView participate;
-    Button host_contest;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private final String TAG = "Contest123";
@@ -59,23 +59,44 @@ public class contest extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_contest, container, false);
         list = new ArrayList<>();
-        host_contest = view.findViewById(R.id.host_contest);
         databaseReference = FirebaseDatabase.getInstance().getReference("");
         viewPager = (ViewPager)view.findViewById(R.id.view_contest_Pager);
 
-
-
-
-        showContests();
-
-        host_contest.setOnClickListener(new View.OnClickListener() {
+        DatabaseReference presenceRef = FirebaseDatabase.getInstance().getReference("disconnectmessage");
+        presenceRef.onDisconnect().setValue("I disconnected!");
+        presenceRef.onDisconnect().removeValue(new DatabaseReference.CompletionListener() {
             @Override
-            public void onClick(View view) {
-                getFragmentManager().beginTransaction().replace(R.id.drawer_layout,new hostContest()).addToBackStack(null).commit();
+            public void onComplete(DatabaseError error, @NonNull DatabaseReference reference) {
+                if (error != null) {
+                    Log.d(TAG, "could not establish onDisconnect event:" + error.getMessage());
+                }
             }
         });
 
 
+        DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+        connectedRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean connected = snapshot.getValue(Boolean.class);
+                if (connected) {
+                    Toast.makeText(getContext(),"Connected",Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "connected");
+                } else {
+
+                    Toast.makeText(getContext(),"Not Connected",Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "not connected");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "Listener was cancelled");
+            }
+        });
+
+
+        showContests();
 
         return view;
     }
@@ -109,17 +130,8 @@ public class contest extends Fragment {
                     Log.d(TAG,"not null pager");
                 }
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
-
     }
-
-
-
-
-
 }

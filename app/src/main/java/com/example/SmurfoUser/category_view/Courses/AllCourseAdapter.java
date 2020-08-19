@@ -6,7 +6,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -26,6 +29,7 @@ import com.example.SmurfoUser.bottom_navigation_fragments.Explore.See_Video;
 import com.example.SmurfoUser.SubscriptionModel;
 import com.example.SmurfoUser.UserClass;
 import com.example.SmurfoUser.category_view.routine.routine_view;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,19 +37,32 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
 
 public class AllCourseAdapter extends RecyclerView.Adapter<AllCourseAdapter.MyView> {
 
     private List<CourseThumbnail> list;
     private Context context;
-    private final String TAG = "HOrizontalAdapter";
+    private final String TAG = "HorizontalAdapter";
+    private String activity;
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    CourseThumbnail model;
+    int a1=0,a2=0,a3=0;
+    final String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+    int points=0,flag=0;
 
-    public AllCourseAdapter(List<CourseThumbnail> list, Context context) {
+    public AllCourseAdapter(List<CourseThumbnail> list, Context context, String activity) {
         this.list = list;
         this.context = context;
+        this.activity = activity;
     }
 
     @NonNull
@@ -63,7 +80,13 @@ public class AllCourseAdapter extends RecyclerView.Adapter<AllCourseAdapter.MyVi
         holder.courseId = list.get(position).getCourseId();
         holder.thumbnail = list.get(position).getCourseImage();
         holder.instructorId = list.get(position).getInstructorId();
-        Log.d(TAG,"fghjkk");
+
+        holder.image.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                return true;
+            }
+        });
 
     }
 
@@ -74,16 +97,11 @@ public class AllCourseAdapter extends RecyclerView.Adapter<AllCourseAdapter.MyVi
 
     @Override
     public int getItemCount() {
-
-
-        Log.d(TAG+" ppp ",list.size()+"");
-
         return list.size();
     }
 
-
     public class MyView
-            extends RecyclerView.ViewHolder {
+            extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
 
         // Text View
         TextView CourseName,CourseCategory;
@@ -103,8 +121,7 @@ public class AllCourseAdapter extends RecyclerView.Adapter<AllCourseAdapter.MyVi
             CourseCategory = view.findViewById(R.id.raw_all_course_description);
             loadingDialog = new LoadingDialog(((AppCompatActivity) context));
 
-
-
+            view.setOnCreateContextMenuListener(this);
             user = FirebaseAuth.getInstance().getCurrentUser();
             mDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -112,160 +129,94 @@ public class AllCourseAdapter extends RecyclerView.Adapter<AllCourseAdapter.MyVi
                 @Override
                 public void onClick(View view) {
                     int p=0;
-                    if (user == null) {
-                        Toast.makeText(context, "Login First", Toast.LENGTH_SHORT).show();
+                    if(user==null)
+                    {
+                        Toast.makeText(context,"Login First",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, Login.class);
                         context.startActivity(intent);
                     }
-                    else {
-                        loadingDialog.startLoadingDialog();
-                        if (p == 0) {
-                            //      p = checkPurchased();
-                        }
-                    }
-                    p=1;
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadingDialog.DismissDialog();
-                        }
-                    },3000);
-                    if(p==1)
+                    else if(user.getUid()==instructorId)
                     {
-                        Fragment fragment = new routine_view();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("category","Course");
-                        bundle.putString("courseId",courseId);
-                        fragment.setArguments(bundle);
-                        FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.drawer_layout, fragment);
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
+                        coursePurchase();
                     }
                     else
                     {
-                        Fragment fragment = new course_purchase_view();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("courseId", courseId);
-                        bundle.putString("thumbnail", thumbnail);
-                        bundle.putString("userId", user.getUid());
-                        fragment.setArguments(bundle);
-                        FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.drawer_layout, fragment);
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
+                        //        p = checkSubscription();
                     }
+                    coursePurchase();
+
                 }
             });
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int p=0;
+                    if(user==null)
+                    {
+                        Toast.makeText(context,"Login First",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, Login.class);
+                        context.startActivity(intent);
+                    }
+                    else if(user.getUid()==instructorId)
+                    {
+                        coursePurchase();
+                    }
+                    coursePurchase();
 
-
-
+                }
+            });
+        }
+        public void coursePurchase()
+        {
+            Log.d("popop","popop111");
+            Fragment fragment = new course_purchase_view();
+            Bundle bundle = new Bundle();
+            bundle.putString("instructorId", instructorId);
+            bundle.putString("courseId", courseId);
+            bundle.putString("thumbnail", thumbnail);
+            fragment.setArguments(bundle);
+            FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.drawer_layout, fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         }
 
-
-        public int checkSubscription()
-        {
-            Log.d(TAG," pqq ");
-            final int[] flag = new int[1];
-            mDatabaseReference.child("COURSESUBSCRIPTION").child(user.getUid())
-                    .addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot ds: dataSnapshot.getChildren())
-                            {
-                                Log.d(TAG,ds.getValue()+"");
-
-                                SubscriptionModel model = ds.getValue(SubscriptionModel.class);
-                                if(model.getVideoId().equals(courseId))
-                                {
-                                    Log.d(TAG," pqq ");
-                                    flag[0] =1;
-                                    return;
-                                }
-
-                            }
-                            if(flag[0]==1)
-                            {
-                                Fragment fragment = new See_Video();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("videoId", courseId);
-                                fragment.setArguments(bundle);
-                                FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
-                                fragmentTransaction.replace(R.id.drawer_layout, fragment);
-                                fragmentTransaction.addToBackStack(null);
-                                fragmentTransaction.commit();
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-            if(flag[0]==1)
-                return 1;
-
-
-            return 0;
-        }
-
-        public int checkPurchased()
-        {
-            Log.d(TAG," pqq ");
-            final int[] flag = new int[1];
-            mDatabaseReference.child("USERS").child(user.getUid()).child("courses")
-                    .addValueEventListener(new ValueEventListener() {
-
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Log.d(TAG,dataSnapshot.getValue()+"");
-
-                            for(DataSnapshot ds: dataSnapshot.getChildren())
-                            {
-                                Log.d(TAG,ds.getValue()+"");
-
-                                UserClass model = ds.getValue(UserClass.class);
-                                if(model.getCourseId().equals(courseId))
-                                {
-                                    Log.d(TAG," peee ");
-                                    flag[0] =1;
-                                    Log.d(TAG,flag[0]+" oo ");
-                                }
-                            }
-                            if(flag[0]==1) {
-                                Fragment fragment = new course_view();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("courseId", courseId);
-                                bundle.putString("thumbnail",thumbnail);
-                                bundle.putString("instructorId",instructorId);
-                                fragment.setArguments(bundle);
-                                FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
-                                fragmentTransaction.replace(R.id.drawer_layout, fragment);
-                                fragmentTransaction.addToBackStack(null);
-                                fragmentTransaction.commit();
-                                return;
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-            if(flag[0]==1)
-            {
-                return 1;
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            if(activity.equals(context.getResources().getString(R.string.MyCourse))) {
+                MenuItem delete = contextMenu.add(Menu.NONE, 1, 1, "Delete");
+                delete.setOnMenuItemClickListener(onDeleteMenu);
             }
-
-            //TODO: handler for wait
-
-            return 0;
         }
 
-
+        private final MenuItem.OnMenuItemClickListener onDeleteMenu = new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if(activity.equals(context.getResources().getString(R.string.MyCourse))) {
+                    switch (menuItem.getItemId()) {
+                        case 1:
+                            databaseReference.child(context.getResources().getString(R.string.Courses)).child(courseId).removeValue();
+                            databaseReference.child(context.getResources().getString(R.string.CoursesThumbnail)).child(courseId).removeValue();
+                            StorageReference ref = FirebaseStorage.getInstance().getReferenceFromUrl(thumbnail);
+                            StorageReference ref2 = FirebaseStorage.getInstance().getReference("Course").child(courseId + "courseName");
+                            ref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(context, "SuccessFully Deleted", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            ref2.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(context, "SuccessFully Deleted", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            break;
+                    }
+                }
+                return true;
+            }
+        };
 
 
 

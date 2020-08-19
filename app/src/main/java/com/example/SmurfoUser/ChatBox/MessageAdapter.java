@@ -1,20 +1,40 @@
 package com.example.SmurfoUser.ChatBox;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.SmurfoUser.R;
+import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
+
+import static android.view.View.GONE;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder>{
 
@@ -39,12 +59,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
         if(viewType == 0)
         {
             view = LayoutInflater.from(context).inflate(R.layout.raw_chat_item_right,parent,false);
-
         }
         else
         {
             view = LayoutInflater.from(context).inflate(R.layout.raw_chat_item_left,parent,false);
-
         }
         return new MyHolder(view);
     }
@@ -61,17 +79,43 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
         Log.d(TAG,"vbn");
         if(model.getFlag()==0)
         {
-            holder.message.setText(model.getMessage());
-            holder.time.setText(model.getTime());
-            holder.playerView.getLayoutParams().height=0;
-            holder.playerView.getLayoutParams().width = 0;
+            if(model.getVideo().equals("video"))
+            {
+                holder.playerView.getLayoutParams().height=700;
+                holder.playerView.getLayoutParams().width = 550;
+                holder.videouri = Uri.parse(model.getMessage());
+                holder.message.setText("");
+                holder.url = model.getMessage();
+                holder.time.setText(model.getTime());
+                holder.initializePlayer();
+            }
+            else
+            {
+                holder.message.setText(model.getMessage());
+                holder.time.setText(model.getTime());
+                holder.playerView.getLayoutParams().height=0;
+                holder.playerView.getLayoutParams().width = 0;
+            }
         }
+        else
+        {
+            if(model.getVideo().equals("video"))
+            {
+                holder.playerView.getLayoutParams().height=700;
+                holder.playerView.getLayoutParams().width = 550;
+                holder.videouri = Uri.parse(model.getMessage());
+                holder.message_left.setText("");
+                holder.url = model.getMessage();
+                holder.time_left.setText(model.getTime());
+                holder.initializePlayer();
+            }
         else
         {
             holder.message_left.setText(model.getMessage());
             holder.time_left.setText(model.getTime());
             holder.playerView.getLayoutParams().height=0;
             holder.playerView.getLayoutParams().width = 0;
+        }
 
         }
     }
@@ -84,7 +128,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
 
         public TextView message_left,message,time_left,time;
         public PlayerView playerView;
+        SimpleExoPlayer player;
+        private boolean playWhenReady = false;
+        Uri videouri;
+        String url;
 
+
+        boolean fullScreen = false;
+        private int currentWindow = 0;
+        private long playbackPosition = 0;
+        ImageView fullScreenButton;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
@@ -94,11 +147,29 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
             time_left = itemView.findViewById(R.id.show_message_left_date);
             time = itemView.findViewById(R.id.show_message_time);
             playerView = itemView.findViewById(R.id.video_view_chat);
+            playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+            playerView.setPadding(0,0,0,0);
+            playerView.setBackgroundColor(Color.parseColor("#000000"));
+            fullScreenButton = playerView.findViewById(R.id.exo_fullscreen_icon);
 
+
+            fullScreenButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context,exoPlayerFullScreen.class);
+                    intent.putExtra("videoUrl",url);
+                    context.startActivity(intent);
+                }
+            });
         }
+
+
+
 
         public void bind(final MessageModel model,final OnItemClickListener listener)
         {
+
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -106,6 +177,51 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
                 }
             });
         }
+
+
+
+        private void releasePlayer() {
+            if (player != null) {
+                playbackPosition = player.getCurrentPosition();
+                currentWindow = player.getCurrentWindowIndex();
+                playWhenReady = player.getPlayWhenReady();
+                player.release();
+                player = null;
+            }
+        }
+
+
+        private void initializePlayer() {
+
+            player = ExoPlayerFactory.newSimpleInstance(context);
+            playerView.setPlayer(player);
+
+            MediaSource mediaSource = buildMediaSource(videouri);
+
+            player.setPlayWhenReady(playWhenReady);
+            playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+            player.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT);
+            //  player.seekTo(currentWindow, playbackPosition);
+            player.prepare(mediaSource, false, false);
+        }
+
+        private MediaSource buildMediaSource(Uri uri) {
+            DataSource.Factory dataSourceFactory =
+                    new DefaultDataSourceFactory(context, "exoplayer-codelab");
+            return new ProgressiveMediaSource.Factory(dataSourceFactory)
+                    .createMediaSource(uri);
+        }
+
+        @SuppressLint("InlinedApi")
+        private void hideSystemUi() {
+            playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        }
+
+
 
     }
 
@@ -127,6 +243,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
     public interface OnItemClickListener{
         void onItemClick(MessageModel model);
     }
+
+
 
 
 

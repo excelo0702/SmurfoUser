@@ -1,5 +1,6 @@
 package com.example.SmurfoUser.category_view.Courses;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,10 @@ import android.widget.Toast;
 
 import com.example.SmurfoUser.LoadingDialog;
 import com.example.SmurfoUser.R;
+import com.example.SmurfoUser.UserInfoModel;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,8 +34,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class courses extends Fragment {
 
@@ -39,44 +47,78 @@ public class courses extends Fragment {
     }
 
 
-
-
     ViewPager viewPager;
-    List<CourseThumbnail> modelList;
+    List<CourseThumbnail> modelList1,modelList2,modelList3,modelList4,modelList5;
     private DatabaseReference databaseReference;
     private final String TAG = "Courses123";
     private String history,trending,mostly,for_you;
     private RecyclerView recyclerView1,recyclerView2,recyclerView3,recyclerView4,recyclerView;
-    private HorizontalAdapter adapter;
+    private HorizontalAdapter adapter1,adapter2,adapter3,adapter4;
     private Adapter Pageradapter;
 
     TextView allCourse;
 
-
     private List<CourseThumbnail> searchlist;
-    private com.example.SmurfoUser.category_view.Courses.SearchAdapter searchAdapter;
+    private SearchAdapter searchAdapter;
     SearchView searchView;
 
     LoadingDialog loadingDialog;
 
+    FirebaseUser user;
+    UserInfoModel mode;
+    TabLayout tabLayout;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        loadingDialog = new LoadingDialog(getActivity());
+        loadingDialog.startLoadingDialog();
 
-        View view = inflater.inflate(R.layout.fragment_courses, container, false);
-//        loadingDialog.startLoadingDialog();
-
-   /*     new Handler().postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 loadingDialog.DismissDialog();
             }
-        },3000);*/
+        },1500);
+
+        View view = inflater.inflate(R.layout.fragment_courses, container, false);
+        tabLayout = view.findViewById(R.id.tab_layoutt);
+        DatabaseReference presenceRef = FirebaseDatabase.getInstance().getReference("disconnectmessage");
+        presenceRef.onDisconnect().setValue("I disconnected!");
+        presenceRef.onDisconnect().removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError error, @NonNull DatabaseReference reference) {
+                if (error != null) {
+                    Log.d(TAG, "could not establish onDisconnect event:" + error.getMessage());
+                }
+            }
+        });
+
+        DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+        connectedRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean connected = snapshot.getValue(Boolean.class);
+                if (connected) {
+                    Log.d(TAG, "connected");
+                } else {
+                    Log.d(TAG, "not connected");
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "Listener was cancelled");
+            }
+        });
         databaseReference = FirebaseDatabase.getInstance().getReference("");
 
+        databaseReference.child("CoursesThumbnail").keepSynced(true);
+
+
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
 
         allCourse = view.findViewById(R.id.access_all_course);
@@ -89,7 +131,16 @@ public class courses extends Fragment {
             }
         });
 
+
+        getActivity().setRequestedOrientation(
+                ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         viewPager = view.findViewById(R.id.courses_viewPager);
+        modelList1 = new ArrayList<>();
+        modelList2 = new ArrayList<>();
+        modelList3 = new ArrayList<>();
+        modelList4 = new ArrayList<>();
+        modelList5 = new ArrayList<>();
 
         recyclerView = view.findViewById(R.id.search_recycler_courses_view);
         recyclerView.setHasFixedSize(true);
@@ -116,111 +167,105 @@ public class courses extends Fragment {
         recyclerView4.setHasFixedSize(true);
         recyclerView4.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
 
-        modelList = new ArrayList<>();
-        showCoursesImageSlider();
-        showRecentCourse();
-        showTrendingCourse();
-        showMostlyViewedCourse();
-        showForYouCourse();
+        fetchUserInfo();
 
+        showRecentCourse();
+        showMostlyViewedCourse();
+
+        showTrendingCourse();
+
+       showCoursesImageSlider();
 
         return view;
+
     }
 
-    private void showForYouCourse() {
-        Query query = databaseReference.child("CoursesThumbnail").orderByKey().limitToFirst(5);
-        query.addValueEventListener(new ValueEventListener() {
+    private void showForYouCourse(final String interest) {
+        Query query = databaseReference.child(getResources().getString(R.string.CoursesThumbnail));
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                modelList.clear();
+                modelList4.clear();
                 for(DataSnapshot ds: dataSnapshot.getChildren())
                 {
-                    Log.d(TAG+" jjjjjj   ",ds.getValue()+"");
                     CourseThumbnail model = ds.getValue(CourseThumbnail.class);
-                    modelList.add(model);
+                    for(int i=0;i<interest.length() && i<model.getCategory().length();i++)
+                    {
+                        if(interest.charAt(i)==model.getCategory().charAt(i) && interest.charAt(i)=='1')
+                        {
+                            modelList4.add(0,model);
+                            break;
+                        }
+                    }
                 }
-                adapter = new HorizontalAdapter(modelList,getContext());
-                recyclerView4.setAdapter(adapter);
-                Log.d(TAG,"fghjkk");
-
+                adapter4 = new HorizontalAdapter(modelList4,getContext());
+                recyclerView4.setAdapter(adapter4);
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
-
     }
 
     private void showMostlyViewedCourse() {
-        Query query = databaseReference.child("CoursesThumbnail").orderByKey().limitToFirst(5);
+        Query query = databaseReference.child(getResources().getString(R.string.CoursesThumbnail)).orderByChild("views");
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                modelList.clear();
+                modelList3.clear();
+
                 for(DataSnapshot ds: dataSnapshot.getChildren())
                 {
-                    Log.d(TAG+" jjjjjj   ",ds.getValue()+"");
                     CourseThumbnail model = ds.getValue(CourseThumbnail.class);
-                    modelList.add(model);
+                    modelList3.add(0,model);
                 }
-                adapter = new HorizontalAdapter(modelList,getContext());
-                recyclerView3.setAdapter(adapter);
-                Log.d(TAG,"fghjkk");
-
+                adapter3 = new HorizontalAdapter(modelList3,getContext());
+                recyclerView3.setAdapter(adapter3);
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
 
     }
 
-
     private void showTrendingCourse() {
-        Query query = databaseReference.child("CoursesThumbnail").orderByKey().limitToLast(5);
+        Query query = databaseReference.child(getResources().getString(R.string.CoursesThumbnail)).orderByChild("trending");
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                modelList.clear();
+                modelList2.clear();
+
                 for(DataSnapshot ds: dataSnapshot.getChildren())
                 {
-                    Log.d(TAG+" jjjjjj   ",ds.getValue()+"");
                     CourseThumbnail model = ds.getValue(CourseThumbnail.class);
-                    modelList.add(model);
+                    modelList2.add(0,model);
                 }
-                adapter = new HorizontalAdapter(modelList,getContext());
-                recyclerView2.setAdapter(adapter);
-                Log.d(TAG,"fghjkk");
-
+                adapter2 = new HorizontalAdapter(modelList2,getContext());
+                recyclerView2.setAdapter(adapter2);
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
 
     }
 
     private void showRecentCourse() {
-        Query query = databaseReference.child("CoursesThumbnail").orderByKey().limitToFirst(5);
+        modelList1.clear();
+
+
+        Query query = databaseReference.child(getResources().getString(R.string.CourseHistory)).child(user.getUid()).orderByChild("time").limitToLast(7);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                modelList.clear();
+                modelList1.clear();
+
                 for(DataSnapshot ds: dataSnapshot.getChildren())
                 {
-                    Log.d(TAG+" jjjjjj   ",ds.getValue()+"");
+                    Log.d("popop",ds.getValue()+"");
                     CourseThumbnail model = ds.getValue(CourseThumbnail.class);
-                    modelList.add(model);
+                    modelList1.add(0,model);
                 }
-                adapter = new HorizontalAdapter(modelList,getContext());
-                recyclerView1.setAdapter(adapter);
-                Log.d(TAG,"fghjkk");
+                adapter4 = new HorizontalAdapter(modelList1,getContext());
+                recyclerView1.setAdapter(adapter4);
 
             }
             @Override
@@ -232,21 +277,20 @@ public class courses extends Fragment {
     }
 
     private void showCoursesImageSlider() {
-        databaseReference.child("CoursesThumbnail").addValueEventListener(new ValueEventListener() {
+        databaseReference.child(getResources().getString(R.string.CoursesThumbnail)).limitToLast(7).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("IIIImage",dataSnapshot.getChildrenCount()+"");
-
-                modelList.clear();
+                modelList5.clear();
                 for(DataSnapshot ds: dataSnapshot.getChildren())
                 {
-                    Log.d("IIIImage",ds.getValue().toString());
                     CourseThumbnail model = ds.getValue(CourseThumbnail.class);
-                    modelList.add(model);
+                    modelList5.add(0,model);
 
                 }
-                Pageradapter = new Adapter(modelList,getContext());
+                Pageradapter = new Adapter(modelList5,getContext());
                 viewPager.setAdapter(Pageradapter);
+                tabLayout.setupWithViewPager(viewPager,true);
+
             }
 
             @Override
@@ -257,13 +301,35 @@ public class courses extends Fragment {
 
     }
 
+    private void fetchUserInfo()
+    {
+        databaseReference.child(getResources().getString(R.string.UserInfo)).child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mode = dataSnapshot.getValue(UserInfoModel.class);
+                final String interest = mode.getInterest();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showForYouCourse(interest);
+
+                    }
+                },500);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
-
 
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
@@ -282,7 +348,6 @@ public class courses extends Fragment {
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     searchlist.clear();
-                    Toast.makeText(getContext(),"hhhh",Toast.LENGTH_SHORT).show();
                     Query firebasequery = databaseReference.child("CoursesThumbnail").orderByChild("courseName").startAt(newText).endAt(newText+"\uf8ff");
                     firebasequery.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -304,7 +369,6 @@ public class courses extends Fragment {
             });
         }
     }
-
 
 
 }

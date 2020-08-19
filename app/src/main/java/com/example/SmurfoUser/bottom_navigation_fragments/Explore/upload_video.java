@@ -39,6 +39,7 @@ import android.widget.Toast;
 
 import com.example.SmurfoUser.R;
 import com.example.SmurfoUser.onBackPressed;
+import com.example.SmurfoUser.ui.Dashboard.PointModel;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -53,8 +54,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -69,6 +73,7 @@ import static android.view.View.GONE;
 /**
  * A simple {@link Fragment} subclass.
  */
+
 public class upload_video extends Fragment implements onBackPressed {
 
 
@@ -76,7 +81,7 @@ public class upload_video extends Fragment implements onBackPressed {
     private Button uploadBtn;
     private EditText video_title;
     private EditText description;
-    private ImageView thumbnail;
+    private ImageView thumbnail,pencil;
     private Uri videouri,mImageUri;
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
@@ -98,6 +103,9 @@ public class upload_video extends Fragment implements onBackPressed {
 
     private String subCategory,descriptio;
     private static final int PICK_IMAGE_REQUEST = 2;
+    int points=0;
+
+    PointModel modelWeekly,modelOverAll;
 
 
     public upload_video() {
@@ -122,6 +130,7 @@ public class upload_video extends Fragment implements onBackPressed {
         video_title = view.findViewById(R.id.video_title);
         description = view.findViewById(R.id.descriptioin_upload_video);
         thumbnail = view.findViewById(R.id.upload_thumbnail);
+        pencil = view.findViewById(R.id.pencil_explore);
         spinner =view.findViewById(R.id.category_spinner);
 
         progress_seekBar = view.findViewById(R.id.progress_bar);
@@ -144,6 +153,7 @@ public class upload_video extends Fragment implements onBackPressed {
         spinner.setAdapter(adapter);
 
 
+        fetchUserPoints();
 
         Toast.makeText(getContext(),subCategory,Toast.LENGTH_LONG).show();
 
@@ -163,17 +173,21 @@ public class upload_video extends Fragment implements onBackPressed {
                 if(user==null)
                 {
                     Toast.makeText(getContext(),"user cant be null",Toast.LENGTH_SHORT).show();
+
+                }
+                else if(videouri==null){
+                    Toast.makeText(getContext(),"You didn't choose any video",Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    uploadVideo();
                     uploadBtn.setEnabled(false);
                     choosebtn.setEnabled(false);
                     thumbnail.setEnabled(false);
+                    uploadVideo();
                 }
             }
         });
 
-        thumbnail.setOnClickListener(new View.OnClickListener() {
+        pencil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openFileChooser();
@@ -183,19 +197,42 @@ public class upload_video extends Fragment implements onBackPressed {
         fullScreenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 FullScreen();
-          //      Intent intent = new Intent(getContext(), FloatingWidgetService.class);
-            //    intent.putExtra("videoUri",videouri.toString());
-              //  getActivity().startService(intent);
-
             }
         });
 
 
 
-
         return view;
+    }
+
+    private void fetchUserPoints() {
+        databaseReference.child(getResources().getString(R.string.UsersPoint)).child(getResources().getString(R.string.Weekly)).child(user.getUid()).addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot!=null){
+                            modelWeekly = dataSnapshot.getValue(PointModel.class);
+                            points = modelWeekly.getPoints();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                }
+        );
+        databaseReference.child(getResources().getString(R.string.UsersPoint)).child(getResources().getString(R.string.OverAll)).child(user.getUid()).addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot!=null){
+                            modelOverAll = dataSnapshot.getValue(PointModel.class);
+                            points = modelOverAll.getPoints();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                }
+        );
     }
 
     private void FullScreen() {
@@ -286,6 +323,14 @@ public class upload_video extends Fragment implements onBackPressed {
         }
     }
 
+    private void increasePoints()
+    {
+        modelWeekly.setPoints(modelWeekly.getPoints()+10);
+        modelOverAll.setPoints(modelOverAll.getPoints()+10);
+        databaseReference.child("UsersPoint").child("weekly").child(auth.getCurrentUser().getUid()).setValue(modelWeekly);
+        databaseReference.child("UsersPoint").child("OverAll").child(auth.getCurrentUser().getUid()).setValue(modelOverAll);
+
+    }
 
     private Uri getImageUri(Context context, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -300,6 +345,7 @@ public class upload_video extends Fragment implements onBackPressed {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         getActivity().startActivityForResult(intent,1);
     }
+
 
     private void openFileChooser() {
         Intent intent = new Intent();
@@ -383,6 +429,7 @@ public class upload_video extends Fragment implements onBackPressed {
         }
     }
 
+
     private String getfilterExt(Uri videoUri)
     {
         ContentResolver contentResolver = getActivity().getContentResolver();
@@ -393,7 +440,7 @@ public class upload_video extends Fragment implements onBackPressed {
 
     private void uploadVideo()
     {
-        if(videouri!=null)
+        if(videouri!=null )
         {
             //   Toast.makeText(getApplicationContext(),"upl88",Toast.LENGTH_SHORT).show();
 
@@ -428,20 +475,19 @@ public class upload_video extends Fragment implements onBackPressed {
             }
             if(title.equals(""))
             {
-                Toast.makeText(getContext(),"Title cant be null",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Song Name can't be null",Toast.LENGTH_SHORT).show();
+                uploadBtn.setEnabled(true);
                 return;
             }
-            Log.d("222222","2222222");
-            if(videouri==null )
-            {
-                Toast.makeText(getContext(),"You didn't choose any video",Toast.LENGTH_SHORT).show();
-            }
+
             if(mImageUri==null)
             {
                 Toast.makeText(getContext(),"Choose thumbnail for dislpayng it",Toast.LENGTH_SHORT).show();
+                uploadBtn.setEnabled(true);
+                return;
             }
             final String upload = System.currentTimeMillis()+"";
-            final StorageReference reference = storageReference.child("VIDEOS").child(user.getUid()).child(upload+getfilterExt(videouri));
+            final StorageReference reference = storageReference.child(getResources().getString(R.string.ExploreVideos)).child(user.getUid()).child(upload+getfilterExt(videouri));
             reference.putFile(videouri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -450,7 +496,7 @@ public class upload_video extends Fragment implements onBackPressed {
                                 @Override
                                 public void onSuccess(final Uri videouri) {
 
-                                    final StorageReference imageReference = storageReference.child("THUMBNAIL").child(upload+getfilterExt(mImageUri));
+                                    final StorageReference imageReference = storageReference.child(getResources().getString(R.string.ExploreThumbnail)).child(upload+getfilterExt(mImageUri));
                                     imageReference.putFile(mImageUri)
                                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                                 @Override
@@ -467,10 +513,10 @@ public class upload_video extends Fragment implements onBackPressed {
                                                                             progress_seekBar.setProgress(0);
                                                                         }
                                                                     },100);
-
                                                                     VideoModel model = new VideoModel(user.getUid(),title,"Normal",descriptio,videouri.toString(),imageuri.toString(),"NONE","NONE","-1",upload,"0","0","0",sub_category);
-                                                                    databaseReference.child("VIDEOS").child(upload).setValue(model);
-                                                                    databaseReference.child("USER_VIDEOS").child(user.getUid()).child(upload).setValue(model);
+                                                                    databaseReference.child(getResources().getString(R.string.ExploreVideos)).child(upload).setValue(model);
+                                                                    databaseReference.child(getResources().getString(R.string.UsersExploreVideos)).child(user.getUid()).child(upload).setValue(model);
+                                                                    increasePoints();
                                                                 }
                                                             });
                                                 }
@@ -505,7 +551,11 @@ public class upload_video extends Fragment implements onBackPressed {
     @Override
     public void onBackPressed() {
         ((AppCompatActivity)getActivity()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        player.setPlayWhenReady(false);
-        player.release();
+        if (player!=null)
+        {
+            player.release();
+        }
     }
+
+
 }

@@ -50,43 +50,10 @@ public class ApproveVideo extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_approve_video, container, false);
-        recyclerView = view.findViewById(R.id.routine_videos);
-        recyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getContext());
-        list = new ArrayList<>();
-        mAdapter = new ApproveVideoAdapter(list,getContext());
-        user = FirebaseAuth.getInstance().getCurrentUser();
-
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-
-        fetchRoutine();
 
 
         return view;
     }
 
-    private void fetchRoutine() {
-        mDatabaseReference.child(getString(R.string.RoutineThumbnail))
-           .addValueEventListener(new ValueEventListener() {
-               @Override
-               public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                   for(DataSnapshot ds: dataSnapshot.getChildren())
-                   {
-                       RoutineThumbnailModel model = ds.getValue(RoutineThumbnailModel.class);
-                       if(model.getInstructor_name().equals(user.getUid()))
-                       {
-                           list.add(0,model);
-                       }
-                   }
-                   mAdapter.setData(list);
-                   recyclerView.setLayoutManager(mLayoutManager);
-                   recyclerView.setAdapter(mAdapter);
-               }
-               @Override
-               public void onCancelled(@NonNull DatabaseError databaseError) {
-
-               }
-           });
-    }
 
 }

@@ -27,13 +27,17 @@ import android.widget.Toast;
 
 import com.example.SmurfoUser.R;
 import com.example.SmurfoUser.bottom_navigation_fragments.Calendar.CalendarModel;
+import com.example.SmurfoUser.ui.Dashboard.PointModel;
 import com.example.SmurfoUser.ui.notifications.NotificationModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -67,6 +71,7 @@ public class hostContest extends Fragment {
     private PopupWindow mPopupWindow;
     String date_text;
     RelativeLayout relativeLayout;
+    int points=0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -190,6 +195,9 @@ public class hostContest extends Fragment {
                                     CalendarModel calendar = new CalendarModel("Contest",date_text,info,info,uri.toString(),time);
                                     databaseReference.child("CALENDAR").child(date_text).child(time).setValue(calendar);
 
+                                    PointModel popo = new PointModel(user.getUid(),"",points+50);
+                                    databaseReference.child("PointsInstructor").child(user.getUid()).setValue(popo);
+
                                 }
                             });
                         }
@@ -223,5 +231,27 @@ public class hostContest extends Fragment {
         select_date = v.findViewById(R.id.select_date);
         relativeLayout = v.findViewById(R.id.rrr);
     }
+
+
+    private void fetchUserPoints() {
+        databaseReference.child("PointsInstructor").child(user.getUid()).addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot!=null){
+                            //       PointModel model = dataSnapshot.getValue(PointModel.class);
+                            //     points = model.getPoints();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                }
+        );
+    }
+
+
 
 }

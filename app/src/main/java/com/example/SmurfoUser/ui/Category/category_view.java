@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.example.SmurfoUser.R;
 import com.example.SmurfoUser.bottom_navigation_fragments.Explore.VideoModel;
-import com.example.SmurfoUser.category_view.routine.VideoAdapter;
+import com.example.SmurfoUser.bottom_navigation_fragments.Explore.VideoAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -101,7 +101,7 @@ public class category_view extends Fragment {
                     Toast.makeText(getContext(),"No category has been added",Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    mAdapter = new VideoAdapter(videolist, getContext());
+                    mAdapter = new VideoAdapter(videolist, getContext(),"CategoryView");
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setAdapter(mAdapter);
                 }

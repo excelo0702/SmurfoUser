@@ -3,12 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.Dashboard.ChatPeopleList">
+    tools:context=".ui.Dashboard.MyRoutinePackage.ChatPeopleList">
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/chat_pepole_list_recycler_view"
         ></androidx.recyclerview.widget.RecyclerView>
-
 </FrameLayout>

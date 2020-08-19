@@ -8,50 +8,43 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.SmurfoUser.ChatBox.ChatWithInstructor;
+import com.example.SmurfoUser.LetsGetStarted.lets_get_started;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.sarnava.textwriter.TextWriter;
 
 public class SplashScreen_Activity extends AppCompatActivity {
-
-    private final int SPLASH_DISPLAY_LENGTH = 2500;
+    private final int SPLASH_DISPLAY_LENGTH = 200;
     TextWriter text;
+    FirebaseUser usesr;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-
-        if(getIntent().hasCategory("category"))
-        {
-            Intent intent = new Intent(SplashScreen_Activity.this, ChatWithInstructor.class);
-            startActivity(intent);
-        }
-
-
-        text=findViewById(R.id.textwriter);
-        text .setWidth(12)
-                .setDelay(30)
-                .setColor(Color.RED)
-                .setConfig(TextWriter.Configuration.INTERMEDIATE)
-                .setSizeFactor(30f)
-                .setLetterSpacing(25f)
-                .setText("SMURFO")
-                .setListener(new TextWriter.Listener() {
-                    @Override
-                    public void WritingFinished() {
-
-                        //do stuff after animation is finished
-                    }
-                })
-                .startAnimation();
-
+        usesr = FirebaseAuth.getInstance().getCurrentUser();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent mainIntent = new Intent(SplashScreen_Activity.this,MainActivity.class);
-                SplashScreen_Activity.this.startActivity(mainIntent);
-                SplashScreen_Activity.this.finish();
+
+                if(usesr==null || !usesr.isEmailVerified()){
+                    Intent mainIntent = new Intent(SplashScreen_Activity.this, lets_get_started.class);
+                    startActivity(mainIntent);
+                    SplashScreen_Activity.this.finish();
+                }
+                else
+                {
+                    Intent mainIntent = new Intent(SplashScreen_Activity.this,MainActivity.class);
+                    startActivity(mainIntent);
+                    SplashScreen_Activity.this.finish();
+                }
+
+
             }
         }, SPLASH_DISPLAY_LENGTH);
+
+
     }
 }

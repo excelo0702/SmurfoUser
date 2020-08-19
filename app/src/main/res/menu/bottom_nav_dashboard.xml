@@ -7,27 +7,37 @@
         android:id="@+id/dashboard_dashboard"
         android:enabled="true"
         android:title="Dashboard"
+        android:icon="@drawable/ic_dashboard"
+        app:showAsAction="always"></item>
+
+    <item
+        android:id="@+id/my_routines_dashboard"
+        android:enabled="true"
+        android:title="My Routines"
+        android:icon="@drawable/ic_dashboard_video_library"
+        app:showAsAction="always"></item>
+
+    <item
+        android:id="@+id/certificates_dashboard"
+        android:enabled="true"
+        android:title="My Courses"
+        android:icon="@drawable/ic_dashboard_course"
+        app:showAsAction="always"></item>
+
+
+    <item
+        android:id="@+id/my_videos_dashboard"
+        android:enabled="true"
+        android:title="My videos"
+        android:icon="@drawable/ic_baseline_ondemand_video_24"
         app:showAsAction="always"></item>
 
     <item
         android:id="@+id/favorite_dashboard"
         android:enabled="true"
-        android:title="Favorite"
+        android:title="My Bookmarks"
+        android:icon="@drawable/ic_baseline_bookmark_24"
         app:showAsAction="always"></item>
-    <item
-        android:id="@+id/my_routines_dashboard"
-        android:enabled="true"
-        android:title="My Routines"
-        app:showAsAction="always"></item>
-    <item
-        android:id="@+id/certificates_dashboard"
-        android:enabled="true"
-        android:title="Certificates"
-        app:showAsAction="always"></item>
-    <item
-        android:id="@+id/my_videos_dashboard"
-        android:enabled="true"
-        android:title="My videos"
-        app:showAsAction="always"></item>
+
 
 </menu>

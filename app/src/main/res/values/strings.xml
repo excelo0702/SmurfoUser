@@ -20,8 +20,27 @@
     <string name="Open">chhots</string>
     <string name="Close">chhots</string>
 
+    <string name="Click_Here"><u>Click Here</u></string>
+    <string name="MyCourse">MyCourse</string>
+
     <string name="UserPurchasedRoutines">USER_PURCHASED_ROUTINES</string>
     <string name="RoutineThumbnail">ROUTINE_THUMBNAIL</string>
+    <string name="UsersPoint">UsersPoint</string>
+    <string name="Weekly">weekly</string>
+    <string name="OverAll">OverAll</string>
+    <string name="ExploreVideos">VIDEOS</string>
+    <string name="ExploreThumbnail">THUMBNAIL</string>
+    <string name="UsersExploreVideos">USER_VIDEOS</string>
+    <string name="CALENDAR">CALENDAR</string>
+    <string name="InstructorInfo">InstructorInfo</string>
+    <string name="InstructorCoverPhoto">InstructorCoverPhoto</string>
+    <string name="InstructorStyle">InstructorStyle</string>
+    <string name="UserInfo">UserInfo</string>
+    <string name="CoursesThumbnail">CoursesThumbnail</string>
+    <string name="CourseHistory">CourseHistory</string>
+    <string name="Courses">Courses</string>
+    <string name="CoursePreview">CoursePreview</string>
+
 
     <string-array name="category_list">
         <item>Street</item>

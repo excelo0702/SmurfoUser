@@ -4,11 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.Dashboard.MyRoutinePackage.MyRoutines">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="My Routines"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:id="@+id/routine"></TextView>
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/my_routine_dashboard"></androidx.recyclerview.widget.RecyclerView>
+        android:id="@+id/my_routine_dashboard"
+        android:layout_below="@id/routine"></androidx.recyclerview.widget.RecyclerView>
 
 </RelativeLayout>

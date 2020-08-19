@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginRight="20dp"
+        android:textColor="@color/Smurfogreen"
         android:text="Save"
         android:id="@+id/bottom_sheet_btn"></Button>
 

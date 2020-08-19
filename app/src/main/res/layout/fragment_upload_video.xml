@@ -34,7 +34,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/chhose_btn"
-        android:text="chhose video"
+        android:text="Choose Video"
+        android:textColor="@color/black"
         ></Button>
 
     <EditText
@@ -42,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:layout_marginBottom="10dp"
-        android:hint="Video title"
+        android:hint="Song Name"
         android:layout_below="@id/chhose_btn"
         android:layout_toRightOf="@id/upload_thumbnail"
         android:id="@+id/video_title"
@@ -71,11 +72,32 @@
         android:layout_height="150dp"
         android:layout_below="@id/chhose_btn"
         android:id="@+id/upload_thumbnail"
-        android:src="@mipmap/ic_launcher_round"
+
+        android:src="@drawable/smurfo_thumbnail"
         ></ImageView>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Thumbnail"
+            android:textColor="@color/black"
+            android:layout_toLeftOf="@id/pencil_explore"
+            android:layout_above="@id/progress_bar"
+            android:layout_marginBottom="2dp">
 
-    <androidx.appcompat.widget.AppCompatSpinner
+        </TextView>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/pencil_explore"
+            android:layout_above="@+id/progress_bar"
+            android:src="@drawable/ic_edit_pencil"
+            android:layout_toLeftOf="@id/category_spinner"
+            ></ImageView>
+
+
+        <androidx.appcompat.widget.AppCompatSpinner
         android:layout_width="170dp"
         android:layout_height="45dp"
         android:id="@+id/category_spinner"
@@ -88,7 +110,7 @@
         android:id="@+id/progress_bar"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="15dp"
         android:layout_margin="10dp"
         android:layout_below="@id/category_spinner"
         android:progress="0"/>
@@ -98,7 +120,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/upload_btn"
-        android:text="Upload"
+        android:text="Upload Video"
+        android:textColor="@color/black"
         android:layout_below="@id/progress_bar"
         ></Button>
 
